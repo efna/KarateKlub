@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Protokol";
+    ViewBag.PageTitle = "Protokol";
+    int brojTaba = (int)ViewData["tab"];
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="protokol">
+                    <a id="evidencijaProtokola" href="#protokolTab" data-toggle="tab">Evidencija protokola</a>
+                </li>
+                <li id="pregledDokumenata">
+                    <a id="dokumenti" href="#pregledDokumenataTab" data-toggle="tab">Pregled dokumenata</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="protokolTab">
+
+                    @Html.Action("Index", "Protokoli", new { })
+
+                </div>
+
+                <div id="pregledDokumenataTab">
+
+                    @Html.Action("PregledSvihDokumenata", "Dokumenti", new { })
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var protokol = document.getElementById("protokol");
+       protokol.classList.add("active");
+       var protokolTab = document.getElementById("protokolTab");
+       protokolTab.classList.add("tab-pane");
+       protokolTab.classList.add("fade");
+       protokolTab.classList.add("in");
+       protokolTab.classList.add("active");
+       var pregledDokumenataTab = document.getElementById("pregledDokumenataTab");
+       pregledDokumenataTab.classList.add("tab-pane");
+       pregledDokumenataTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var pregledDokumenata = document.getElementById("pregledDokumenata");
+       pregledDokumenata.classList.add("active");
+       var pregledDokumenataTab = document.getElementById("pregledDokumenataTab");
+       pregledDokumenataTab.classList.add("tab-pane");
+       pregledDokumenataTab.classList.add("fade");
+       pregledDokumenataTab.classList.add("in");
+       pregledDokumenataTab.classList.add("active");
+       var protokolTab = document.getElementById("protokolTab");
+       protokolTab.classList.add("tab-pane");
+       protokolTab.classList.add("fade");
+
+
+   }
+
+</script>
+
+
+
+
+

@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Upravni odbor";
+    ViewBag.PageTitle = "Upravni odbor";
+    int brojTaba = (int)ViewData["tab"];
+    int aktivnost = (int)ViewData["aktivnost"];
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .poravnanje2 {
+        width: 200px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="clanoviUpravnogOdbora">
+                    <a id="clanovi" href="#clanoviUpravnogOdboraTab" data-toggle="tab">Članovi upravnog odbora</a>
+                </li>
+                <li id="sjedniceUpravnogOdbora">
+                    <a id="sjednice" href="#sjedniceUpravnogOdboraTab" data-toggle="tab">Sjednice upravnog odbora</a>
+                </li>
+              
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="clanoviUpravnogOdboraTab">
+
+                    @Html.Action("Index", "ClanoviUpravnogOdbora", new { aktivan = aktivnost })
+
+                </div>
+
+                <div id="sjedniceUpravnogOdboraTab">
+
+                    @Html.Action("Index", "SjedniceupravnogOdbora", new { })
+                </div>
+
+               
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div style="text-align:center;">
+    @using (Html.BeginForm("Index", "UlogeClanovaUpravnogOdbora", new { }, FormMethod.Post, new { @class = "poravnanje2" }))
+    {
+
+        <button type="submit" style="width:210px;" class="btn-lg btn btn-primary" title="Pregledaj uloge"><span class="fa fa-file-text-o" aria-hidden="true"></span>Pregledaj uloge</button>
+    }
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var clanoviUpravnogOdbora = document.getElementById("clanoviUpravnogOdbora");
+       clanoviUpravnogOdbora.classList.add("active");
+       var clanoviUpravnogOdboraTab = document.getElementById("clanoviUpravnogOdboraTab");
+       clanoviUpravnogOdboraTab.classList.add("tab-pane");
+       clanoviUpravnogOdboraTab.classList.add("fade");
+       clanoviUpravnogOdboraTab.classList.add("in");
+       clanoviUpravnogOdboraTab.classList.add("active");
+       var sjedniceUpravnogOdboraTab = document.getElementById("sjedniceUpravnogOdboraTab");
+       sjedniceUpravnogOdboraTab.classList.add("tab-pane");
+       sjedniceUpravnogOdboraTab.classList.add("fade");
+      
+
+    }
+ 
+   else
+   {
+       var sjedniceUpravnogOdbora = document.getElementById("sjedniceUpravnogOdbora");
+       sjedniceUpravnogOdbora.classList.add("active");
+       var sjedniceUpravnogOdboraTab = document.getElementById("sjedniceUpravnogOdboraTab");
+       sjedniceUpravnogOdboraTab.classList.add("tab-pane");
+       sjedniceUpravnogOdboraTab.classList.add("fade");
+       sjedniceUpravnogOdboraTab.classList.add("in");
+       sjedniceUpravnogOdboraTab.classList.add("active");
+       var clanoviUpravnogOdboraTab = document.getElementById("clanoviUpravnogOdboraTab");
+       clanoviUpravnogOdboraTab.classList.add("tab-pane");
+       clanoviUpravnogOdboraTab.classList.add("fade");
+      
+     
+   }
+
+</script>
+
+

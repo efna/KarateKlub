@@ -1,0 +1,128 @@
+﻿@model KarateKlub.Web.Areas.ModulTrener.Models.ParticipacijeZaPolaganjeUcenickaZvanjaNeizmireneParticipacijeVM
+@using KarateKlub.Web.Areas.ModulTrener.Models
+
+@{
+    ViewBag.Title = "Neizmirene participacije za polaganje";
+    ViewBag.PageTitle = "Neizmirene participacije za polaganje";
+    Layout = null;
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<br />
+<br />
+<div style="margin-left:25px;width:260px;">
+    @using (Html.BeginForm("GoToUpravljanjeUplatamaClana2", "ClanoviKluba", FormMethod.Get, new { id = "FilterNeizmireneParticipacije" }))
+    {
+        @Html.HiddenFor(Model => Model.osobaId)
+        @Html.HiddenFor(Model => Model.aktivan)
+
+        @Html.DropDownListFor(model => model.izmirena, Model.Izmirenost, new { @class = "form-control", onchange = "document.getElementById('FilterNeizmireneParticipacije').submit()" })
+
+    }
+</div>
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaNeizmireneParticipacijeZaPolaganjeClana">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Polaganje</th>
+                                        <th>Zvanje za koje polaže</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (NeizmireneParticipacijePodaci x in Model.neizmireneParticipacije)
+                                    {
+                                        <tr>
+                                            <td>Polaganje održano @x.DatumPolaganja.ToString("dd.MM.yyyy") - @x.MjestoPolaganje</td>
+                                            <td>@x.ZvanjeZaKojePolaze</td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaNeizmireneParticipacijeZaPolaganjeClana').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [],
+                'orderable': false
+            }, {
+                'targets': [0, 1],
+                'width': '50%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+

@@ -1,0 +1,171 @@
+﻿
+@using KarateKlub.Data.Models
+
+@{
+
+    int brojTaba = (int)ViewData["tab"];
+    int aktivan = (int)ViewData["aktivan"];
+    int osobaId = (int)ViewData["osobaId"];
+    Osoba osoba = (Osoba)ViewData["osoba"];
+    int aktivnostLicence = (int)ViewData["aktivnostLicence"];
+    int brojTabaUplate = (int)ViewData["brojTabaUplate"];
+    int izmirena = (int)ViewData["izmirena"];
+
+    ViewBag.Title = "Detaljne informacije o članu " + osoba.Ime + " " + osoba.Prezime;
+    ViewBag.PageTitle = "Detaljni podaci člana";
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "GoToPregledClanova", "ClanoviKluba", new { aktivan = aktivan }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz članova" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="licniKlubskiPodaciClana">
+                    <a id="podaciClana" href="#licniKlubskiPodaciClanaTab" data-toggle="tab">Podaci člana</a>
+                </li>
+                <li id="zvanjaClana">
+                    <a id="zvanja" href="#zvanjaClanaTab" data-toggle="tab">Stečena zvanja</a>
+                </li>
+                <li id="steceneLicenceClana">
+                    <a id="licenceClana" href="#steceneLicenceClanaTab" data-toggle="tab">Stečene licence</a>
+                </li>
+                <li id="uplateClana">
+                    <a id="uplate" href="#uplateClanaTab" data-toggle="tab">Uplate</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="licniKlubskiPodaciClanaTab">
+
+                    @Html.Action("Detalji", "ClanoviKluba", new { osobaId = osobaId, aktivan = aktivan })
+
+
+                </div>
+
+                <div id="zvanjaClanaTab">
+
+                    @Html.Action("PregledStecenihZvanjaClana", "StecenaZvanja", new { osobaId = osobaId })
+
+
+                </div>
+                <div id="steceneLicenceClanaTab">
+
+                    @Html.Action("PregledStecenihLicenci", "SteceneLicence", new { osobaId = osobaId, aktivnostLicence = aktivnostLicence, aktivan = aktivan })
+
+
+
+
+                </div>
+                <div id="uplateClanaTab">
+
+                    @Html.Action("Index", "UpravljanjeUplatamaClanaKluba", new { osobaId = osobaId, aktivan = aktivan, brojTaba = brojTabaUplate, izmirena = izmirena })
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var licniKlubskiPodaciClana = document.getElementById("licniKlubskiPodaciClana");
+       licniKlubskiPodaciClana.classList.add("active");
+       var licniKlubskiPodaciClanaTab = document.getElementById("licniKlubskiPodaciClanaTab");
+       licniKlubskiPodaciClanaTab.classList.add("tab-pane");
+       licniKlubskiPodaciClanaTab.classList.add("fade");
+       licniKlubskiPodaciClanaTab.classList.add("in");
+       licniKlubskiPodaciClanaTab.classList.add("active");
+       var zvanjaClanaTab = document.getElementById("zvanjaClanaTab");
+       zvanjaClanaTab.classList.add("tab-pane");
+       zvanjaClanaTab.classList.add("fade");
+       var steceneLicenceClanaTab = document.getElementById("steceneLicenceClanaTab");
+       steceneLicenceClanaTab.classList.add("tab-pane");
+       steceneLicenceClanaTab.classList.add("fade");
+       var uplateClanaTab = document.getElementById("uplateClanaTab");
+       uplateClanaTab.classList.add("tab-pane");
+       uplateClanaTab.classList.add("fade");
+
+
+    }
+
+   else if(@brojTaba==2)
+   {
+       var zvanjaClana = document.getElementById("zvanjaClana");
+       zvanjaClana.classList.add("active");
+       var zvanjaClanaTab = document.getElementById("zvanjaClanaTab");
+       zvanjaClanaTab.classList.add("tab-pane");
+       zvanjaClanaTab.classList.add("fade");
+       zvanjaClanaTab.classList.add("in");
+       zvanjaClanaTab.classList.add("active");
+       var licniKlubskiPodaciClanaTab = document.getElementById("licniKlubskiPodaciClanaTab");
+       licniKlubskiPodaciClanaTab.classList.add("tab-pane");
+       licniKlubskiPodaciClanaTab.classList.add("fade");
+       var steceneLicenceClanaTab = document.getElementById("steceneLicenceClanaTab");
+       steceneLicenceClanaTab.classList.add("tab-pane");
+       steceneLicenceClanaTab.classList.add("fade");
+       var uplateClanaTab = document.getElementById("uplateClanaTab");
+       uplateClanaTab.classList.add("tab-pane");
+       uplateClanaTab.classList.add("fade");
+
+   }
+   else if(@brojTaba==3)
+   {
+       var steceneLicenceClana = document.getElementById("steceneLicenceClana");
+       steceneLicenceClana.classList.add("active");
+       var steceneLicenceClanaTab = document.getElementById("steceneLicenceClanaTab");
+       steceneLicenceClanaTab.classList.add("tab-pane");
+       steceneLicenceClanaTab.classList.add("fade");
+       steceneLicenceClanaTab.classList.add("in");
+       steceneLicenceClanaTab.classList.add("active");
+       var licniKlubskiPodaciClanaTab = document.getElementById("licniKlubskiPodaciClanaTab");
+       licniKlubskiPodaciClanaTab.classList.add("tab-pane");
+       licniKlubskiPodaciClanaTab.classList.add("fade");
+       var zvanjaClanaTab = document.getElementById("zvanjaClanaTab");
+       zvanjaClanaTab.classList.add("tab-pane");
+       zvanjaClanaTab.classList.add("fade");
+       var uplateClanaTab = document.getElementById("uplateClanaTab");
+       uplateClanaTab.classList.add("tab-pane");
+       uplateClanaTab.classList.add("fade");
+
+   }
+   else{
+       var uplateClana = document.getElementById("uplateClana");
+       uplateClana.classList.add("active");
+       var uplateClanaTab = document.getElementById("uplateClanaTab");
+       uplateClanaTab.classList.add("tab-pane");
+       uplateClanaTab.classList.add("fade");
+       uplateClanaTab.classList.add("in");
+       uplateClanaTab.classList.add("active");
+       var licniKlubskiPodaciClanaTab = document.getElementById("licniKlubskiPodaciClanaTab");
+       licniKlubskiPodaciClanaTab.classList.add("tab-pane");
+       licniKlubskiPodaciClanaTab.classList.add("fade");
+       var zvanjaClanaTab = document.getElementById("zvanjaClanaTab");
+       zvanjaClanaTab.classList.add("tab-pane");
+       zvanjaClanaTab.classList.add("fade");
+       var steceneLicenceClanaTab = document.getElementById("steceneLicenceClanaTab");
+       steceneLicenceClanaTab.classList.add("tab-pane");
+       steceneLicenceClanaTab.classList.add("fade");
+   }
+
+</script>
+
+
+
+
+

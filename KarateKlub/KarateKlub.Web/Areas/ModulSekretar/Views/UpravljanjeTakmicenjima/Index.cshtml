@@ -1,0 +1,96 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    int brojTaba = (int)ViewData["tab"];
+    int brojTabaRezultati = (int)ViewData["brojTabaRezultati"];
+
+    int takmicenjeId = (int)ViewData["takmicenjeId"];
+    Takmicenja takmicenje = (Takmicenja)ViewData["takmicenje"];
+
+    ViewBag.Title = "Upravljanje podacima takmičenja " + takmicenje.NazivTakmicenja;
+    ViewBag.PageTitle = "Protokol";
+}
+
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "UpravljanjeTakmicenjimaTakmicarima", new { brojTaba=1,aktivnost=0}, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz takmičenja" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="rezultati">
+                    <a id="rezultatiTakmicenja" href="#rezultatiTab" data-toggle="tab">Rezultati</a>
+                </li>
+                <li id="troskovi">
+                    <a id="troskoviTakmicenja" href="#troskoviTab" data-toggle="tab">Troškovi</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="rezultatiTab">
+
+                    @Html.Action("Index", "UpravljanjeRezultatimaTakmicenja", new {takmicenjeId=takmicenjeId,brojTaba=brojTabaRezultati })
+
+                </div>
+
+                <div id="troskoviTab">
+
+                    @Html.Action("Index", "TroskoviTakmicenja", new {takmicenjeId=takmicenjeId})
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var rezultati = document.getElementById("rezultati");
+       rezultati.classList.add("active");
+       var rezultatiTab = document.getElementById("rezultatiTab");
+       rezultatiTab.classList.add("tab-pane");
+       rezultatiTab.classList.add("fade");
+       rezultatiTab.classList.add("in");
+       rezultatiTab.classList.add("active");
+       var troskoviTab = document.getElementById("troskoviTab");
+       troskoviTab.classList.add("tab-pane");
+       troskoviTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var troskovi = document.getElementById("troskovi");
+       troskovi.classList.add("active");
+       var troskoviTab = document.getElementById("troskoviTab");
+       troskoviTab.classList.add("tab-pane");
+       troskoviTab.classList.add("fade");
+       troskoviTab.classList.add("in");
+       troskoviTab.classList.add("active");
+       var rezultatiTab = document.getElementById("rezultatiTab");
+       rezultatiTab.classList.add("tab-pane");
+       rezultatiTab.classList.add("fade");
+
+
+   }
+
+</script>
+
+
+
+
+
+

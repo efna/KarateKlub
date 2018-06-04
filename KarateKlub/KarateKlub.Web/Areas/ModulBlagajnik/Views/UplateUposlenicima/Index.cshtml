@@ -1,0 +1,182 @@
+﻿@model KarateKlub.Web.Areas.ModulBlagajnik.Models.UplateUposlenicimaIndexVM
+@using KarateKlub.Web.Areas.ModulBlagajnik.Models
+
+@{
+    ViewBag.Title = "Uplate uposlenicima";
+    ViewBag.PageTitle = "Uplate uposlenicima";
+    Layout = null;
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaUplateUposlenicima">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Vršilac funkcije</th>
+                                        <th>Funkcija</th>
+                                        <th>JMBG</th>
+                                        <th>Datum uplate</th>
+                                        <th>Vremenski period</th>
+                                        <th>Iznos</th>
+                                        <th>Svrha</th>
+                                        <th>Obrazloženje</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (UplataUposlenikaPodaci x in Model.uplateUposlenicima)
+                                    {
+                                        <tr>
+                                            <td>@x.Osoba</td>
+                                            @if (x.osoba.isTrener == true)
+                                            {
+                                                <td>Trener</td>
+                                            }
+                                            else if (x.osoba.isSekretar == true)
+                                            {
+                                                <td>Sekretar</td>
+                                            }
+                                            else if (x.osoba.isBlagajnik == true)
+                                            {
+                                                <td>Blagajnik</td>
+                                            }
+                                            else if (x.osoba.isKnjigovodja == true)
+                                            {
+                                                <td>Knjigovođa</td>
+                                            }
+                                            else
+                                            {
+                                                <td>Član UO</td>
+                                            }
+
+                                            <td>@x.JMBG</td>
+                                            <td>@x.DatumUplate.ToString("dd.MM.yyyy")</td>
+                                            <td>@x.DatumOd.ToString("dd.MM.yyyy") - @x.DatumDo.ToString("dd.MM.yyyy")</td>
+                                            <td>@x.IznosKMBrojevima (@x.IznosKMSLovima)</td>
+                                            <td>@x.SvrhaUplate</td>
+                                            <td>
+                                                @if (x.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za uplatu.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaUplateUposlenicima').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [7],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4, 5, 6, 7],
+                'width': '20%',
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Takmičenja i takmičari";
+    ViewBag.PageTitle = "Takmičenja i takmičari";
+    int brojTaba = (int)ViewData["tab"];
+    int aktivnost = (int)ViewData["aktivnost"];
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="takmicenja">
+                    <a id="takm" href="#takmicenjaTab" data-toggle="tab">Takmičenja</a>
+                </li>
+                <li id="takmicari">
+                    <a id="takmicariKluba" href="#takmicariTab" data-toggle="tab">Takmičari</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="takmicenjaTab">
+
+                    @Html.Action("Index", "Takmicenja", new {})
+               
+                </div>
+
+                <div id="takmicariTab">
+
+                    @Html.Action("Index", "Takmicari", new {aktivnost=aktivnost })
+          
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var takmicenja = document.getElementById("takmicenja");
+       takmicenja.classList.add("active");
+       var takmicenjaTab = document.getElementById("takmicenjaTab");
+       takmicenjaTab.classList.add("tab-pane");
+       takmicenjaTab.classList.add("fade");
+       takmicenjaTab.classList.add("in");
+       takmicenjaTab.classList.add("active");
+       var takmicariTab = document.getElementById("takmicariTab");
+       takmicariTab.classList.add("tab-pane");
+       takmicariTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var takmicari = document.getElementById("takmicari");
+       takmicari.classList.add("active");
+       var takmicariTab = document.getElementById("takmicariTab");
+       takmicariTab.classList.add("tab-pane");
+       takmicariTab.classList.add("fade");
+       takmicariTab.classList.add("in");
+       takmicariTab.classList.add("active");
+       var takmicenjaTab = document.getElementById("takmicenjaTab");
+       takmicenjaTab.classList.add("tab-pane");
+       takmicenjaTab.classList.add("fade");
+
+
+   }
+
+</script>
+
+
+

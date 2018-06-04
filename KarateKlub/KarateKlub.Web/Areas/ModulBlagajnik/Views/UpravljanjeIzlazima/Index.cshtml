@@ -1,0 +1,618 @@
+﻿@model KarateKlub.Web.Areas.ModulBlagajnik.Models.UpravljanjeIzlazimaIndexVM
+@{
+    ViewBag.Title = "Izlazi";
+    ViewBag.PageTitle = "Izlazi";
+    int brojTaba = (int)ViewData["tab"];
+    string DatumOd = (string)ViewData["DatumOd"];
+    string DatumDo = (string)ViewData["DatumDo"];
+    decimal ukupanIzlazZaOdabraniPeriod = (decimal)ViewData["ukupanIzlazZaOdabraniPeriod"];
+
+}
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+
+    .customDiv {
+        margin: 5px;
+    }
+
+    #slikaClana {
+        border: 1px solid transparent;
+        border-color: #337ab7;
+    }
+
+    .razmak {
+        margin-top: 20px;
+    }
+
+    .poravnanjeDugmadi {
+        margin-top: 10px;
+    }
+</style>
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+@using (Html.BeginForm("GoToUpravljanjeIzlazima", "UpravljanjeIzlazima", FormMethod.Post))
+{
+    <label style="margin-left:50px;">Odaberite period:</label>
+    <div class="input-group date" style="width:350px;margin-left:50px;">
+        @Html.TextBoxFor(model => model.DatumOd, new { @class = "form-control datepicker", @readonly = "readonly", onchange = "ValidirajDatumOd()", @id = "DatumOd" })
+        @Html.ValidationMessageFor(model => model.DatumOd)
+        @Html.ValidationMessage("DatumOdError", new { id = "DatumOdError" })
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-remove" onclick="document.getElementById('DatumOd').value = ''"></span></span>
+    </div>
+    <div class="input-group date" style="width:350px;margin-top:5px;margin-left:50px;">
+
+        @Html.TextBoxFor(model => model.DatumDo, new { @class = "form-control datepicker", @readonly = "readonly", onchange = "ValidirajDatumDo()", @id = "DatumDo" })
+        @Html.ValidationMessageFor(model => model.DatumDo)
+        @Html.ValidationMessage("DatumDoError", new { id = "DatumDoError" })
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span><span class="input-group-addon"><span class="glyphicon glyphicon-remove" onclick="document.getElementById('DatumDo').value = ''"></span></span>
+    </div>
+    <br />
+
+
+    <button type="submit" title="Pretraga" class="btn btn-default" style="margin-left:50px;width:270px;" onclick="return Validiraj()">
+        Pretraga
+        <i class="fa fa-refresh" style="margin-left:150px;"></i>
+    </button>
+}
+@if (DatumOd != "" && DatumDo != "")
+{
+    using (Html.BeginForm("Index", "UpravljanjeIzlazima", new { }, FormMethod.Post))
+    {
+
+        <button type="submit" title="Poništi pretragu" class="btn btn-default poravnanjeDugmadi" style="display:inline-block;position:relative;margin-left:50px;width:270px;" data-toggle="modal" data-target="#klubskiPodaciClanaModal">
+            Poništi pretragu
+            <i class="fa fa-remove" style="margin-left:115px;"></i>
+        </button>
+    }
+}
+
+
+<br />
+<br />
+<br />
+<br />
+@if (ukupanIzlazZaOdabraniPeriod != 0)
+{
+    <label style="margin-left:50px;">Ukupan iznos izdvojen za troškove u odabranom periodu: @ukupanIzlazZaOdabraniPeriod KM</label>
+    <br />
+    <br />
+    <br />
+}
+
+<script>
+
+        $(function () {
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+                language: 'bs'
+            })
+        })
+</script>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="uplateUposlenicima">
+                    <a id="uplate" href="#uplateUposlenicimaTab" data-toggle="tab">Uplate osoblju</a>
+                </li>
+                <li id="troskoviRegistracijeKluba">
+                    <a id="troskoviRegKluba" href="#troskoviRegistracijeKlubaTab" data-toggle="tab">Registracije kluba</a>
+                </li>
+                <li id="troskoviRegistracijeTakmicara">
+                    <a id="troskoviRegTakmicara" href="#troskoviRegistracijeTakmicaraTab" data-toggle="tab">Registracije takmičara</a>
+                </li>
+                <li id="troskoviTakmicenja">
+                    <a id="troskoviSem" href="#troskoviTakmicenjaTab" data-toggle="tab">Takmičenja</a>
+                </li>
+                <li id="troskoviSeminara">
+                    <a id="troskoviSem" href="#troskoviSeminaraTab" data-toggle="tab">Seminari</a>
+                </li>
+                <li id="troskoviPolaganja">
+                    <a id="troskoviPol" href="#troskoviPolaganjaTab" data-toggle="tab">Polaganja</a>
+                </li>
+                <li id="troskoviNarudzbeOpreme">
+                    <a id="troskoviNarudzbeOpr" href="#troskoviNarudzbeOpremeTab" data-toggle="tab">Narudžbe opreme</a>
+                </li>
+                <li id="ostaliTroskovi">
+                    <a id="ostalo" href="#ostaliTroskoviTab" data-toggle="tab">Ostali troškovi</a>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="uplateUposlenicimaTab">
+
+                    @Html.Action("PregledUplataSvihUposlenikaZaIzlaz", "UplateUposlenicima", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+
+                </div>
+                <div id="troskoviRegistracijeKlubaTab">
+
+                    @Html.Action("PregledSvihRegistracija", "RegistracijeKluba", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+
+                </div>
+
+                <div id="troskoviRegistracijeTakmicaraTab">
+
+                    @Html.Action("PregledSvihRegistracija", "RegistracijeTakmicara", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+                <div id="troskoviTakmicenjaTab">
+
+                    @Html.Action("PregledSvihTroskova", "TroskoviTakmicenja", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+                <div id="troskoviSeminaraTab">
+
+                    @Html.Action("PregledSvihTroskova", "TroskoviSeminara", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+                <div id="troskoviPolaganjaTab">
+
+                    @Html.Action("PregledSvihTroskova", "TroskoviPolaganjaUcenickaZvanja", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+                <div id="troskoviNarudzbeOpremeTab">
+
+                    @Html.Action("PregledSvihTroskova", "NarudzbeOpremeKluba", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+                <div id="ostaliTroskoviTab">
+
+                    @Html.Action("Index", "Izlaz", new { })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var uplateUposlenicima = document.getElementById("uplateUposlenicima");
+        uplateUposlenicima.classList.add("active");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        uplateUposlenicimaTab.classList.add("in");
+        uplateUposlenicimaTab.classList.add("active");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+
+
+
+    }
+
+    else if(@brojTaba==2)
+    {
+        var troskoviRegistracijeKluba = document.getElementById("troskoviRegistracijeKluba");
+        troskoviRegistracijeKluba.classList.add("active");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        troskoviRegistracijeKlubaTab.classList.add("in");
+        troskoviRegistracijeKlubaTab.classList.add("active");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+
+
+
+    }
+    else if(@brojTaba==3){
+        var troskoviRegistracijeTakmicara = document.getElementById("troskoviRegistracijeTakmicara");
+        troskoviRegistracijeTakmicara.classList.add("active");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        troskoviRegistracijeTakmicaraTab.classList.add("in");
+        troskoviRegistracijeTakmicaraTab.classList.add("active");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+
+
+    }
+    else if(@brojTaba==4){
+        var troskoviTakmicenja = document.getElementById("troskoviTakmicenja");
+        troskoviTakmicenja.classList.add("active");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        troskoviTakmicenjaTab.classList.add("in");
+        troskoviTakmicenjaTab.classList.add("active");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+
+    }
+    else if(@brojTaba==5){
+        var troskoviSeminara = document.getElementById("troskoviSeminara");
+        troskoviSeminara.classList.add("active");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        troskoviSeminaraTab.classList.add("in");
+        troskoviSeminaraTab.classList.add("active");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+    }
+    else if(@brojTaba==6)
+    {
+        var troskoviPolaganja = document.getElementById("troskoviPolaganja");
+        troskoviPolaganja.classList.add("active");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        troskoviPolaganjaTab.classList.add("in");
+        troskoviPolaganjaTab.classList.add("active");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+    }
+    else if(@brojTaba==7)
+    {
+        var troskoviNarudzbeOpreme = document.getElementById("troskoviNarudzbeOpreme");
+        troskoviNarudzbeOpreme.classList.add("active");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+        troskoviNarudzbeOpremeTab.classList.add("in");
+        troskoviNarudzbeOpremeTab.classList.add("active");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+    }
+    else{
+        var ostaliTroskovi = document.getElementById("ostaliTroskovi");
+        ostaliTroskovi.classList.add("active");
+        var ostaliTroskoviTab = document.getElementById("ostaliTroskoviTab");
+        ostaliTroskoviTab.classList.add("tab-pane");
+        ostaliTroskoviTab.classList.add("fade");
+        ostaliTroskoviTab.classList.add("in");
+        ostaliTroskoviTab.classList.add("active");
+        var uplateUposlenicimaTab = document.getElementById("uplateUposlenicimaTab");
+        uplateUposlenicimaTab.classList.add("tab-pane");
+        uplateUposlenicimaTab.classList.add("fade");
+        var troskoviRegistracijeKlubaTab = document.getElementById("troskoviRegistracijeKlubaTab");
+        troskoviRegistracijeKlubaTab.classList.add("tab-pane");
+        troskoviRegistracijeKlubaTab.classList.add("fade");
+        var troskoviRegistracijeTakmicaraTab = document.getElementById("troskoviRegistracijeTakmicaraTab");
+        troskoviRegistracijeTakmicaraTab.classList.add("tab-pane");
+        troskoviRegistracijeTakmicaraTab.classList.add("fade");
+        var troskoviTakmicenjaTab = document.getElementById("troskoviTakmicenjaTab");
+        troskoviTakmicenjaTab.classList.add("tab-pane");
+        troskoviTakmicenjaTab.classList.add("fade");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+        troskoviPolaganjaTab.classList.add("tab-pane");
+        troskoviPolaganjaTab.classList.add("fade");
+        var troskoviNarudzbeOpremeTab = document.getElementById("troskoviNarudzbeOpremeTab");
+        troskoviNarudzbeOpremeTab.classList.add("tab-pane");
+        troskoviNarudzbeOpremeTab.classList.add("fade");
+
+    }
+
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+    document.getElementById("DatumOd").onblur = ValidirajDatumOd;
+    document.getElementById("DatumDo").onblur = ValidirajDatumDo;
+
+
+
+    function Validiraj() {
+
+
+        var validna = true;
+
+        if (ValidirajDatumOd() == false)
+            validna = false;
+        if (ValidirajDatumDo() == false)
+            validna = false;
+
+
+
+        return validna;
+    }
+
+
+    function ValidirajDatumOd() {
+        var valid = true;
+        var element = document.getElementById("DatumOd");
+        var error = document.getElementById("DatumOdError");
+        var datumDo = document.getElementById("DatumDo");
+        var datumDoError = document.getElementById("DatumDoError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum početka je obavezno polje";
+        }
+
+        else if (element.value != "" && datumDo.value != "") {
+            var danOd = element.value.substring(0, 2);
+            var mjesecOd = element.value.substring(3, 5);
+            var godinaOd = element.value.substring(6, 20);
+            var danDo = datumDo.value.substring(0, 2);
+            var mjesecDo = datumDo.value.substring(3, 5);
+            var godinaDo = datumDo.value.substring(6, 20);
+            var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+            var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+            var dod = new Date(noviDatumOd);
+            var ddo = new Date(noviDatumDo);
+            if (ddo <= dod) {
+                valid = false;
+                error.innerHTML = "*Datum početka mora biti manji od datuma završetka.";
+
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+
+
+                valid = true;
+            }
+
+
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajDatumDo() {
+        var valid = true;
+        var element = document.getElementById("DatumDo");
+        var error = document.getElementById("DatumDoError");
+        var datumOd = document.getElementById("DatumOd");
+        var datumOdError = document.getElementById("DatumOdError");
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum završetka je obavezno polje";
+        }
+
+        else if (element.value != "" && datumOd.value != "") {
+            var danDo = element.value.substring(0, 2);
+            var mjesecDo = element.value.substring(3, 5);
+            var godinaDo = element.value.substring(6, 20);
+            var danOd = datumOd.value.substring(0, 2);
+            var mjesecOd = datumOd.value.substring(3, 5);
+            var godinaOd = datumOd.value.substring(6, 20);
+            var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+            var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+            var dod = new Date(noviDatumOd);
+            var ddo = new Date(noviDatumDo);
+            if (ddo <= dod) {
+                valid = false;
+                error.innerHTML = "*Datum završetka mora biti veći od datuma početka.";
+
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+
+
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+
+</script>
+
+
+
+
+

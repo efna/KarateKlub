@@ -1,0 +1,280 @@
+﻿@model KarateKlub.Web.Areas.ModulTrener.Models.TakmicariPodaciTakmicaraVM
+@using KarateKlub.Web.Areas.ModulTrener.Models
+
+@{
+    ViewBag.Title = "Podaci takmičara " + Model.Ime + ' ' + Model.Prezime;
+    ViewBag.PageTitle = "Podaci takmičara";
+    Layout = null;
+}
+
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+
+    .customDiv {
+        margin: 5px;
+    }
+
+    #slikaClana {
+        border: 1px solid transparent;
+        border-color: #337ab7;
+    }
+
+    .razmak {
+        margin-top: 20px;
+    }
+
+    .poravnanjeDugmadi {
+        margin-top: 10px;
+    }
+</style>
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="customDiv">
+                                    <br />
+                                    <br />
+                                    @if (Model.Slika != null)
+                                    {
+                                        <img id="slikaClana" style="width: 300px; height: 300px;" src="@Url.Action("GetImage", new { takmicarId = Model.Id})" />
+                                    }
+                                    else
+                                    {
+
+                                        <img id="slikaClana" src="~/Content/AdminLTE-2.4.2/dist/img/korisnikNemaSliku.jpg" style="width: 300px; height: 300px;">
+                                    }
+
+                                    @using (Html.BeginForm("DodajSliku", "Takmicari", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.HiddenFor(Model => Model.Id)
+                                        @Html.HiddenFor(Model => Model.OsobaId)
+                                        @Html.HiddenFor(Model => Model.ClanId)
+                                        @Html.HiddenFor(Model => Model.aktivnost)
+                                        <div id="PoravnanjeKontrola">
+                                            <div class="form-group" style="width:auto;">
+                                                <label></label>
+                                                @Html.TextBoxFor(model => model.s, "Dodaj sliku", new { @class = "form-control", style = "border-color:#337ab7;", type = "file", onchange = "ValidirajSliku()" })
+                                                @Html.ValidationMessageFor(model => model.s)
+                                                @Html.ValidationMessage("SlikaError", new { id = "SlikaError" })
+
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" title="Spremi sliku" class="btn-lg btn btn-primary" style="width:300px;margin-top:25px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi sliku </button>
+
+                                    }
+
+                                    <br />
+                                    <br />
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="col-md-4">
+                                <div class="customDiv">
+                                
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmakNaslov">Prezime i ime: </a>
+                                        <a class="col-sm-6 razmakNaslov">@Model.Prezime @Model.Ime</a>
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Ime oca: </a>
+                                        <a class="col-sm-6 razmak">@Model.ImeRoditelja</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Spol: </a>
+                                        <a class="col-sm-6 razmak">@Model.Spol</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">JMBG: </a>
+                                        <a class="col-sm-6 razmak">@Model.JMBG</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Datum rođenja: </a>
+                                        <a class="col-sm-6 razmak">@Model.DatumRodjenja.ToString("dd.MM.yyyy")</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Mjesto rođenja: </a>
+                                        <a class="col-sm-6 razmak">@Model.MjestoRodjenja</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Kontakt telefon: </a>
+                                        <a class="col-sm-6 razmak">@Model.KontaktTelefon</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">E-mail: </a>
+                                        <a class="col-sm-6 razmak">@Model.Email</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+
+                                @if (Model.isAktivan == true)
+                                {
+                                    using (Html.BeginForm("DeaktivirajTakmicara", "Takmicari", new { takmicarId = Model.Id, aktivnost = Model.aktivnost }))
+                                    {
+                                       
+                                        <button type="submit" class="btn-lg btn btn-primary" title="Deaktiviraj takmičara">
+                                            Deaktiviraj takmičara
+                                            <i class="fa fa-user-times" style="margin-left:80px;"></i>
+                                        </button>
+
+
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("AktivirajTakmicara", "Takmicari", new { takmicarId = Model.Id, aktivnost = Model.aktivnost }))
+                                    {
+                                       @Html.HiddenFor(Model=>Model.Id)
+                                        @Html.HiddenFor(Model => Model.aktivnost)
+                                        <button type="submit" class="btn-lg btn btn-primary" title="Aktiviraj takmičara">
+                                            Aktiviraj takmičara
+                                            <i class="glyphicon glyphicon-user" style="margin-left:105px;"></i>
+                                        </button>
+
+
+                                    }
+
+
+                                }
+                         
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br />
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    document.getElementById("s").onblur = ValidirajSliku;
+    function Validiraj() {
+        var validna = true;
+        if (ValidirajSliku() == false)
+            validna = false;
+        return validna;
+    }
+    function ValidirajSliku() {
+        var element = document.getElementById("s");
+        var error = document.getElementById("SlikaError");
+
+
+
+       
+        var dozvoljeneEkstenzije = new Array("psd", "xcf", "al", "cdr", "tif", "tiff", "bmp", "jpg", "jpeg", "gif", "png", "eps", "raw", "cr2", "nef", "urf", "sr2", "dip", "jpe", "jfif");
+
+        var ekstenzijaUcitaneSlike = element.value.split('.').pop().toLowerCase();
+
+        if (element.value.length == 0) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite sliku koju želite spasiti";
+            return false;
+        }
+        else {
+            if (element.value.length != 0) {
+                for (var i = 0; i <= dozvoljeneEkstenzije.length; i++) {
+                    if (dozvoljeneEkstenzije[i] == ekstenzijaUcitaneSlike) {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                        return true;
+                    }
+
+                }
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Odabrani file nije dozvoljenog formata";
+                return false;
+
+            }
+        }
+
+        element.classList.remove("input-validation-error");
+        error.classList.remove("field-validation-error");
+        error.classList.add("field-validation-valid");
+        error.innerHTML = "";
+        return true;
+
+
+    }
+
+</script>
+
+
+

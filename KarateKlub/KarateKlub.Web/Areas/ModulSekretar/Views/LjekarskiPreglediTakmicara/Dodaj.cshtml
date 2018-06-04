@@ -1,0 +1,280 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.LjekarskiPreglediTakmicaraDodajVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Novi ljekarski pregled";
+    ViewBag.Title = "Novi ljekarski pregled";
+
+    Layout = null;
+
+}
+
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiNoviLjekarskiPregled", "LjekarskiPreglediTakmicara", FormMethod.Post, new { style = "width:400px;", id = "formaDodajLjekarskiPregled" }))
+{
+    @Html.HiddenFor(Model => Model.aktivnost)
+    @Html.HiddenFor(Model => Model.TakmicarId)
+
+
+    <div id="Poravnanje">
+
+
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum pregleda: </label>
+
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumLjekarskogPregleda, new { @class = "form-control datepicker", onchange = "ValidirajDatumLjekarskogPregleda()" })
+                @Html.ValidationMessageFor(model => model.DatumLjekarskogPregleda)
+                @Html.ValidationMessage("DatumLjekarskogPregledaError", new { id = "DatumLjekarskogPregledaError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Dijagnoza: </label>
+            @Html.TextAreaFor(model => model.Dijagnoza, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.Dijagnoza)
+            @Html.ValidationMessage("DijagnozaError", new { id = "DijagnozaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Ime doktora: </label>
+            @Html.TextBoxFor(model => model.ImeDoktora, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ImeDoktora)
+            @Html.ValidationMessage("ImeDoktoraError", new { id = "ImeDoktoraError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Prezime doktora: </label>
+            @Html.TextBoxFor(model => model.PrezimeDoktora, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PrezimeDoktora)
+            @Html.ValidationMessage("PrezimeDoktoraError", new { id = "PrezimeDoktoraError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Titula: </label>
+            @Html.TextBoxFor(model => model.Titula, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Titula)
+            @Html.ValidationMessage("TitulaError", new { id = "TitulaError" })
+
+        </div>
+
+  
+    </div>
+        <div id="btnSpremi">
+            <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+        </div>
+
+
+}
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+
+</script>
+<script type="text/javascript">
+
+    document.getElementById("ImeDoktora").onblur = ValidirajImeDoktora;
+    document.getElementById("PrezimeDoktora").onblur = ValidirajPrezimeDoktora;
+    document.getElementById("DatumLjekarskogPregleda").onblur = ValidirajDatumLjekarskogPregleda;
+    document.getElementById("Dijagnoza").onblur = ValidirajDijagnozu;
+
+
+    function Validiraj() {
+        var valid = true;
+        if (ValidirajImeDoktora() == false)
+            valid = false;
+        if (ValidirajPrezimeDoktora() == false)
+            valid = false;
+        if (ValidirajDatumLjekarskogPregleda() == false)
+            valid = false;
+        if (ValidirajDijagnozu() == false)
+            valid = false;
+
+        return valid;
+
+    }
+    function ValidirajDijagnozu() {
+
+        var valid = true;
+        var element = document.getElementById("Dijagnoza");
+        var error = document.getElementById("DijagnozaError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Dijagnoza je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajImeDoktora() {
+
+        var valid = true;
+        var element = document.getElementById("ImeDoktora");
+        var error = document.getElementById("ImeDoktoraError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Ime doktora je obavezno polje";
+        }
+        else {
+            if (element.value.length < 2) {
+                valid = false;
+                error.innerHTML = "*Ime se sastoji od najmanje 2 slova";
+            }
+            else {
+                var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+                if (pravilo.test(element.value) == true) {
+                    valid = false;
+                    error.innerHTML = "*Ime se sastoji od isključivo od slova";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajPrezimeDoktora() {
+
+        var valid = true;
+        var element = document.getElementById("PrezimeDoktora");
+        var error = document.getElementById("PrezimeDoktoraError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Prezime doktora je obavezno polje";
+        }
+        else {
+            if (element.value.length < 2) {
+                valid = false;
+                error.innerHTML = "*Prezime se sastoji od najmanje 2 slova";
+            }
+            else {
+                var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+                if (pravilo.test(element.value) == true) {
+                    valid = false;
+                    error.innerHTML = "*Prezime se sastoji isključivo od slova";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+    function ValidirajDatumLjekarskogPregleda() {
+        var valid = true;
+        var element = document.getElementById("DatumLjekarskogPregleda");
+        var error = document.getElementById("DatumLjekarskogPregledaError");
+
+        if (element.value=="") {
+            valid = false;
+            error.innerHTML = "*Datum ljekarskog pregleda je obavezno polje";
+        }
+        else {
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+   
+</script>
+
+
+

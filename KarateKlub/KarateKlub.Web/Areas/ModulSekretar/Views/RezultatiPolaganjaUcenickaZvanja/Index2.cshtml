@@ -1,0 +1,71 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.RezultatiPolaganjaUcenickaZvanjaIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Rezultati polaganja";
+    ViewBag.PageTitle = "Rezultati polaganja";
+    Layout = null;
+}
+
+<style>
+    #btnSpremi {
+        margin-left: 200px;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiRezultat", "RezultatiPolaganjaUcenickaZvanja", FormMethod.Post, new { id = "formaRezultatiPolaganja" }))
+{
+    @Html.HiddenFor(Model => Model.polaganjeId)
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Učesnik</th>
+                <th class="col-xs-1" style="text-align:center;">Položio</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.rezultatiPolaganja.Count; i++)
+            {
+
+                <tr>
+            
+                    <td style="display:none;">@Html.HiddenFor(model => model.rezultatiPolaganja[i].Id)</td>
+                    <td style="display:none;">@Html.HiddenFor(model => model.rezultatiPolaganja[i].PolaganjeUcenickaZvanjaId)</td>
+                    <td style="display:none;">@Html.HiddenFor(model => model.rezultatiPolaganja[i].UcesnikPolaganjaZaUcenickaZvanjaId)</td>
+                    <td>@Model.rezultatiPolaganja[i].Ucesnik - @Model.rezultatiPolaganja[i].Zvanje</td>
+                    <td class="col-xs-1" align="center">@Html.CheckBoxFor(model => model.rezultatiPolaganja[i].isPolozio)</td>
+
+                </tr>
+            }
+
+            <tr>
+                <td><b><b>Označi sve učesnike</b></b></td>
+                <td class="col-xs-1" align="center"><input type="checkbox" id="OznaciSveUcesnike" /></td>
+            </tr>
+
+        </tbody>
+    </table>
+    <hr />
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi rezultate" class="btn-lg btn btn-primary" style="width:170px;"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#OznaciSveUcesnike").click(function () {
+            if($(this).prop("checked")==true)
+            {
+                $("input[type='checkbox']").prop("checked", true);
+            }
+            else
+            {
+                $("input[type='checkbox']").prop("checked", false);
+            }
+        })
+    }
+    )
+</script>

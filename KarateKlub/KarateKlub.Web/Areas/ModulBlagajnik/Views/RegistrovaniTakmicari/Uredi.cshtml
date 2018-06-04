@@ -1,0 +1,130 @@
+﻿@model KarateKlub.Web.Areas.ModulBlagajnik.Models.RegistrovaniTakmicariUrediVM
+@using KarateKlub.Web.Areas.ModulBlagajnik.Models
+@{
+    ViewBag.PageTitle = "Uređivanje registrovanih takmičara";
+    ViewBag.Title = "Uređivanje registrovanih takmičara";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiIzmjenuRegistrovanihTakmicara", "RegistrovaniTakmicari", FormMethod.Post, new { style = "width:400px;", id = "formaUrediRegistrovaneTakmicare" }))
+{
+
+    @Html.HiddenFor(Model => Model.savez)
+    @Html.HiddenFor(Model => Model.RegistracijaTakmicaraId)
+
+    <div id="Poravnanje">
+        <div class="form-group" style="width:auto;">
+            <label>Registrovani takmičari: </label>
+            @Html.DropDownListFor(model => model.ClanKlubaId, Model.takmicariKluba, new { @class = "form-control select2", @multiple = "multiple", @id = "listaTakmicara" })
+            @Html.ValidationMessageFor(model => model.ClanKlubaId, "Odaberite registrovane takmičara iz opadajuće liste")
+            @Html.ValidationMessage("ClanKlubaIdError", new { id = "ClanKlubaIdError" })
+        </div>
+
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+
+}
+
+<script>
+    $(function () {
+
+        $('.select2').select2();
+        $('#listaTakmicara option:contains("-Odaberite takmičare-")').attr("disabled", "disabled");
+
+
+    })
+</script>
+<script type="text/javascript">
+
+    document.getElementById("listaTakmicara").onblur = ValidirajListuTakmicara;
+    document.getElementById("listaTakmicara").onchange = ValidirajListuTakmicara;
+
+
+
+    function Validiraj() {
+        var valid = true;
+        if (ValidirajListuTakmicara() == false)
+            valid = false;
+
+        return valid;
+
+    }
+
+
+    function ValidirajListuTakmicara() {
+
+        var element = document.getElementById("listaTakmicara");
+        var error = document.getElementById("ClanKlubaIdError");
+        if ($("#listaTakmicara").val() == "")
+        {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite takmičare iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+
+
+</script>
+
+
+
+
+
+
+
+
+
+

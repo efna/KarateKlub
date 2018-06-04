@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5830431A-72C5-403A-AA32-29730D81DF5D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KarateKlub.Data</RootNamespace>
+    <AssemblyName>KarateKlub.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helper\IEntity.cs" />
+    <Compile Include="Migrations\201804131841100_InitialCreate.cs" />
+    <Compile Include="Migrations\201804131841100_InitialCreate.Designer.cs">
+      <DependentUpon>201804131841100_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804131845575_izmjenaKazneTakmicari.cs" />
+    <Compile Include="Migrations\201804131845575_izmjenaKazneTakmicari.Designer.cs">
+      <DependentUpon>201804131845575_izmjenaKazneTakmicari.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804150941295_IzmjenaClanarine.cs" />
+    <Compile Include="Migrations\201804150941295_IzmjenaClanarine.Designer.cs">
+      <DependentUpon>201804150941295_IzmjenaClanarine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804151344237_izmjenaDatumUplateTabelaStavkeClanarine.cs" />
+    <Compile Include="Migrations\201804151344237_izmjenaDatumUplateTabelaStavkeClanarine.Designer.cs">
+      <DependentUpon>201804151344237_izmjenaDatumUplateTabelaStavkeClanarine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804151350411_addIsIzmirenaClanarinaTabelaStavkeClanarine.cs" />
+    <Compile Include="Migrations\201804151350411_addIsIzmirenaClanarinaTabelaStavkeClanarine.Designer.cs">
+      <DependentUpon>201804151350411_addIsIzmirenaClanarinaTabelaStavkeClanarine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804171006434_addTabelaUpisiUpisanClanoviEditTabelaUpisnice.cs" />
+    <Compile Include="Migrations\201804171006434_addTabelaUpisiUpisanClanoviEditTabelaUpisnice.Designer.cs">
+      <DependentUpon>201804171006434_addTabelaUpisiUpisanClanoviEditTabelaUpisnice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804171021524_izmjenaNazivaTabeleIspisaniClanoviKluba.cs" />
+    <Compile Include="Migrations\201804171021524_izmjenaNazivaTabeleIspisaniClanoviKluba.Designer.cs">
+      <DependentUpon>201804171021524_izmjenaNazivaTabeleIspisaniClanoviKluba.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804181031055_izmjenaTabelaUpisnine.cs" />
+    <Compile Include="Migrations\201804181031055_izmjenaTabelaUpisnine.Designer.cs">
+      <DependentUpon>201804181031055_izmjenaTabelaUpisnine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804181107452_izmjenaNazivaIsIzmirenaUpisninaTabelaUpisnine.cs" />
+    <Compile Include="Migrations\201804181107452_izmjenaNazivaIsIzmirenaUpisninaTabelaUpisnine.Designer.cs">
+      <DependentUpon>201804181107452_izmjenaNazivaIsIzmirenaUpisninaTabelaUpisnine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804190910551_izmjenaTabelaUplateUposlenicima.cs" />
+    <Compile Include="Migrations\201804190910551_izmjenaTabelaUplateUposlenicima.Designer.cs">
+      <DependentUpon>201804190910551_izmjenaTabelaUplateUposlenicima.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805162204455_noveTabeleUlazIzlaz.cs" />
+    <Compile Include="Migrations\201805162204455_noveTabeleUlazIzlaz.Designer.cs">
+      <DependentUpon>201805162204455_noveTabeleUlazIzlaz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805162206585_addUlazIzlaz.cs" />
+    <Compile Include="Migrations\201805162206585_addUlazIzlaz.Designer.cs">
+      <DependentUpon>201805162206585_addUlazIzlaz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805171224136_izmjenaTipaIznosKMSlovimaUlazIzlaz.cs" />
+    <Compile Include="Migrations\201805171224136_izmjenaTipaIznosKMSlovimaUlazIzlaz.Designer.cs">
+      <DependentUpon>201805171224136_izmjenaTipaIznosKMSlovimaUlazIzlaz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Administratori.cs" />
+    <Compile Include="Models\Blagajnici.cs" />
+    <Compile Include="Models\Clanarine.cs" />
+    <Compile Include="Models\ClanoviEkipe.cs" />
+    <Compile Include="Models\ClanoviKluba.cs" />
+    <Compile Include="Models\ClanoviUpravnogOdbora.cs" />
+    <Compile Include="Models\DisciplineTakmicenja.cs" />
+    <Compile Include="Models\Dokumenti.cs" />
+    <Compile Include="Models\Donacije.cs" />
+    <Compile Include="Models\Donatori.cs" />
+    <Compile Include="Models\Ekipa.cs" />
+    <Compile Include="Models\FunkcijeTrenera.cs" />
+    <Compile Include="Models\Ispisi.cs" />
+    <Compile Include="Models\Izlaz.cs" />
+    <Compile Include="Models\JediniceMjere.cs" />
+    <Compile Include="Models\KazneTakmicari.cs" />
+    <Compile Include="Models\KlubskaOprema.cs" />
+    <Compile Include="Models\Knjigovodje.cs" />
+    <Compile Include="Models\KorisnickeUloge.cs" />
+    <Compile Include="Models\KorisnickiNalozi.cs" />
+    <Compile Include="Models\ObnoveLicenci.cs" />
+    <Compile Include="Models\Osoba.cs" />
+    <Compile Include="Models\LjekarskiPreglediTakmicara.cs" />
+    <Compile Include="Models\NagradeTakmicari.cs" />
+    <Compile Include="Models\NarudzbeOpremeKluba.cs" />
+    <Compile Include="Models\NivoLicence.cs" />
+    <Compile Include="Models\OdlukeUpravnogOdbora.cs" />
+    <Compile Include="Models\OsvojenaMjestaNaTakmicenju.cs" />
+    <Compile Include="Models\OtpisanaOpremaKluba.cs" />
+    <Compile Include="Models\ParticipacijeZaPolaganjeUcenickaZvanja.cs" />
+    <Compile Include="Models\PohvaleTakmicari.cs" />
+    <Compile Include="Models\PolaganjaUcenickaZvanja.cs" />
+    <Compile Include="Models\PrisustvaNaSjednicamaUpravnogOdbora.cs" />
+    <Compile Include="Models\Protokol.cs" />
+    <Compile Include="Models\RazduzenaOpremaKlubaClanovi.cs" />
+    <Compile Include="Models\RegistracijeKluba.cs" />
+    <Compile Include="Models\RegistracijeTakmicara.cs" />
+    <Compile Include="Models\RegistrovaniTakmicari.cs" />
+    <Compile Include="Models\RezultatiPolaganjaUcenickaZvanja.cs" />
+    <Compile Include="Models\RezultatiTakmicenja.cs" />
+    <Compile Include="Models\RezultatiTakmicenjaEkipno.cs" />
+    <Compile Include="Models\Savezi.cs" />
+    <Compile Include="Models\Sekretari.cs" />
+    <Compile Include="Models\Seminari.cs" />
+    <Compile Include="Models\SjedniceUpravnogOdbora.cs" />
+    <Compile Include="Models\Sponzori.cs" />
+    <Compile Include="Models\Sponzorstva.cs" />
+    <Compile Include="Models\StarosneDobi.cs" />
+    <Compile Include="Models\StavkeClanarine.cs" />
+    <Compile Include="Models\StavkeNarudzbeOpremeKluba.cs" />
+    <Compile Include="Models\StavkeProtokola.cs" />
+    <Compile Include="Models\StecenaZvanja.cs" />
+    <Compile Include="Models\SteceneLicence.cs" />
+    <Compile Include="Models\Takmicari.cs" />
+    <Compile Include="Models\Takmicenja.cs" />
+    <Compile Include="Models\Treneri.cs" />
+    <Compile Include="Models\TroskoviNarudzbeOpremeKluba.cs" />
+    <Compile Include="Models\TroskoviPolaganjaUcenickaZvanja.cs" />
+    <Compile Include="Models\TroskoviRegistracijeTakmicara.cs" />
+    <Compile Include="Models\TroskoviRegracijeKluba.cs" />
+    <Compile Include="Models\TroskoviSeminara.cs" />
+    <Compile Include="Models\TroskoviTakmicenja.cs" />
+    <Compile Include="Models\UcesniciPolaganjaZaUcenickaZvanja.cs" />
+    <Compile Include="Models\UcesniciSeminara.cs" />
+    <Compile Include="Models\Ulaz.cs" />
+    <Compile Include="Models\UlogeClanovaUpravnogOdbora.cs" />
+    <Compile Include="Models\UpisaniClanovi.cs" />
+    <Compile Include="Models\Upisi.cs" />
+    <Compile Include="Models\Upisnine.cs" />
+    <Compile Include="Models\UplateUposlenicima.cs" />
+    <Compile Include="Models\VrsteLica.cs" />
+    <Compile Include="Models\VrsteLicenci.cs" />
+    <Compile Include="Models\VrsteOpremeKluba.cs" />
+    <Compile Include="Models\ZabraneTakmicari.cs" />
+    <Compile Include="Models\ZaduzenjeOpremeKlubaClanovima.cs" />
+    <Compile Include="Models\ZvanjaUKarateu.cs" />
+    <Compile Include="MojContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201804131841100_InitialCreate.resx">
+      <DependentUpon>201804131841100_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804131845575_izmjenaKazneTakmicari.resx">
+      <DependentUpon>201804131845575_izmjenaKazneTakmicari.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804150941295_IzmjenaClanarine.resx">
+      <DependentUpon>201804150941295_IzmjenaClanarine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804151344237_izmjenaDatumUplateTabelaStavkeClanarine.resx">
+      <DependentUpon>201804151344237_izmjenaDatumUplateTabelaStavkeClanarine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804151350411_addIsIzmirenaClanarinaTabelaStavkeClanarine.resx">
+      <DependentUpon>201804151350411_addIsIzmirenaClanarinaTabelaStavkeClanarine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171006434_addTabelaUpisiUpisanClanoviEditTabelaUpisnice.resx">
+      <DependentUpon>201804171006434_addTabelaUpisiUpisanClanoviEditTabelaUpisnice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171021524_izmjenaNazivaTabeleIspisaniClanoviKluba.resx">
+      <DependentUpon>201804171021524_izmjenaNazivaTabeleIspisaniClanoviKluba.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804181031055_izmjenaTabelaUpisnine.resx">
+      <DependentUpon>201804181031055_izmjenaTabelaUpisnine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804181107452_izmjenaNazivaIsIzmirenaUpisninaTabelaUpisnine.resx">
+      <DependentUpon>201804181107452_izmjenaNazivaIsIzmirenaUpisninaTabelaUpisnine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804190910551_izmjenaTabelaUplateUposlenicima.resx">
+      <DependentUpon>201804190910551_izmjenaTabelaUplateUposlenicima.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805162204455_noveTabeleUlazIzlaz.resx">
+      <DependentUpon>201805162204455_noveTabeleUlazIzlaz.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805162206585_addUlazIzlaz.resx">
+      <DependentUpon>201805162206585_addUlazIzlaz.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805171224136_izmjenaTipaIznosKMSlovimaUlazIzlaz.resx">
+      <DependentUpon>201805171224136_izmjenaTipaIznosKMSlovimaUlazIzlaz.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

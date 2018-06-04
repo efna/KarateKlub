@@ -1,0 +1,176 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.BlagajniciKlubskiPodaciBlagajnikaVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Klubski podaci";
+    ViewBag.Title = "Klubski podaci";
+
+    Layout = null;
+
+}
+
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiKlubskePodatkeBlagajnika", "Blagajnici", FormMethod.Post, new { style = "width:400px;", id = "formaKlubskiPodaciBlagajnika" }))
+{
+    @Html.HiddenFor(Model => Model.isAktivnaOsoba)
+    @Html.HiddenFor(Model => Model.OsobaId)
+    @Html.HiddenFor(Model => Model.aktivan)
+    if (Model.isAktivnaOsoba == false)
+    {
+
+        <div class="container">
+
+            <a href="#" style="margin-left:25px;" data-toggle="popover" title="Poruka" data-content="Osoba nije aktivna. Izmjena podataka nije moguća.">Pogledajte poruku</a>
+        </div>
+        <br />
+        <div id="Poravnanje">
+
+            <div class="form-group" style="width:auto;">
+
+                <label>Datum zaposlenja: </label>
+
+                <div class="input-group date">
+                    @Html.TextBoxFor(model => model.DatumZaposlenja, new { @class = "form-control datepicker", disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.DatumZaposlenja)
+                    @Html.ValidationMessage("DatumZaposlenjaError", new { id = "DatumZaposlenjaError" })
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    }
+    else
+    {
+        <div id="Poravnanje">
+
+            <div class="form-group" style="width:auto;">
+
+                <label>Datum zaposlenja: </label>
+
+                <div class="input-group date">
+                    @Html.TextBoxFor(model => model.DatumZaposlenja, new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.DatumZaposlenja)
+                    @Html.ValidationMessage("DatumZaposlenjaError", new { id = "DatumZaposlenjaError" })
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div id="btnSpremi">
+            <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+        </div>
+
+    }
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+
+</script>
+
+<script type="text/javascript">
+
+    document.getElementById("DatumZaposlenja").onblur = ValidirajDatumZaposlenja;
+
+
+
+    function Validiraj() {
+        var validna = true;
+
+        if (ValidirajDatumZaposlenja() == false)
+            validna = false;
+
+        return validna;
+    }
+
+    function ValidirajDatumZaposlenja() {
+        var valid = true;
+
+        var element = document.getElementById("DatumZaposlenja");
+        var error = document.getElementById("DatumZaposlenjaError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum zaposlenja je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+</script>
+
+
+

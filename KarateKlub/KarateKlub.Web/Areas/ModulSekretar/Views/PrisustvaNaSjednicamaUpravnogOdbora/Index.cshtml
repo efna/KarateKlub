@@ -1,0 +1,71 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.PrisustvaNaSjednicamaUpravnogOdboraIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Prisustvo na sjednici";
+    ViewBag.PageTitle = "Prisustvo na sjednici";
+    Layout = null;
+}
+
+<style>
+    #btnSpremi {
+        margin-left: 200px;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiPrisustvo", "PrisustvaNaSjednicamaUpravnogOdbora", FormMethod.Post,new {id= "formaPrisustva" }))
+{
+    @Html.HiddenFor(Model=>Model.sjednicaId)
+ 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Član</th>
+                <th class="col-xs-1" style="text-align:center;">Prisustvo</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.prisustvaNaSjednici.Count; i++)
+            {
+    
+                <tr>
+                    <td style="display:none;">@Html.HiddenFor(model => model.prisustvaNaSjednici[i].Id)</td>
+                    <td style="display:none;">@Html.HiddenFor(model => model.prisustvaNaSjednici[i].ClanUpravnogOdboraId)</td>
+                    <td style="display:none;">@Html.HiddenFor(model => model.prisustvaNaSjednici[i].SjednicaUpravnogOdboraId)</td>
+                    <td>@Model.prisustvaNaSjednici[i].ImePrezime - @Model.prisustvaNaSjednici[i].Funkcija</td>
+                    <td class="col-xs-1" align="center">@Html.CheckBoxFor(model => model.prisustvaNaSjednici[i].Prisutan)</td>
+
+                </tr>
+            }
+        
+            <tr>
+                <td><b><b>Označi sve članove</b></b></td>
+                <td class="col-xs-1" align="center"><input type="checkbox" id="OznaciSve" /></td>
+            </tr>
+          
+        </tbody>
+    </table>
+    <hr />
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi prisustva" class="btn-lg btn btn-primary" style="width:170px;"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#OznaciSve").click(function () {
+            if($(this).prop("checked")==true)
+            {
+                $("input[type='checkbox']").prop("checked", true);
+            }
+            else
+            {
+                $("input[type='checkbox']").prop("checked", false);
+            }
+        })
+    }
+    )
+</script>

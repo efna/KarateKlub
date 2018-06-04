@@ -1,0 +1,126 @@
+﻿@{
+
+    int brojTaba = (int)ViewData["tab"];
+    int polaganjeId = (int)ViewData["polaganjeId"];
+    string datumPolaganja = (string)ViewData["datumPolaganja"];
+    int zvanje = (int)ViewData["zvanje"];
+    int brojTabaParticipacije = (int)ViewData["brojTabaParticipacije"];
+    ViewBag.Title = "Upravljanje podacima polaganja održanog " + datumPolaganja;
+    ViewBag.PageTitle = "Upravljanje podacima polaganja";
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "PolaganjaUcenickaZvanja", new {}, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz polaganja" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="ucesniciPolaganja">
+                    <a id="ucesnici" href="#ucesniciPolaganjaTab" data-toggle="tab">Učesnici</a>
+                </li>
+                <li id="participacijeZaPolaganje">
+                    <a id="participacije" href="#participacijeZaPolaganjeTab" data-toggle="tab">Participacije</a>
+                </li>
+                <li id="troskoviPolaganja">
+                    <a id="troskovi" href="#troskoviPolaganjaTab" data-toggle="tab">Troškovi</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="ucesniciPolaganjaTab">
+
+                    @Html.Action("Index", "UcesniciPolaganjaZaUcenickaZvanja", new { polaganjeId = polaganjeId, zvanje = zvanje })
+
+                </div>
+
+                <div id="participacijeZaPolaganjeTab">
+
+                    @Html.Action("UpravljanjeParticipacijamaZaPolaganjeUcenickaZvanja", "ParticipacijeZaPolaganjeUcenickaZvanja", new { polaganjeId = polaganjeId, brojTaba = brojTabaParticipacije })
+
+
+                </div>
+
+                <div id="troskoviPolaganjaTab">
+
+                    @Html.Action("Index", "TroskoviPolaganjaUcenickaZvanja", new { polaganjeId = polaganjeId })
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var ucesniciPolaganja = document.getElementById("ucesniciPolaganja");
+       ucesniciPolaganja.classList.add("active");
+       var ucesniciPolaganjaTab = document.getElementById("ucesniciPolaganjaTab");
+       ucesniciPolaganjaTab.classList.add("tab-pane");
+       ucesniciPolaganjaTab.classList.add("fade");
+       ucesniciPolaganjaTab.classList.add("in");
+       ucesniciPolaganjaTab.classList.add("active");
+       var participacijeZaPolaganjeTab = document.getElementById("participacijeZaPolaganjeTab");
+       participacijeZaPolaganjeTab.classList.add("tab-pane");
+       participacijeZaPolaganjeTab.classList.add("fade");
+       var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+       troskoviPolaganjaTab.classList.add("tab-pane");
+       troskoviPolaganjaTab.classList.add("fade");
+
+
+
+    }
+
+   else if(@brojTaba==2)
+   {
+       var participacijeZaPolaganje = document.getElementById("participacijeZaPolaganje");
+       participacijeZaPolaganje.classList.add("active");
+       var participacijeZaPolaganjeTab = document.getElementById("participacijeZaPolaganjeTab");
+       participacijeZaPolaganjeTab.classList.add("tab-pane");
+       participacijeZaPolaganjeTab.classList.add("fade");
+       participacijeZaPolaganjeTab.classList.add("in");
+       participacijeZaPolaganjeTab.classList.add("active");
+       var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+       troskoviPolaganjaTab.classList.add("tab-pane");
+       troskoviPolaganjaTab.classList.add("fade");
+       var ucesniciPolaganjaTab = document.getElementById("ucesniciPolaganjaTab");
+       ucesniciPolaganjaTab.classList.add("tab-pane");
+       ucesniciPolaganjaTab.classList.add("fade");
+
+   }
+   else{
+
+       var troskoviPolaganja = document.getElementById("troskoviPolaganja");
+       troskoviPolaganja.classList.add("active");
+       var troskoviPolaganjaTab = document.getElementById("troskoviPolaganjaTab");
+       troskoviPolaganjaTab.classList.add("tab-pane");
+       troskoviPolaganjaTab.classList.add("fade");
+       troskoviPolaganjaTab.classList.add("in");
+       troskoviPolaganjaTab.classList.add("active");
+       var ucesniciPolaganjaTab = document.getElementById("ucesniciPolaganjaTab");
+       ucesniciPolaganjaTab.classList.add("tab-pane");
+       ucesniciPolaganjaTab.classList.add("fade");
+       var participacijeZaPolaganjeTab = document.getElementById("participacijeZaPolaganjeTab");
+       participacijeZaPolaganjeTab.classList.add("tab-pane");
+       participacijeZaPolaganjeTab.classList.add("fade");
+   }
+</script>
+
+
+
+

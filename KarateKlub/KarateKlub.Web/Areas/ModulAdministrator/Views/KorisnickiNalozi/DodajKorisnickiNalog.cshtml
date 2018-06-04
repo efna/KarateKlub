@@ -1,0 +1,283 @@
+﻿@model KarateKlub.Web.Areas.ModulAdministrator.Models.KorisnickiNaloziDodajKorisnickiNalogVM
+@using KarateKlub.Web.Areas.ModulAdministrator.Models
+@{
+    ViewBag.PageTitle = "Novi korisnički nalog";
+    ViewBag.Title = "Novi korisnički nalog";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiNoviKorisnickiNalog", "KorisnickiNalozi", FormMethod.Post, new { style = "width:400px;", id = "formaDodajKorisnickiNalog" }))
+{
+    @Html.HiddenFor(Model=>Model.OsobaId)
+    <div id="PoravnanjeKontrola">
+
+        <div class="form-group" style="width:auto;">
+            <label>Osoba: </label>
+            @Html.TextBoxFor(model => model.OsobaImePrezime, new { @class = "form-control", disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.OsobaImePrezime)
+            @Html.ValidationMessage("OsobaImePrezimeError", new { id = "OsobaImePrezimeError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Korisničko ime: </label>
+            @Html.TextBoxFor(model => model.KorisnickoIme, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.KorisnickoIme)
+            @Html.ValidationMessage("KorisnickoImeError", new { id = "KorisnickoImeError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Lozinka: </label>
+            @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", type = "password" })
+            @Html.ValidationMessageFor(model => model.Lozinka)
+            @Html.ValidationMessage("LozinkaError", new { id = "LozinkaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Potvrda lozinke: </label>
+            @Html.TextBoxFor(model => model.PotvrdaLozinke, new { @class = "form-control", type = "password" })
+            @Html.ValidationMessageFor(model => model.PotvrdaLozinke)
+            @Html.ValidationMessage("PotvrdaLozinkeError", new { id = "PotvrdaLozinkeError" })
+
+        </div>
+
+
+        </div>
+        <br />
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+<div id="zauzeto" style="display:none;"></div>
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+
+<script type="text/javascript">
+
+    document.getElementById("KorisnickoIme").onblur = ValidirajKorisnickoIme;
+    document.getElementById("Lozinka").onblur = ValidirajLozinku;
+    document.getElementById("PotvrdaLozinke").onblur = ValidirajPotvrduLozinke;
+
+
+        function Validiraj() {
+            var validna = true;
+            if (ValidirajKorisnickoIme() == false)
+                validna = false;
+            if (ValidirajLozinku() == false)
+                validna = false;
+            if (ValidirajPotvrduLozinke() == false)
+                validna = false;
+            return validna;
+        }
+
+
+        function ValidirajKorisnickoIme() {
+
+            var valid = true;
+            var element = document.getElementById("KorisnickoIme");
+            var error = document.getElementById("KorisnickoImeError");
+            var pravilo = new RegExp(/[*$%?#&!,+-]/, 'gi');
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Korisničko ime je obavezno polje";
+
+            }
+            else
+                if (element.value.length < 3) {
+                    valid = false;
+                    error.innerHTML = "*Korisničko ime se sastoji od najmanje 3 slova";
+
+
+                }
+                else if (pravilo.test(element.value) == true) {
+                    valid = false;
+                    error.innerHTML = "*Korisničko ime smije sadržavati samo '.' ili '_' od specijalnih znakova";
+
+                }
+                else {
+                    var username = $("#KorisnickoIme").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/KorisnickiNalozi/CheckUsername",
+                        data: '{username: "' + username + '" }',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+
+
+                            if (response == false) {
+
+                                $("#zauzeto").text("zauzeto");
+                                valid = false;
+                                element.classList.add("input-validation-error");
+                                error.classList.remove("field-validation-valid");
+                                error.classList.add("field-validation-error");
+                                error.innerHTML = "*Korisničko ime je zauzeto";
+
+
+                            }
+                            else {
+
+                                $("#zauzeto").text("");
+                                element.classList.remove("input-validation-error");
+                                error.classList.remove("field-validation-error");
+                                error.classList.add("field-validation-valid");
+                            }
+
+                        }
+                    });
+
+                    var zauzetoText = document.getElementById("zauzeto").textContent;
+
+
+                    if (zauzetoText == "zauzeto") {
+                        valid = false;
+                        error.innerHTML = "*Korisničko ime je zauzeto";
+                    }
+
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+
+                    }
+
+
+                }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+
+
+            }
+            return valid;
+
+
+        }
+        function ValidirajLozinku() {
+
+            var valid = true;
+            var element = document.getElementById("Lozinka");
+            var error = document.getElementById("LozinkaError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Lozinka je obavezno polje";
+            }
+            else {
+                if (element.value.length < 6) {
+                    valid = false;
+                    error.innerHTML = "*Lozinka moramo imati najmanje 6 karaktera";
+                }
+                else {
+                    var pravilo1 = new RegExp(/[a-zA-Z]/, 'gi');
+                    var pravilo2 = new RegExp(/[0-9]/, 'gi');
+                    var pravilo3 = new RegExp(/[$#%&!?*,._+-]/, 'gi');
+
+                    if (pravilo1.test(element.value) == false || pravilo2.test(element.value) == false
+                        || pravilo3.test(element.value) == false) {
+                        valid = false;
+                        error.innerHTML = "*Lozinka mora biti kombinacija brojeva, slova i specijalnih znakova";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajPotvrduLozinke() {
+
+            var valid = true;
+            var element = document.getElementById("PotvrdaLozinke");
+            var lozinka = document.getElementById("Lozinka");
+            var error = document.getElementById("PotvrdaLozinkeError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Potvrda lozinke je obavezno polje";
+            }
+            else {
+                if (lozinka.value != element.value) {
+                    valid = false;
+                    error.innerHTML = "*Potvrda lozinke se ne slaže sa poljem lozinka";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+
+     
+</script>
+
+
+
+
+
+
+

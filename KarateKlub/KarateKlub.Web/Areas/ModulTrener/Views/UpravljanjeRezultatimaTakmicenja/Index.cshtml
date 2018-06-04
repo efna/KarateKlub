@@ -1,0 +1,88 @@
+﻿@{
+    int brojTaba = (int)ViewData["tab"];
+    int takmicenjeId = (int)ViewData["takmicenjeId"];
+    string nazivTakmicenja = (string)ViewData["nazivTakmicenja"];
+    ViewBag.Title = "Rezultati takmičenja " +nazivTakmicenja;
+    ViewBag.PageTitle = "Rezultati takmičenja";
+
+
+}
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "UpravljanjeTakmicenjimaTakmicarima", new { brojTaba = 1, aktivnost = 0 }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz takmičenja" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="pojedinacnoRezultati">
+                    <a id="pojedinacno" href="#pojedinacnoRezultatiTab" data-toggle="tab">Pojedinačno</a>
+                </li>
+                <li id="ekipnoRezultati">
+                    <a id="ekipno" href="#ekipnoRezultatiTab" data-toggle="tab">Ekipno</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="pojedinacnoRezultatiTab">
+
+
+                    @Html.Action("Index", "RezultatiTakmicenja", new { takmicenjeId = takmicenjeId })
+                </div>
+
+                <div id="ekipnoRezultatiTab">
+
+                  @Html.Action("Index", "RezultatiTakmicenjaEkipno", new {takmicenjeId=takmicenjeId })
+                 
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var pojedinacnoRezultati = document.getElementById("pojedinacnoRezultati");
+       pojedinacnoRezultati.classList.add("active");
+       var pojedinacnoRezultatiTab = document.getElementById("pojedinacnoRezultatiTab");
+       pojedinacnoRezultatiTab.classList.add("tab-pane");
+       pojedinacnoRezultatiTab.classList.add("fade");
+       pojedinacnoRezultatiTab.classList.add("in");
+       pojedinacnoRezultatiTab.classList.add("active");
+       var ekipnoRezultatiTab = document.getElementById("ekipnoRezultatiTab");
+       ekipnoRezultatiTab.classList.add("tab-pane");
+       ekipnoRezultatiTab.classList.add("fade");
+
+    }
+
+   else
+   {
+       var ekipnoRezultati = document.getElementById("ekipnoRezultati");
+       ekipnoRezultati.classList.add("active");
+       var ekipnoRezultatiTab = document.getElementById("ekipnoRezultatiTab");
+       ekipnoRezultatiTab.classList.add("tab-pane");
+       ekipnoRezultatiTab.classList.add("fade");
+       ekipnoRezultatiTab.classList.add("in");
+       ekipnoRezultatiTab.classList.add("active");
+       var pojedinacnoRezultatiTab = document.getElementById("pojedinacnoRezultatiTab");
+       pojedinacnoRezultatiTab.classList.add("tab-pane");
+       pojedinacnoRezultatiTab.classList.add("fade");
+
+   }
+
+</script>
+
+
+

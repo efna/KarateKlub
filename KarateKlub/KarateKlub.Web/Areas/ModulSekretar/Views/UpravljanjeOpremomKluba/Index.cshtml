@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Klubska oprema";
+    ViewBag.PageTitle = "Klubska oprema";
+    int brojTaba = (int)ViewData["tab"];
+    int aktivnost = (int)ViewData["aktivnost"];
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+   
+          <div class="col-xs-12">
+    
+            <ul class="nav nav-tabs nav-justified">
+
+              
+                <li id="oprema">
+                    <a href="#opremaTab" data-toggle="tab">Evidencija opreme</a>
+                </li>
+                <li id="zaduzenjaOpremeClanovima">
+                    <a href="#zaduzenjaOpremeClanovimaTab" data-toggle="tab">Zadužena i razdužena oprema</a>
+                </li>
+                <li id="otpisanaOprema">
+                    <a href="#otpisanaOpremaTab" data-toggle="tab">Otpisana oprema</a>
+                </li>
+                <li id="narudzbe">
+                    <a href="#narudzbeTab" data-toggle="tab">Narudžbe</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+
+                <div id="opremaTab">
+                    @Html.Action("Index", "KlubskaOprema")
+                </div>
+                
+                <div id="zaduzenjaOpremeClanovimaTab">
+                    @Html.Action("Index", "ZaduzenjeOpremeKlubaClanovima",new {aktivnost=aktivnost })
+
+                </div>
+                <div id="otpisanaOpremaTab">
+                    @Html.Action("Index", "OtpisanaOpremaKluba")
+
+                </div>
+                <div id="narudzbeTab">
+                    @Html.Action("Index", "NarudzbeOpremeKluba")
+                </div>
+            </div>
+            
+        </div>
+      
+    </div>
+</div>
+<div style="text-align:center;">
+    @using (Html.BeginForm("Index", "VrsteOpremeKluba", new { }, FormMethod.Post, new { @class = "" }))
+    {
+
+        <button type="submit" style="width:210px;" class="btn-lg btn btn-primary" title="Pregledaj vrste opreme"><span class="fa fa-file-text-o" aria-hidden="true"></span>Pregledaj vrste opreme</button>
+    }
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var oprema = document.getElementById("oprema");
+        oprema.classList.add("active");
+        var opremaTab = document.getElementById("opremaTab");
+        opremaTab.classList.add("tab-pane");
+        opremaTab.classList.add("fade");
+        opremaTab.classList.add("in");
+        opremaTab.classList.add("active");
+        var zaduzenjaOpremeClanovimaTab = document.getElementById("zaduzenjaOpremeClanovimaTab");
+        zaduzenjaOpremeClanovimaTab.classList.add("tab-pane");
+        zaduzenjaOpremeClanovimaTab.classList.add("fade");
+        var otpisanaOpremaTab = document.getElementById("otpisanaOpremaTab");
+        otpisanaOpremaTab.classList.add("tab-pane");
+        otpisanaOpremaTab.classList.add("fade");
+        var narudzbeTab = document.getElementById("narudzbeTab");
+        narudzbeTab.classList.add("tab-pane");
+        narudzbeTab.classList.add("fade");
+
+    }
+    else if(@brojTaba==2){
+        var zaduzenjaOpremeClanovima=document.getElementById("zaduzenjaOpremeClanovima");
+        zaduzenjaOpremeClanovima.classList.add("active");
+        var zaduzenjaOpremeClanovimaTab = document.getElementById("zaduzenjaOpremeClanovimaTab");
+        zaduzenjaOpremeClanovimaTab.classList.add("tab-pane");
+        zaduzenjaOpremeClanovimaTab.classList.add("fade");
+        zaduzenjaOpremeClanovimaTab.classList.add("in");
+        zaduzenjaOpremeClanovimaTab.classList.add("active");
+        var opremaTab = document.getElementById("opremaTab");
+        opremaTab.classList.add("tab-pane");
+        opremaTab.classList.add("fade");
+        var otpisanaOpremaTab = document.getElementById("otpisanaOpremaTab");
+        otpisanaOpremaTab.classList.add("tab-pane");
+        otpisanaOpremaTab.classList.add("fade");
+        var narudzbeTab = document.getElementById("narudzbeTab");
+        narudzbeTab.classList.add("tab-pane");
+        narudzbeTab.classList.add("fade");
+
+
+
+    }
+
+    else if(@brojTaba==3){
+        var otpisanaOprema=document.getElementById("otpisanaOprema");
+        otpisanaOprema.classList.add("active");
+        var otpisanaOpremaTab = document.getElementById("otpisanaOpremaTab");
+        otpisanaOpremaTab.classList.add("tab-pane");
+        otpisanaOpremaTab.classList.add("fade");
+        otpisanaOpremaTab.classList.add("in");
+        otpisanaOpremaTab.classList.add("active");
+        var opremaTab = document.getElementById("opremaTab");
+        opremaTab.classList.add("tab-pane");
+        opremaTab.classList.add("fade");
+        var zaduzenjaOpremeClanovimaTab = document.getElementById("zaduzenjaOpremeClanovimaTab");
+        zaduzenjaOpremeClanovimaTab.classList.add("tab-pane");
+        zaduzenjaOpremeClanovimaTab.classList.add("fade");
+        var narudzbeTab = document.getElementById("narudzbeTab");
+        narudzbeTab.classList.add("tab-pane");
+        narudzbeTab.classList.add("fade");
+
+    }
+
+    else{
+        var narudzbe=document.getElementById("narudzbe");
+        narudzbe.classList.add("active");
+        var narudzbeTab = document.getElementById("narudzbeTab");
+        narudzbeTab.classList.add("tab-pane");
+        narudzbeTab.classList.add("fade");
+        narudzbeTab.classList.add("in");
+        narudzbeTab.classList.add("active");
+        var opremaTab = document.getElementById("opremaTab");
+        opremaTab.classList.add("tab-pane");
+        opremaTab.classList.add("fade");
+        var zaduzenjaOpremeClanovimaTab = document.getElementById("zaduzenjaOpremeClanovimaTab");
+        zaduzenjaOpremeClanovimaTab.classList.add("tab-pane");
+        zaduzenjaOpremeClanovimaTab.classList.add("fade");
+        var otpisanaOpremaTab = document.getElementById("otpisanaOpremaTab");
+        otpisanaOpremaTab.classList.add("tab-pane");
+        otpisanaOpremaTab.classList.add("fade");
+
+    }
+</script>
+
+
+

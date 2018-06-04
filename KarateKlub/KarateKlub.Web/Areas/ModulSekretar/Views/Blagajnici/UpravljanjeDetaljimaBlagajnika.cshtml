@@ -1,0 +1,96 @@
+﻿
+@using KarateKlub.Data.Models
+
+@{
+
+    int brojTaba = (int)ViewData["tab"];
+    int aktivan = (int)ViewData["aktivan"];
+    int osobaId = (int)ViewData["osobaId"];
+    Osoba osoba = (Osoba)ViewData["osoba"];
+
+    ViewBag.Title = "Detaljne informacije o blagajniku " + osoba.Ime + " " + osoba.Prezime;
+    ViewBag.PageTitle = "Detaljni podaci blagajnika";
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "GoToPrikazBlagajnika", "UpravljanjeUposlenicima", new { aktivan = aktivan }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz blagajnika" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="licniKlubskiPodaciBlagajnika">
+                    <a id="podaciBlagajnika" href="#licniKlubskiPodaciBlagajnikaTab" data-toggle="tab">Podaci blagajnika</a>
+                </li>
+                <li id="uplateBlagajniku">
+                    <a id="uplateBlagajnikuKluba" href="#uplateBlagajnikuTab" data-toggle="tab">Uplate</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="licniKlubskiPodaciBlagajnikaTab">
+
+                    @Html.Action("Detalji", "Blagajnici", new { osobaId = osobaId, aktivan = aktivan })
+
+
+                </div>
+
+                <div id="uplateBlagajnikuTab">
+
+                    @Html.Action("PregledUplataUposlenika2", "UplateUposlenicima", new { osobaId = osobaId, aktivan = aktivan })
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var licniKlubskiPodaciBlagajnika = document.getElementById("licniKlubskiPodaciBlagajnika");
+       licniKlubskiPodaciBlagajnika.classList.add("active");
+       var licniKlubskiPodaciBlagajnikaTab = document.getElementById("licniKlubskiPodaciBlagajnikaTab");
+       licniKlubskiPodaciBlagajnikaTab.classList.add("tab-pane");
+       licniKlubskiPodaciBlagajnikaTab.classList.add("fade");
+       licniKlubskiPodaciBlagajnikaTab.classList.add("in");
+       licniKlubskiPodaciBlagajnikaTab.classList.add("active");
+       var uplateBlagajnikuTab = document.getElementById("uplateBlagajnikuTab");
+       uplateBlagajnikuTab.classList.add("tab-pane");
+       uplateBlagajnikuTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var uplateBlagajniku = document.getElementById("uplateBlagajniku");
+       uplateBlagajniku.classList.add("active");
+       var uplateBlagajnikuTab = document.getElementById("uplateBlagajnikuTab");
+       uplateBlagajnikuTab.classList.add("tab-pane");
+       uplateBlagajnikuTab.classList.add("fade");
+       uplateBlagajnikuTab.classList.add("in");
+       uplateBlagajnikuTab.classList.add("active");
+       var licniKlubskiPodaciBlagajnikaTab = document.getElementById("licniKlubskiPodaciBlagajnikaTab");
+       licniKlubskiPodaciBlagajnikaTab.classList.add("tab-pane");
+       licniKlubskiPodaciBlagajnikaTab.classList.add("fade");
+
+   }
+
+</script>
+
+
+

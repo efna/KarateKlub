@@ -1,0 +1,128 @@
+﻿@model KarateKlub.Web.Areas.ModulClanKluba.Models.StavkeClanarinePregledClanarinaClanaVM
+@using KarateKlub.Web.Areas.ModulClanKluba.Models
+
+@{
+    ViewBag.Title = "Neizmirene članarine";
+    ViewBag.PageTitle = "Neizmirene članarine";
+    int izmirena = (int)ViewData["izmirena"];
+    int osobaId = (int)ViewData["osobaId"];
+    Layout = null;
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+<br />
+<br />
+<div style="margin-left:25px;width:260px;">
+    @using (Html.BeginForm("GoToUpravljanjeUplatamaClana", "ClanoviKluba", FormMethod.Get, new { id = "FilterNeizmireneClanarine" }))
+    {
+        
+        @Html.DropDownListFor(model => model.izmirena, Model.Izmirenost, new { @class = "form-control", onchange = "document.getElementById('FilterNeizmireneClanarine').submit()" })
+
+    }
+</div>
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaStavkeClanarineClanaKlubaNeizmirene">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Članarina</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (StavkaPodaci x in Model.stavka)
+                                    {
+                                        <tr id="row_@x.Id">
+                                            <td>@x.Clanarina</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaStavkeClanarineClanaKlubaNeizmirene').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [],
+                'orderable': false
+            }, {
+                'targets': [0],
+                'width': '100%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+

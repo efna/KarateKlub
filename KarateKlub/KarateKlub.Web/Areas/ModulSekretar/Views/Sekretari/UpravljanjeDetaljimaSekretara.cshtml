@@ -1,0 +1,96 @@
+﻿@using KarateKlub.Data.Models
+
+@{
+
+    int brojTaba = (int)ViewData["tab"];
+    int aktivan = (int)ViewData["aktivan"];
+    int osobaId = (int)ViewData["osobaId"];
+    Osoba osoba = (Osoba)ViewData["osoba"];
+
+    ViewBag.Title = "Detaljne informacije o sekretaru " + osoba.Ime + " " + osoba.Prezime;
+    ViewBag.PageTitle = "Detaljni podaci sekretara";
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "GoToPrikazSekretara", "UpravljanjeUposlenicima", new { aktivan = aktivan }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz sekretara" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="licniKlubskiPodaciSekretara">
+                    <a id="podaciSekretara" href="#licniKlubskiPodaciSekretaraTab" data-toggle="tab">Podaci sekretara</a>
+                </li>
+                <li id="uplateSekretaru">
+                    <a id="uplateSekretaruKluba" href="#uplateSekretaruTab" data-toggle="tab">Uplate</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="licniKlubskiPodaciSekretaraTab">
+
+                    @Html.Action("Detalji", "Sekretari", new { osobaId = osobaId, aktivan = aktivan })
+
+
+                </div>
+
+                <div id="uplateSekretaruTab">
+
+                    @Html.Action("PregledUplataUposlenika2", "UplateUposlenicima", new { osobaId = osobaId, aktivan = aktivan })
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var licniKlubskiPodaciSekretara = document.getElementById("licniKlubskiPodaciSekretara");
+       licniKlubskiPodaciSekretara.classList.add("active");
+       var licniKlubskiPodaciSekretaraTab = document.getElementById("licniKlubskiPodaciSekretaraTab");
+       licniKlubskiPodaciSekretaraTab.classList.add("tab-pane");
+       licniKlubskiPodaciSekretaraTab.classList.add("fade");
+       licniKlubskiPodaciSekretaraTab.classList.add("in");
+       licniKlubskiPodaciSekretaraTab.classList.add("active");
+       var uplateSekretaruTab = document.getElementById("uplateSekretaruTab");
+       uplateSekretaruTab.classList.add("tab-pane");
+       uplateSekretaruTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var uplateSekretaru = document.getElementById("uplateSekretaru");
+       uplateSekretaru.classList.add("active");
+       var uplateSekretaruTab = document.getElemetById("uplateSekretaruTab");
+       uplateSekretaruTab.classList.add("tab-pane");
+       uplateSekretaruTab.classList.add("fade");
+       uplateSekretaruTab.classList.add("in");
+       uplateSekretaruTab.classList.add("active");
+       var licniKlubskiPodaciSekretaraTab = document.getElementById("licniKlubskiPodaciSekretaraTab");
+       licniKlubskiPodaciSekretaraTab.classList.add("tab-pane");
+       licniKlubskiPodaciSekretaraTab.classList.add("fade");
+
+   }
+
+</script>
+
+
+
+

@@ -1,0 +1,70 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.DonacijeIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.PageTitle = "Pregled donacije";
+    ViewBag.Title = "Pregled donacije";
+    Layout = null;
+
+}
+
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .poravnanje2 {
+        width: 200px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+@using (Html.BeginForm("", "", FormMethod.Get, new { style = "width:550px;", id = "donacijeForm" }))
+{
+<div class="table-responsive-vertical shadow-z-1">
+    <table style="border-top: 1px solid rgba(0, 0, 0, 0.12);" class="table table-hover">
+        <thead style="font-size:16px; font-weight:500;">
+            <tr>
+                <th>Donator</th>
+                <th>Datum</th>
+                <th>Priznanica</th>
+                <th>Iznos</th>
+                <th>Obrazloženje</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.donacija.Naziv (@Model.donacija.Donator)</td>
+                <td>@Model.donacija.DatumUplate.ToString("dd.MM.yyyy")</td>
+                <td class="col-xs-1" align="center">@Model.donacija.BrojUplatnice</td>
+                <td>@Model.donacija.IznosKMBrojevima.ToString() KM (@Model.donacija.IznosKMSlovima)</td>
+                <td>
+                    @if (Model.donacija.Obrazlozenje == null)
+                    {
+                        <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Nije uneseno obrazloženje za donaciju.">Pregledaj obrazloženje</a>
+
+                    }
+                    else
+                    {
+
+                        <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@Model.donacija.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                    }
+                </td>
+
+           
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+}
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

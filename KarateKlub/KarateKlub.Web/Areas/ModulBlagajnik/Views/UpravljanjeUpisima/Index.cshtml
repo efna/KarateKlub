@@ -1,0 +1,117 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    ViewBag.PageTitle = "Upisi";
+    ViewBag.Title = "Upisi";
+    int brojTaba = (int)ViewData["tab"];
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li id="upisi">
+                    <a id="upisiUKlub" href="#upisiTab" data-toggle="tab">Upisi</a>
+                </li>
+                <li id="izmireneUpisnine">
+                    <a id="izmirene" href="#izmireneUpisnineTab" data-toggle="tab">Pregled izmirenih upisnina</a>
+                </li>
+                <li id="neizmireneUpisnine">
+                    <a id="neizmirene" href="#neizmireneUpisnineTab" data-toggle="tab">Pregled neizmirenih upisnina</a>
+                </li>
+
+
+
+            </ul>
+            <div class="tab-content">
+                <div id="upisiTab">
+
+                    @Html.Action("Index", "Upisi", new { })
+
+                </div>
+                <div id="izmireneUpisnineTab">
+
+                    @Html.Action("IzmireneUpisnine", "Upisnine", new { })
+
+                </div>
+                <div id="neizmireneUpisnineTab">
+
+                    @Html.Action("NeizmireneUpisnine", "Upisnine", new { })
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var upisi = document.getElementById("upisi");
+        upisi.classList.add("active");
+        var upisiTab = document.getElementById("upisiTab");
+        upisiTab.classList.add("tab-pane");
+        upisiTab.classList.add("fade");
+        upisiTab.classList.add("in");
+        upisiTab.classList.add("active");
+        var izmireneUpisnineTab = document.getElementById("izmireneUpisnineTab");
+        izmireneUpisnineTab.classList.add("tab-pane");
+        izmireneUpisnineTab.classList.add("fade");
+        var neizmireneUpisnineTab = document.getElementById("neizmireneUpisnineTab");
+        neizmireneUpisnineTab.classList.add("tab-pane");
+        neizmireneUpisnineTab.classList.add("fade");
+    }
+
+ else  if (@brojTaba==2)
+    {
+     var izmireneUpisnine = document.getElementById("izmireneUpisnine");
+     izmireneUpisnine.classList.add("active");
+     var izmireneUpisnineTab = document.getElementById("izmireneUpisnineTab");
+     izmireneUpisnineTab.classList.add("tab-pane");
+     izmireneUpisnineTab.classList.add("fade");
+     izmireneUpisnineTab.classList.add("in");
+     izmireneUpisnineTab.classList.add("active");
+     var upisiTab = document.getElementById("upisiTab");
+     upisiTab.classList.add("tab-pane");
+     upisiTab.classList.add("fade");
+     var neizmireneUpisnineTab = document.getElementById("neizmireneUpisnineTab");
+     neizmireneUpisnineTab.classList.add("tab-pane");
+     neizmireneUpisnineTab.classList.add("fade");
+
+    }
+ else{
+     var neizmireneUpisnine = document.getElementById("neizmireneUpisnine");
+     neizmireneUpisnine.classList.add("active");
+     var neizmireneUpisnineTab = document.getElementById("neizmireneUpisnineTab");
+     neizmireneUpisnineTab.classList.add("tab-pane");
+     neizmireneUpisnineTab.classList.add("fade");
+     neizmireneUpisnineTab.classList.add("in");
+     neizmireneUpisnineTab.classList.add("active");
+     var upisiTab = document.getElementById("upisiTab");
+     upisiTab.classList.add("tab-pane");
+     upisiTab.classList.add("fade");
+     var izmireneUpisnineTab = document.getElementById("izmireneUpisnineTab");
+     izmireneUpisnineTab.classList.add("tab-pane");
+     izmireneUpisnineTab.classList.add("fade");
+
+ }
+
+
+</script>
+
+
+
+
+
+

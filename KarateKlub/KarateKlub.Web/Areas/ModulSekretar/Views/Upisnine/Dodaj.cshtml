@@ -1,0 +1,162 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.UpisnineDodajVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Nova upisnina";
+    ViewBag.Title = "Nova upisnina";
+    Layout = null;
+}
+
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiNovuUpisninu", "Upisnine", FormMethod.Post, new { style = "width:400px;", id = "formaDodajUpisninu" }))
+{
+    @Html.HiddenFor(Model => Model.UpisId)
+    @Html.HiddenFor(Model => Model.izmirena)
+
+
+    <div id="Poravnanje">
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Član kluba: </label>
+            @Html.DropDownListFor(model => model.UpisaniClanoviId, Model.UpisaniClanovi, new { @class = "form-control select2", @multiple = "multiple", @id = "listaClanova", onchange = "ValidirajListuClanova()" })
+            @Html.ValidationMessageFor(model => model.UpisaniClanoviId, "Odaberite člana iz opadajuće liste")
+            @Html.ValidationMessage("UpisaniClanoviIdError", new { id = "UpisaniClanoviIdError" })
+        </div>
+
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+
+}
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+
+</script>
+<script>
+    $(function () {
+
+        $('#listaClanova option:contains("-Odaberite člana-")').attr("disabled", "disabled");
+        $(".select2").select2({
+            closeOnSelect: false,
+            language: {
+                noResults: function () {
+                    return "Nema pronađenih rezultata";
+                },
+                errorLoading: function () {
+                    return 'Preuzimanje nije uspjelo.';
+                },
+
+                loadingMore: function () {
+                    return 'Učitavanje rezultata…';
+                },
+                searching: function () {
+                    return 'Pretraga…';
+                }
+            }
+
+
+        });
+    })
+
+</script>
+<script type="text/javascript">
+
+
+
+    function Validiraj() {
+        var valid = true;
+
+        if (ValidirajListuClanova() == false)
+            valid = false;
+
+        return valid;
+
+    }
+
+
+
+    function ValidirajListuClanova() {
+
+        var element = document.getElementById("listaClanova");
+        var error = document.getElementById("UpisaniClanoviIdError");
+        if ($("#listaClanova").val() == "") {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite članove iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+
+
+    }
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

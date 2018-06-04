@@ -1,0 +1,152 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.UcesniciPolaganjaZaUcenickaZvanjaUrediVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Uređivanje učesnika polaganja";
+    ViewBag.Title = "Uređivanje učesnika polaganja";
+    Layout = null;
+
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiIzmjenuUcesnikaPolaganjaZaUcenickaZvanja", "UcesniciPolaganjaZaUcenickaZvanja", FormMethod.Post, new { style = "width:400px;", id = "formaUrediUcesnikaPolaganjaZaUcenickaZvanja" }))
+{
+    @Html.HiddenFor(Model => Model.PolaganjeUcenickaZvanjaId)
+    @Html.HiddenFor(Model => Model.Id)
+
+    <div id="PoravnanjeKontrola">
+        <div class="form-group" style="width:auto;">
+            <label>Učesnik: </label>
+            @Html.DropDownListFor(model => model.ClanKlubaId, Model.clanoviKluba, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClanKlubaId, "Odaberite učesnika iz opadajuće liste")
+            @Html.ValidationMessage("ClanKlubaIdError", new { id = "ClanKlubaIdError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Polaže za zvanje: </label>
+            @Html.DropDownListFor(model => model.ZvanjeUKarateuId, Model.zvanjaUKarateu, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ZvanjeUKarateuId, "Odaberite zvanje iz opadajuće liste")
+            @Html.ValidationMessage("ZvanjeUKarateuIdError", new { id = "ZvanjeUKarateuIdError" })
+        </div>
+
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+<script type="text/javascript">
+
+    document.getElementById("ClanKlubaId").onblur = ValidirajUcesnikaPolaganja;
+    document.getElementById("ZvanjeUKarateuId").onblur = ValidirajZvanjeUKarateu;
+
+    function Validiraj() {
+
+
+        var validna = true;
+        if (ValidirajUcesnikaPolaganja() == false)
+            validna = false;
+        if (ValidirajZvanjeUKarateu() == false)
+            validna = false;
+
+        return validna;
+    }
+
+
+    function ValidirajUcesnikaPolaganja() {
+
+        var element = document.getElementById("ClanKlubaId");
+        var error = document.getElementById("ClanKlubaIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite učesnika iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+
+    function ValidirajZvanjeUKarateu() {
+
+        var element = document.getElementById("ZvanjeUKarateuId");
+        var error = document.getElementById("ZvanjeUKarateuIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite zvanje za koje učesnik polaže iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+</script>
+
+
+
+
+

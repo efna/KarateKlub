@@ -1,0 +1,51 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.ClanoviEkipeIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.PageTitle = "Pregled članova ekipe";
+    ViewBag.Title = "Pregled članova ekipe";
+    Layout = null;
+
+}
+
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .poravnanje2 {
+        width: 200px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+@using (Html.BeginForm("", "", FormMethod.Get, new { style = "width:500px;", id = "clanoviEkipeForma" }))
+{
+    <div class="table-responsive-vertical shadow-z-1">
+        <table style="border-top: 1px solid rgba(0, 0, 0, 0.12);" class="table table-hover">
+            <thead style="font-size:16px; font-weight:500;">
+                <tr>
+                    <th>Takmičar</th>
+                    <th>Zvanje</th>
+                    <th>Uzrast</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                   @foreach (ClanEkipePodaci x in Model.clanoviEkipe)
+                   {
+                    <tr>
+                        <td>@x.Takmicar</td>
+                        <td>@x.ZvanjeUKarateu</td>
+                        <td>@x.StarosnaDob</td>
+                    </tr>
+                   }
+                    
+            </tbody>
+        </table>
+    </div>
+
+}

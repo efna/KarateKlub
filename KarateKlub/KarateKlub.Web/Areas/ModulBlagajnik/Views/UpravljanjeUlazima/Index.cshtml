@@ -1,0 +1,502 @@
+﻿@model KarateKlub.Web.Areas.ModulBlagajnik.Models.UpravljanjeUlazimaIndeVM
+
+@{
+    ViewBag.Title = "Ulazi";
+    ViewBag.PageTitle = "Ulazi";
+    int brojTaba = (int)ViewData["tab"];
+    string DatumOd = (string)ViewData["DatumOd"];
+    string DatumDo = (string)ViewData["DatumDo"];
+    decimal ukupanUlazZaOdabraniPeriod = (decimal)ViewData["ukupanUlazZaOdabraniPeriod"];
+}
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+
+    .customDiv {
+        margin: 5px;
+    }
+
+    #slikaClana {
+        border: 1px solid transparent;
+        border-color: #337ab7;
+    }
+
+    .razmak {
+        margin-top: 20px;
+    }
+
+    .poravnanjeDugmadi {
+        margin-top: 10px;
+    }
+</style>
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+
+@using (Html.BeginForm("GoToUpravljanjeUlazima", "UpravljanjeUlazima", FormMethod.Post))
+{
+    <label style="margin-left:50px;">Odaberite period:</label>
+    <div class="input-group date" style="width:350px;margin-left:50px;">
+        @Html.TextBoxFor(model => model.DatumOd, new { @class = "form-control datepicker", @readonly = "readonly", onchange = "ValidirajDatumOd()", @id = "DatumOd" })
+        @Html.ValidationMessageFor(model => model.DatumOd)
+        @Html.ValidationMessage("DatumOdError", new { id = "DatumOdError" })
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+
+        <span class="input-group-addon"><span class="glyphicon glyphicon-remove" onclick="document.getElementById('DatumOd').value = ''"></span></span>
+    </div>
+    <div class="input-group date" style="width:350px;margin-top:5px;margin-left:50px;">
+
+        @Html.TextBoxFor(model => model.DatumDo, new { @class = "form-control datepicker", @readonly = "readonly", onchange = "ValidirajDatumDo()", @id = "DatumDo" })
+        @Html.ValidationMessageFor(model => model.DatumDo)
+        @Html.ValidationMessage("DatumDoError", new { id = "DatumDoError" })
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span><span class="input-group-addon"><span class="glyphicon glyphicon-remove" onclick="document.getElementById('DatumDo').value = ''"></span></span>
+    </div>
+    <br />
+
+
+    <button type="submit" class="btn btn-default" style="margin-left:50px;width:270px;" onclick="return Validiraj()">
+        Pretraga
+        <i class="fa fa-refresh" style="margin-left:150px;"></i>
+    </button>
+}
+@if (DatumOd != "" && DatumDo != "")
+{
+    using (Html.BeginForm("Index", "UpravljanjeUlazima", new { }, FormMethod.Post))
+    {
+
+        <button type="submit" class="btn btn-default poravnanjeDugmadi" style="display:inline-block;position:relative;margin-left:50px;width:270px;" data-toggle="modal" data-target="#klubskiPodaciClanaModal">
+            Poništi pretragu
+            <i class="fa fa-remove" style="margin-left:115px;"></i>
+        </button>
+    }
+}
+
+
+<br />
+<br />
+<br />
+<br />
+@if (ukupanUlazZaOdabraniPeriod != 0)
+{
+    <label style="margin-left:50px;">Ukupan iznos ulaza u odabranom periodu: @ukupanUlazZaOdabraniPeriod KM</label>
+    <br />
+    <br />
+    <br />
+}
+
+<script>
+
+        $(function () {
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+                language: 'bs'
+            })
+        })
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="clanarine">
+                    <a id="uplaceneClanarine" href="#clanarineTab" data-toggle="tab">Članarine</a>
+                </li>
+                <li id="upisnine">
+                    <a id="uplaceneUpisnine" href="#upisnineTab" data-toggle="tab">Upisnine</a>
+                </li>
+                <li id="participacije">
+                    <a id="uplaceneParticipacije" href="#participacijeTab" data-toggle="tab">Participacije za polaganje</a>
+                </li>
+                <li id="donacije">
+                    <a id="uplaceneDonacije" href="#donacijeTab" data-toggle="tab">Donacije</a>
+                </li>
+                <li id="sponzorstva">
+                    <a id="uplacenaSponzorstva" href="#sponzorstvaTab" data-toggle="tab">Sponzorstva</a>
+                </li>
+                <li id="ostaliUlazi">
+                    <a id="ostalo" href="#ostaliUlaziTab" data-toggle="tab">Ostali ulazi</a>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="clanarineTab">
+
+                    @Html.Action("IzmireneClanarine", "StavkeClanarine", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+
+                </div>
+                <div id="upisnineTab">
+
+                    @Html.Action("IzmireneUpisnine", "Upisnine", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+
+                </div>
+
+                <div id="participacijeTab">
+
+                    @Html.Action("IzmireneParticipacije", "ParticipacijeZaPolaganjeUcenickaZvanja", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+                <div id="donacijeTab">
+
+                    @Html.Action("PregledSvihDonacija", "Donacije", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+                <div id="sponzorstvaTab">
+
+                    @Html.Action("PregledSvihSponzorstva", "Sponzorstva", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+                <div id="ostaliUlaziTab">
+
+                    @Html.Action("Index", "Ulaz", new { DatumOd = Model.DatumOd, DatumDo = Model.DatumDo })
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var clanarine = document.getElementById("clanarine");
+       clanarine.classList.add("active");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+       clanarineTab.classList.add("in");
+       clanarineTab.classList.add("active");
+       var upisnineTab = document.getElementById("upisnineTab");
+       upisnineTab.classList.add("tab-pane");
+       upisnineTab.classList.add("fade");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+       var donacijeTab = document.getElementById("donacijeTab");
+       donacijeTab.classList.add("tab-pane");
+       donacijeTab.classList.add("fade");
+       var sponzorstvaTab = document.getElementById("sponzorstvaTab");
+       sponzorstvaTab.classList.add("tab-pane");
+       sponzorstvaTab.classList.add("fade");
+       var ostaliUlaziTab = document.getElementById("ostaliUlaziTab");
+       ostaliUlaziTab.classList.add("tab-pane");
+       ostaliUlaziTab.classList.add("fade");
+
+
+
+    }
+
+   else if(@brojTaba==2)
+   {
+       var upisnine = document.getElementById("upisnine");
+       upisnine.classList.add("active");
+       var upisnineTab = document.getElementById("upisnineTab");
+       upisnineTab.classList.add("tab-pane");
+       upisnineTab.classList.add("fade");
+       upisnineTab.classList.add("in");
+       upisnineTab.classList.add("active");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+       var donacijeTab = document.getElementById("donacijeTab");
+       donacijeTab.classList.add("tab-pane");
+       donacijeTab.classList.add("fade");
+       var sponzorstvaTab = document.getElementById("sponzorstvaTab");
+       sponzorstvaTab.classList.add("tab-pane");
+       sponzorstvaTab.classList.add("fade");
+       var ostaliUlaziTab = document.getElementById("ostaliUlaziTab");
+       ostaliUlaziTab.classList.add("tab-pane");
+       ostaliUlaziTab.classList.add("fade");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+
+
+
+   }
+   else if(@brojTaba==3){
+       var participacije = document.getElementById("participacije");
+       participacije.classList.add("active");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+       participacijeTab.classList.add("in");
+       participacijeTab.classList.add("active");
+       var donacijeTab = document.getElementById("donacijeTab");
+       donacijeTab.classList.add("tab-pane");
+       donacijeTab.classList.add("fade");
+       var sponzorstvaTab = document.getElementById("sponzorstvaTab");
+       sponzorstvaTab.classList.add("tab-pane");
+       sponzorstvaTab.classList.add("fade");
+       var ostaliUlaziTab = document.getElementById("ostaliUlaziTab");
+       ostaliUlaziTab.classList.add("tab-pane");
+       ostaliUlaziTab.classList.add("fade");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+       var upisnineTab = document.getElementById("upisnineTab");
+       upisnineTab.classList.add("tab-pane");
+       upisnineTab.classList.add("fade");
+
+
+   }
+   else if(@brojTaba==4){
+       var donacije = document.getElementById("donacije");
+       donacije.classList.add("active");
+       var donacijeTab = document.getElementById("donacijeTab");
+       donacijeTab.classList.add("tab-pane");
+       donacijeTab.classList.add("fade");
+       donacijeTab.classList.add("in");
+       donacijeTab.classList.add("active");
+       var sponzorstvaTab = document.getElementById("sponzorstvaTab");
+       sponzorstvaTab.classList.add("tab-pane");
+       sponzorstvaTab.classList.add("fade");
+       var ostaliUlaziTab = document.getElementById("ostaliUlaziTab");
+       ostaliUlaziTab.classList.add("tab-pane");
+       ostaliUlaziTab.classList.add("fade");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+       var upisnineTab = document.getElementById("upisnineTab");
+       upisnineTab.classList.add("tab-pane");
+       upisnineTab.classList.add("fade");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+   }
+   else if(@brojTaba==5){
+       var sponzorstva = document.getElementById("sponzorstva");
+       sponzorstva.classList.add("active");
+       var sponzorstvaTab = document.getElementById("sponzorstvaTab");
+       sponzorstvaTab.classList.add("tab-pane");
+       sponzorstvaTab.classList.add("fade");
+       sponzorstvaTab.classList.add("in");
+       sponzorstvaTab.classList.add("active");
+       var ostaliUlaziTab = document.getElementById("ostaliUlaziTab");
+       ostaliUlaziTab.classList.add("tab-pane");
+       ostaliUlaziTab.classList.add("fade");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+       var upisnineTab = document.getElementById("upisnineTab");
+       upisnineTab.classList.add("tab-pane");
+       upisnineTab.classList.add("fade");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+       var donacijeTab = document.getElementById("donacijeTab");
+       donacijeTab.classList.add("tab-pane");
+       donacijeTab.classList.add("fade");
+   }
+   else
+   {
+
+       var ostaliUlazi = document.getElementById("ostaliUlazi");
+       ostaliUlazi.classList.add("active");
+       var ostaliUlaziTab = document.getElementById("ostaliUlaziTab");
+       ostaliUlaziTab.classList.add("tab-pane");
+       ostaliUlaziTab.classList.add("fade");
+       ostaliUlaziTab.classList.add("in");
+       ostaliUlaziTab.classList.add("active");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+       var upisnineTab = document.getElementById("upisnineTab");
+       upisnineTab.classList.add("tab-pane");
+       upisnineTab.classList.add("fade");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+       var donacijeTab = document.getElementById("donacijeTab");
+       donacijeTab.classList.add("tab-pane");
+       donacijeTab.classList.add("fade");
+       var sponzorstvaTab = document.getElementById("sponzorstvaTab");
+       sponzorstvaTab.classList.add("tab-pane");
+       sponzorstvaTab.classList.add("fade");
+   }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    document.getElementById("DatumOd").onblur = ValidirajDatumOd;
+    document.getElementById("DatumDo").onblur = ValidirajDatumDo;
+
+
+
+    function Validiraj() {
+
+
+        var validna = true;
+
+        if (ValidirajDatumOd() == false)
+            validna = false;
+        if (ValidirajDatumDo() == false)
+            validna = false;
+
+
+
+        return validna;
+    }
+
+
+    function ValidirajDatumOd() {
+        var valid = true;
+        var element = document.getElementById("DatumOd");
+        var error = document.getElementById("DatumOdError");
+        var datumDo = document.getElementById("DatumDo");
+        var datumDoError = document.getElementById("DatumDoError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum početka je obavezno polje";
+        }
+
+        else if (element.value != "" && datumDo.value != "") {
+            var danOd = element.value.substring(0, 2);
+            var mjesecOd = element.value.substring(3, 5);
+            var godinaOd = element.value.substring(6, 20);
+            var danDo = datumDo.value.substring(0, 2);
+            var mjesecDo = datumDo.value.substring(3, 5);
+            var godinaDo = datumDo.value.substring(6, 20);
+            var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+            var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+            var dod = new Date(noviDatumOd);
+            var ddo = new Date(noviDatumDo);
+            if (ddo <= dod) {
+                valid = false;
+                error.innerHTML = "*Datum početka mora biti manji od datuma završetka.";
+
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+
+
+                valid = true;
+            }
+
+
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajDatumDo() {
+        var valid = true;
+        var element = document.getElementById("DatumDo");
+        var error = document.getElementById("DatumDoError");
+        var datumOd = document.getElementById("DatumOd");
+        var datumOdError = document.getElementById("DatumOdError");
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum završetka je obavezno polje";
+        }
+
+        else if (element.value != "" && datumOd.value != "") {
+            var danDo = element.value.substring(0, 2);
+            var mjesecDo = element.value.substring(3, 5);
+            var godinaDo = element.value.substring(6, 20);
+            var danOd = datumOd.value.substring(0, 2);
+            var mjesecOd = datumOd.value.substring(3, 5);
+            var godinaOd = datumOd.value.substring(6, 20);
+            var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+            var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+            var dod = new Date(noviDatumOd);
+            var ddo = new Date(noviDatumDo);
+            if (ddo <= dod) {
+                valid = false;
+                error.innerHTML = "*Datum završetka mora biti veći od datuma početka.";
+
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+
+
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+
+</script>
+
+
+
+
+

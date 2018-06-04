@@ -1,0 +1,256 @@
+﻿
+@model KarateKlub.Web.Areas.ModulAdministrator.Models.KorisnickiNaloziKorisnickiPodaciVM
+@using KarateKlub.Web.Areas.ModulAdministrator.Models
+@{
+    ViewBag.PageTitle = "Upravljanje korisničkim podacima";
+    ViewBag.Title = "Upravljanje korisničkim podacima";
+
+    Layout = null;
+}
+
+
+<style>
+     #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+    #Poravnanje {
+
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+   
+</style>
+
+@using (Html.BeginForm("SpremiKorisnickePodatke", "KorisnickiNalozi", FormMethod.Post, new { style = "width:400px;", id = "FormaKorisnickiPodaci" }))
+{
+    @Html.HiddenFor(Model=>Model.isAktivanNalog)
+    @Html.HiddenFor(Model=>Model.OsobaId)
+    @Html.HiddenFor(Model=>Model.KorisnickaUlogaId)
+    @Html.HiddenFor(Model=>Model.aktivnost)
+    if (Model.isAktivanNalog == false)
+    {
+
+        <div class="container">
+           
+            <a href="#" style="margin-left:25px;" data-toggle="popover" title="Poruka" data-content="Korisnik nije aktivan. Izmjena podataka nije moguća.">Pogledajte poruku</a>
+        </div>
+        <br />
+        <div id="Poravnanje">
+            <div class="form-group" style="width:auto;">
+                <label>Uloga: </label>
+                @Html.DropDownListFor(model => model.KorisnickaUlogaId, Model.KorisnickeUloge, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.KorisnickaUlogaId, "Odaberite korisničku ulogu iz opadajuće liste")
+                @Html.ValidationMessage("KorisnickaUlogaError", new { id = "KorisnickaUlogaError" })
+
+            </div>
+
+
+            <div class="form-group" style="width:auto;">
+                <label>Korisničko ime: </label>
+                @Html.TextBoxFor(model => model.KorisnickoIme, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.KorisnickoIme)
+                @Html.ValidationMessage("KorisnickoImeError", new { id = "KorisnickoImeError" })
+            </div>
+            <div class="form-group" style="width:auto;">
+                <label>Stara lozinka: </label>
+                @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", type = "password", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Lozinka)
+                @Html.ValidationMessage("LozinkaError", new { id = "LozinkaError" })
+
+            </div>
+        
+            <div class="form-group" style="width:auto;">
+                <label>Nova lozinka: </label>
+                @Html.TextBoxFor(model => model.StaraLozinka, new { @class = "form-control", type = "password", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.StaraLozinka)
+                @Html.ValidationMessage("NovaLozinkaError", new { id = "NovaLozinkaError" })
+
+            </div>
+            <div class="form-group" style="width:auto;">
+                <label>Potvrda lozinke: </label>
+                @Html.TextBoxFor(model => model.PotvrdaLozinke, new { @class = "form-control", type = "password", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.PotvrdaLozinke)
+                @Html.ValidationMessage("PotvrdaLozinkeError", new { id = "PotvrdaLozinkeError" })
+
+            </div>
+
+        </div>
+
+    }
+    else
+    {
+        <div id="Poravnanje">
+
+            <div class="form-group" style="width:auto;">
+                <label>Uloga: </label>
+                @Html.DropDownListFor(model => model.KorisnickaUlogaId, Model.KorisnickeUloge, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.KorisnickaUlogaId, "Odaberite korisničku ulogu iz opadajuće liste")
+                @Html.ValidationMessage("KorisnickaUlogaError", new { id = "KorisnickaUlogaError" })
+
+            </div>
+
+
+            <div class="form-group" style="width:auto;">
+                <label>Korisničko ime: </label>
+                @Html.TextBoxFor(model => model.KorisnickoIme, new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.KorisnickoIme)
+                @Html.ValidationMessage("KorisnickoImeError", new { id = "KorisnickoImeError" })
+            </div>
+            <div class="form-group" style="width:auto;">
+                <label>Lozinka: </label>
+                @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", type = "password", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.Lozinka)
+                @Html.ValidationMessage("LozinkaError", new { id = "LozinkaError" })
+
+            </div>
+        
+            <div class="form-group" style="width:auto;">
+                <label>Nova lozinka: </label>
+                @Html.TextBoxFor(model => model.NovaLozinka, new { @class = "form-control", type = "password" })
+                @Html.ValidationMessageFor(model => model.NovaLozinka)
+                @Html.ValidationMessage("NovaLozinkaError", new { id = "NovaLozinkaError" })
+
+            </div>
+            <div class="form-group" style="width:auto;">
+                <label>Potvrda lozinke: </label>
+                @Html.TextBoxFor(model => model.PotvrdaLozinke, new { @class = "form-control", type = "password" })
+                @Html.ValidationMessageFor(model => model.PotvrdaLozinke)
+                @Html.ValidationMessage("PotvrdaLozinkeError", new { id = "PotvrdaLozinkeError" })
+
+            </div>
+
+        </div>
+        <div id="btnSpremi">
+            <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+        </div>
+
+
+    }
+}
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+
+<script type="text/javascript">
+
+    document.getElementById("NovaLozinka").onblur = ValidirajLozinku;
+    document.getElementById("PotvrdaLozinke").onblur = ValidirajPotvrduLozinke;
+
+        function Validiraj() {
+            var validna = true;
+            if (ValidirajLozinku() == false)
+                validna = false;
+            if (ValidirajPotvrduLozinke() == false)
+                validna = false;
+            return validna;
+        }
+
+     
+    function ValidirajLozinku() {
+
+        var valid = true;
+        var element = document.getElementById("NovaLozinka");
+        var error = document.getElementById("NovaLozinkaError");
+
+        if(element.value==""){
+
+            valid = false;
+            error.innerHTML = "*Nova lozinka je obavezno polje!";
+        }
+        else
+        {
+            if (element.value.length < 6) {
+                valid = false;
+                error.innerHTML = "*Lozinka moramo imati najmanje 6 karaktera";
+            }
+            else {
+                var pravilo1 = new RegExp(/[a-zA-Z]/, 'gi');
+                var pravilo2 = new RegExp(/[0-9]/, 'gi');
+                var pravilo3 = new RegExp(/[$#%&!?*,._+-]/, 'gi');
+
+                if (pravilo1.test(element.value) == false || pravilo2.test(element.value) == false
+                    || pravilo3.test(element.value) == false) {
+                    valid = false;
+                    error.innerHTML = "*Lozinka mora biti kombinacija brojeva, slova i specijalnih znakova";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+        }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+           function ValidirajPotvrduLozinke() {
+
+            var valid = true;
+            var element = document.getElementById("PotvrdaLozinke");
+            var novaLozinka = document.getElementById("NovaLozinka");
+            var error = document.getElementById("PotvrdaLozinkeError");
+
+            if (element.value == "" && novaLozinka.value!="") {
+                valid = false;
+                error.innerHTML = "*Potvrda lozinke je obavezno polje";
+            }
+            else {
+                if (element.value != novaLozinka.value && novaLozinka.value!="") {
+                    valid = false;
+                    error.innerHTML = "*Potvrda lozinke se ne slaže sa poljem lozinka";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+</script>
+

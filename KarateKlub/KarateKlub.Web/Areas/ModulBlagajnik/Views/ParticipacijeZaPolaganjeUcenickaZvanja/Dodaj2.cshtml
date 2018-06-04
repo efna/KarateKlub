@@ -1,0 +1,274 @@
+﻿@model KarateKlub.Web.Areas.ModulBlagajnik.Models.ParticipacijeZaPolaganjeUcenickaZvanjaDodajVM
+@using KarateKlub.Data.Models
+@{
+    ViewBag.PageTitle = "Nova participacija za polaganje";
+    ViewBag.Title = "Nova participacija za polaganje";
+    Layout = null;
+    UcesniciPolaganjaZaUcenickaZvanja ucesnik = (UcesniciPolaganjaZaUcenickaZvanja)ViewData["ucesnik"];
+}
+
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiNovuParticipacijuZaPolaganjeUcenickaZvanja", "ParticipacijeZaPolaganjeUcenickaZvanja", FormMethod.Post, new { style = "width:400px;", id = "formaDodaj2ParticipacijuZaPolaganje" }))
+{
+    @Html.HiddenFor(Model => Model.PolaganjeUcenickaZvanjaId)
+    @Html.HiddenFor(Model => Model.UcesnikPolaganjaZaUcenickaZvanjaId)
+
+    <div id="Poravnanje">
+
+        <div class="form-group" style="width:auto;">
+            <label>Učesnik: </label>
+            @Html.TextBoxFor(Model => Model.Ucesnik, new { @class = "form-control", disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Ucesnik)
+            @Html.ValidationMessage("UcesnikError", new { id = "Error" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Broj priznanice: </label>
+            @Html.TextBoxFor(model => model.BrojPriznanice, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrojPriznanice)
+            @Html.ValidationMessage("BrojPriznaniceError", new { id = "BrojPriznaniceError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Iznos: </label>
+            @Html.TextBoxFor(model => model.IznosKMBrojevima, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.IznosKMBrojevima)
+            @Html.ValidationMessage("IznosKMBrojevimaError", new { id = "IznosKMBrojevimaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Iznos slovima: </label>
+            @Html.TextAreaFor(model => model.IznosKMSlovima, new { @class = "form-control", @style = "resize:none;height:70px;" })
+            @Html.ValidationMessageFor(model => model.IznosKMSlovima)
+            @Html.ValidationMessage("IznosKMSlovimaError", new { id = "IznosKMSlovimaError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum uplate: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumUplate, new { @class = "form-control datepicker", onchange = "ValidirajDatumUplate()" })
+                @Html.ValidationMessageFor(model => model.DatumUplate)
+                @Html.ValidationMessage("DatumUplateError", new { id = "DatumUplateError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+
+}
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+<script type="text/javascript">
+
+
+    document.getElementById("BrojPriznanice").onblur = ValidirajBrojPriznanice;
+    document.getElementById("IznosKMBrojevima").onblur = ValidirajIznosBrojevima;
+    document.getElementById("IznosKMSlovima").onblur = ValidirajIznosSlovima;
+    document.getElementById("DatumUplate").onblur = ValidirajDatumUplate;
+
+
+
+    function Validiraj() {
+        var valid = true;
+
+        if (ValidirajBrojPriznanice() == false)
+            valid = false;
+        if (ValidirajIznosBrojevima() == false)
+            valid = false;
+        if (ValidirajIznosSlovima() == false)
+            valid = false;
+        if (ValidirajDatumUplate() == false)
+            valid = false;
+
+        return valid;
+
+    }
+
+
+    function ValidirajBrojPriznanice() {
+
+        var valid = true;
+        var element = document.getElementById("BrojPriznanice");
+        var error = document.getElementById("BrojPriznaniceError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Broj priznanice je obavezno polje";
+        }
+
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+    function ValidirajDatumUplate() {
+        var valid = true;
+        var element = document.getElementById("DatumUplate");
+        var error = document.getElementById("DatumUplateError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum uplate je obavezno polje";
+        }
+        else {
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajIznosBrojevima() {
+
+        var valid = true;
+        var element = document.getElementById("IznosKMBrojevima");
+        var error = document.getElementById("IznosKMBrojevimaError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Iznos je obavezno polje";
+        }
+        else {
+
+            var pravilo = new RegExp(/^[+]?[0-9]+(\,[0-9]+)?$/);
+
+            if (!pravilo.test(element.value) == true) {
+                valid = false;
+                error.innerHTML = "*Iznos može biti samo broj";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajIznosSlovima() {
+
+        var valid = true;
+        var element = document.getElementById("IznosKMSlovima");
+        var error = document.getElementById("IznosKMSlovimaError");
+
+        var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+        if (pravilo.test(element.value) == true) {
+            valid = false;
+            error.innerHTML = "*Iznos slovima se sastoji isključivo od slova";
+        }
+
+
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

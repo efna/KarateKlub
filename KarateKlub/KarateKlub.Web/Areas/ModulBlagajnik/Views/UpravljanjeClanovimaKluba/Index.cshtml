@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "Članovi";
+    ViewBag.PageTitle = "Članovi";
+    int brojTaba = (int)ViewData["tab"];
+    int aktivan = (int)ViewData["aktivan"];
+    int zvanje = (int)ViewData["zvanje"];
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+
+                <li id="pregledClanova">
+                    <a href="#pregledClanovaTab" data-toggle="tab">Pregled članova</a>
+                </li>
+                <li id="pregledClanovaPoPojasevima">
+                    <a href="#pregledClanovaPoPojasevimaTab" data-toggle="tab">Pregled članova po pojasevima</a>
+                </li>
+                <li id="strukturaClanova">
+                    <a href="#strukturaClanovaTab" data-toggle="tab">Struktura članova</a>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="pregledClanovaTab">
+                    @Html.Action("PregledClanovaKluba", "ClanoviKluba", new { aktivan = aktivan })
+                </div>
+
+                <div id="pregledClanovaPoPojasevimaTab">
+                    @Html.Action("PregledClanovaKlubaPoPojasevima", "ClanoviKluba", new { zvanje = zvanje })
+
+                </div>
+                <div id="strukturaClanovaTab">
+                    @Html.Action("StrukturaClanovaKluba", "ClanoviKluba", new { })
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var pregledClanova = document.getElementById("pregledClanova");
+        pregledClanova.classList.add("active");
+        var pregledClanovaTab = document.getElementById("pregledClanovaTab");
+        pregledClanovaTab.classList.add("tab-pane");
+        pregledClanovaTab.classList.add("fade");
+        pregledClanovaTab.classList.add("in");
+        pregledClanovaTab.classList.add("active");
+        var pregledClanovaPoPojasevimaTab = document.getElementById("pregledClanovaPoPojasevimaTab");
+        pregledClanovaPoPojasevimaTab.classList.add("tab-pane");
+        pregledClanovaPoPojasevimaTab.classList.add("fade");
+        var strukturaClanovaTab = document.getElementById("strukturaClanovaTab");
+        strukturaClanovaTab.classList.add("tab-pane");
+        strukturaClanovaTab.classList.add("fade");
+
+
+    }
+    else if(@brojTaba==2){
+        var pregledClanovaPoPojasevima=document.getElementById("pregledClanovaPoPojasevima");
+        pregledClanovaPoPojasevima.classList.add("active");
+        var pregledClanovaPoPojasevimaTab = document.getElementById("pregledClanovaPoPojasevimaTab");
+        pregledClanovaPoPojasevimaTab.classList.add("tab-pane");
+        pregledClanovaPoPojasevimaTab.classList.add("fade");
+        pregledClanovaPoPojasevimaTab.classList.add("in");
+        pregledClanovaPoPojasevimaTab.classList.add("active");
+        var pregledClanovaTab = document.getElementById("pregledClanovaTab");
+        pregledClanovaTab.classList.add("tab-pane");
+        pregledClanovaTab.classList.add("fade");
+        var strukturaClanovaTab = document.getElementById("strukturaClanovaTab");
+        strukturaClanovaTab.classList.add("tab-pane");
+        strukturaClanovaTab.classList.add("fade");
+
+    }
+
+    else{
+        var strukturaClanova=document.getElementById("strukturaClanova");
+        strukturaClanova.classList.add("active");
+        var strukturaClanovaTab = document.getElementById("strukturaClanovaTab");
+        strukturaClanovaTab.classList.add("tab-pane");
+        strukturaClanovaTab.classList.add("fade");
+        strukturaClanovaTab.classList.add("in");
+        strukturaClanovaTab.classList.add("active");
+        var pregledClanovaTab = document.getElementById("pregledClanovaTab");
+        pregledClanovaTab.classList.add("tab-pane");
+        pregledClanovaTab.classList.add("fade");
+        var pregledClanovaPoPojasevimaTab = document.getElementById("pregledClanovaPoPojasevimaTab");
+        pregledClanovaPoPojasevimaTab.classList.add("tab-pane");
+        pregledClanovaPoPojasevimaTab.classList.add("fade");
+
+    }
+</script>
+
+
+
+
+

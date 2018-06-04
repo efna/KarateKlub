@@ -1,0 +1,294 @@
+﻿@{
+    ViewBag.Title = "Takmičarska knjižica";
+    ViewBag.PageTitle = "Takmičarska knjižica";
+    int takmicarId = (int)ViewData["takmicarId"];
+    int aktivnost = (int)ViewData["aktivnost"];
+    int brojTaba = (int)ViewData["tab"];
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "UpravljanjeTakmicenjimaTakmicarima", new {brojTaba=2,aktivnost=aktivnost }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz takmičara" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="podaciTakmicara">
+                    <a id="podaci" href="#podaciTakmicaraTab" data-toggle="tab">Podaci takmičara</a>
+                </li>
+                <li id="ljekarskiPregledi">
+                    <a id="pregledi" href="#ljekarskiPreglediTab" data-toggle="tab">Ljekarski pregledi</a>
+                </li>
+                <li id="rezultatiTakmicenjaPojedinacno">
+                    <a id="rezultatiPojedinacno" href="#rezultatiTakmicenjaPojedinacnoTab" data-toggle="tab">Rezultati</a>
+                </li>
+                <li id="pohvaleTakmicara">
+                    <a id="pohvale" href="#pohvaleTakmicaraTab" data-toggle="tab">Pohvale</a>
+                </li>
+                <li id="nagradeTakmicara">
+                    <a id="nagrade" href="#nagradeTakmicaraTab" data-toggle="tab">Nagrade</a>
+                </li>
+                <li id="kazneTakmicara">
+                    <a id="kazne" href="#kazneTakmicaraTab" data-toggle="tab">Kazne</a>
+                </li>
+                <li id="zabraneTakmicara">
+                    <a id="zabrane" href="#zabraneTakmicaraTab" data-toggle="tab">Zabrane</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+
+                <div id="podaciTakmicaraTab">
+
+                    @Html.Action("PodaciTakmicara", "Takmicari", new {takmicarId=takmicarId,aktivnost=aktivnost })
+                
+                </div>
+
+                <div id="ljekarskiPreglediTab">
+                 
+                    @Html.Action("Index", "LjekarskiPreglediTakmicara", new {takmicarId=takmicarId,aktivnost = aktivnost })
+           
+                </div>
+
+                <div id="rezultatiTakmicenjaPojedinacnoTab">
+
+                    @Html.Action("Index2", "RezultatiTakmicenja", new { takmicarId = takmicarId})
+
+                </div>
+                <div id="pohvaleTakmicaraTab">
+
+                    @Html.Action("Index", "PohvaleTakmicari", new { takmicarId = takmicarId,aktivnost=aktivnost })
+
+                </div>
+                <div id="nagradeTakmicaraTab">
+
+                    @Html.Action("Index", "NagradeTakmicari", new { takmicarId = takmicarId, aktivnost = aktivnost })
+
+                </div>
+                <div id="kazneTakmicaraTab">
+
+                    @Html.Action("Index", "KazneTakmicari", new { takmicarId = takmicarId, aktivnost = aktivnost })
+
+                </div>
+                <div id="zabraneTakmicaraTab">
+
+                    @Html.Action("Index", "ZabraneTakmicari", new { takmicarId = takmicarId, aktivnost = aktivnost })
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var podaciTakmicara = document.getElementById("podaciTakmicara");
+       podaciTakmicara.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       podaciTakmicaraTab.classList.add("in");
+       podaciTakmicaraTab.classList.add("active");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+
+    }
+   else if(@brojTaba==2){
+       var ljekarskiPregledi = document.getElementById("ljekarskiPregledi");
+       ljekarskiPregledi.classList.add("active");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       ljekarskiPreglediTab.classList.add("in");
+       ljekarskiPreglediTab.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+   }
+   else if(@brojTaba==3)
+   {
+       var rezultatiTakmicenjaPojedinacno = document.getElementById("rezultatiTakmicenjaPojedinacno");
+       rezultatiTakmicenjaPojedinacno.classList.add("active");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("in");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+   }
+   else if(@brojTaba==4)
+   {
+       var pohvaleTakmicara = document.getElementById("pohvaleTakmicara");
+       pohvaleTakmicara.classList.add("active");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       pohvaleTakmicaraTab.classList.add("in");
+       pohvaleTakmicaraTab.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+   }
+   else if(@brojTaba==5)
+   {
+       var nagradeTakmicara = document.getElementById("nagradeTakmicara");
+       nagradeTakmicara.classList.add("active");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       nagradeTakmicaraTab.classList.add("in");
+       nagradeTakmicaraTab.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+
+   }
+   else if(@brojTaba==6)
+   {
+       var kazneTakmicara = document.getElementById("kazneTakmicara");
+       kazneTakmicara.classList.add("active");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+       kazneTakmicaraTab.classList.add("in");
+       kazneTakmicaraTab.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+   }
+   else
+   {
+       var zabraneTakmicara = document.getElementById("zabraneTakmicara");
+       zabraneTakmicara.classList.add("active");
+       var zabraneTakmicaraTab = document.getElementById("zabraneTakmicaraTab");
+       zabraneTakmicaraTab.classList.add("tab-pane");
+       zabraneTakmicaraTab.classList.add("fade");
+       zabraneTakmicaraTab.classList.add("in");
+       zabraneTakmicaraTab.classList.add("active");
+       var podaciTakmicaraTab = document.getElementById("podaciTakmicaraTab");
+       podaciTakmicaraTab.classList.add("tab-pane");
+       podaciTakmicaraTab.classList.add("fade");
+       var ljekarskiPreglediTab = document.getElementById("ljekarskiPreglediTab");
+       ljekarskiPreglediTab.classList.add("tab-pane");
+       ljekarskiPreglediTab.classList.add("fade");
+       var rezultatiTakmicenjaPojedinacnoTab = document.getElementById("rezultatiTakmicenjaPojedinacnoTab");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("tab-pane");
+       rezultatiTakmicenjaPojedinacnoTab.classList.add("fade");
+       var pohvaleTakmicaraTab = document.getElementById("pohvaleTakmicaraTab");
+       pohvaleTakmicaraTab.classList.add("tab-pane");
+       pohvaleTakmicaraTab.classList.add("fade");
+       var nagradeTakmicaraTab = document.getElementById("nagradeTakmicaraTab");
+       nagradeTakmicaraTab.classList.add("tab-pane");
+       nagradeTakmicaraTab.classList.add("fade");
+       var kazneTakmicaraTab = document.getElementById("kazneTakmicaraTab");
+       kazneTakmicaraTab.classList.add("tab-pane");
+       kazneTakmicaraTab.classList.add("fade");
+   }
+</script>
+
+
+
+

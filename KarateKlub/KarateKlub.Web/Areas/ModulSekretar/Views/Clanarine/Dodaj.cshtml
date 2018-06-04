@@ -1,0 +1,281 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.ClanarineDodajVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Nova članarina";
+    ViewBag.Title = "Nova članarina";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiNovuClanarinu", "Clanarine", FormMethod.Post, new { style = "width:400px;", id = "formaDodajClanarinu" }))
+{
+    
+    <div id="PoravnanjeKontrola">
+
+        <div class="form-group" style="width:auto;">
+
+            <div class="form-group" style="width:auto;">
+                <label>Naziv: </label>
+                @Html.TextBoxFor(model => model.Naziv, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Naziv)
+                @Html.ValidationMessage("NazivError", new { id = "NazivError" })
+
+            </div>
+            <label>Datum početka: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumOd, new { @class = "form-control datepicker", onchange = "ValidirajDatumOd()" })
+                @Html.ValidationMessageFor(model => model.DatumOd)
+                @Html.ValidationMessage("DatumOdError", new { id = "DatumOdError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+            <label>Datum završetka: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumDo, new { @class = "form-control datepicker", onchange = "ValidirajDatumDo()" })
+                @Html.ValidationMessageFor(model => model.DatumDo)
+                @Html.ValidationMessage("DatumDoError", new { id = "DatumDoError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+
+<script type="text/javascript">
+
+        document.getElementById("Naziv").onblur = ValidirajNaziv;
+        document.getElementById("DatumOd").onblur = ValidirajDatumOd;
+        document.getElementById("DatumDo").onblur = ValidirajDatumDo;
+       
+
+
+        function Validiraj() {
+
+
+            var validna = true;
+            if (ValidirajNaziv() == false)
+                validna = false;
+            if (ValidirajDatumOd() == false)
+                validna = false;
+            if (ValidirajDatumDo() == false)
+                validna = false;
+       
+            
+
+            return validna;
+        }
+
+
+
+        function ValidirajNaziv() {
+
+            var valid = true;
+            var element = document.getElementById("Naziv");
+            var error = document.getElementById("NazivError");
+
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Naziv je obavezno polje";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajDatumOd() {
+            var valid = true;
+            var element = document.getElementById("DatumOd");
+            var error = document.getElementById("DatumOdError");
+            var datumDo = document.getElementById("DatumDo");
+            var datumDoError = document.getElementById("DatumDoError");
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Datum početka je obavezno polje";
+            }
+            else 
+                if (element.value.length < 10) {
+                    valid = false;
+                    error.innerHTML = "*Pogrešan format datuma";
+                }
+            
+            else if (element.value != "" && datumDo.value != "") {
+                var danOd = element.value.substring(0, 2);
+                var mjesecOd = element.value.substring(3, 5);
+                var godinaOd = element.value.substring(6, 20);
+                var danDo = datumDo.value.substring(0, 2);
+                var mjesecDo = datumDo.value.substring(3, 5);
+                var godinaDo = datumDo.value.substring(6, 20);
+                var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+                var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+                var dod = new Date(noviDatumOd);
+                var ddo = new Date(noviDatumDo);
+                if (ddo <= dod) {
+                    valid = false;
+                    error.innerHTML = "*Datum početka mora biti manji od datuma završetka.";
+
+                }
+
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                    valid = true;
+                }
+
+
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajDatumDo() {
+            var valid = true;
+            var element = document.getElementById("DatumDo");
+            var error = document.getElementById("DatumDoError");
+            var datumOd = document.getElementById("DatumOd");
+            var datumOdError = document.getElementById("DatumOdError");
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Datum završetka je obavezno polje";
+            }
+            else 
+                if (element.value.length < 10) {
+                    valid = false;
+                    error.innerHTML = "*Pogrešan format datuma";
+                }
+           
+            else if (element.value != "" && datumOd.value != "") {
+                var danDo = element.value.substring(0, 2);
+                var mjesecDo = element.value.substring(3, 5);
+                var godinaDo = element.value.substring(6, 20);
+                var danOd = datumOd.value.substring(0, 2);
+                var mjesecOd = datumOd.value.substring(3, 5);
+                var godinaOd = datumOd.value.substring(6, 20);
+                var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+                var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+                var dod = new Date(noviDatumOd);
+                var ddo = new Date(noviDatumDo);
+                if (ddo <= dod) {
+                    valid = false;
+                    error.innerHTML = "*Datum završetka mora biti veći od datuma početka.";
+
+                }
+
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                    valid = true;
+                }
+
+
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+
+       
+
+</script>
+
+
+
+
+
+
+
+
+

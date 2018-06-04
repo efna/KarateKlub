@@ -1,0 +1,1073 @@
+﻿@model KarateKlub.Web.Areas.ModulAdministrator.Models.KorisnickiNaloziDodajVM
+@using KarateKlub.Web.Areas.ModulAdministrator.Models
+@{
+    ViewBag.PageTitle = "Upravljanje korisnicima";
+    ViewBag.Title = "Upravljanje korisnicima";
+    bool IzIzbornika = (bool)ViewData["opcija"];
+    if (IzIzbornika == false)
+    {
+        Layout = null;
+
+      
+    }
+
+
+}
+
+@if (IzIzbornika == true)
+{
+    <style>
+        #PoravnanjeKontrola {
+        margin-left: 350px;
+        margin-top: 30px;
+        width: 500px;
+    }
+        #btnSpremi{
+            margin-left:520px;
+   
+        }
+        #btnOdustani{
+            margin-left:520px;
+        }
+    </style>
+}
+else
+{
+    <style>
+          #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+         #btnSpremi{
+            margin-left:200px;
+   
+        }
+
+    </style>
+}
+<style>
+  
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("Spremi", "KorisnickiNalozi", FormMethod.Post, new { style = "width:400px;", enctype = "multipart/form-data", id = "formaDodaj" }))
+{
+    <div id="PoravnanjeKontrola">
+        @Html.HiddenFor(model => model.isAktivnaOsoba)
+        @Html.HiddenFor(model=>model.aktivnost)
+        <div class="form-group" style="width:auto;">
+            <label>Ime: </label>
+            @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Ime)
+            @Html.ValidationMessage("ImeError", new { id = "ImeError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Prezime: </label>
+            @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Prezime)
+            @Html.ValidationMessage("PrezimeError", new { id = "PrezimeError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Ime oca: </label>
+            @Html.TextBoxFor(model => model.ImeRoditelja, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ImeRoditelja)
+            @Html.ValidationMessage("ImeRoditeljaError", new { id = "ImeRoditeljaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label for="JMBG">JMBG: </label>
+            @Html.TextBoxFor(model => model.JMBG, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.JMBG)
+            @Html.ValidationMessage("JMBGError", new { id = "JMBGError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label for="Spol">Spol: </label><br />
+
+            @Html.RadioButtonFor(model => model.Spol, "M", new { id = "SpolM" }) <label>Muško</label>
+        </div>
+        <div class="form-group" style="width:auto;">
+            @Html.RadioButtonFor(model => model.Spol, "Ž", new { id = "SpolZ" }) <label>Žensko</label>
+        </div>
+        @Html.ValidationMessageFor(model => model.Spol)
+        @Html.ValidationMessage("SpolError", new { id = "SpolError" })
+
+        <div class="form-group" style="width:auto;">
+
+    <label>Datum rođenja: </label>
+  
+        <div class="input-group date">
+            @Html.TextBoxFor(model => model.DatumRodjenja, new { @class = "form-control datepicker"})
+            @Html.ValidationMessageFor(model => model.DatumRodjenja)
+            @Html.ValidationMessage("DatumRodjenjaError", new { id = "DatumRodjenjaError" })
+            <div class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+            </div>
+        </div>  
+            
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Mjesto rođenja: </label>
+            @Html.TextBoxFor(model => model.MjestoRodjenja, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MjestoRodjenja)
+            @Html.ValidationMessage("MjestoRodjenjaError", new { id = "MjestoRodjenjaError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Kontakt telefon: </label>
+            @Html.TextBoxFor(model => model.KontaktTelefon, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.KontaktTelefon)
+            @Html.ValidationMessage("KontaktTelefonError", new { id = "KontaktTelefonError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Email: </label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email)
+            @Html.ValidationMessage("EmailError", new { id = "EmailError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Slika: </label>
+            @Html.TextBoxFor(model => model.s, "Dodaj sliku", new { @class = "form-control", type = "file", onchange = "ValidirajSliku();" })
+            @Html.ValidationMessageFor(model => model.s)
+            @Html.ValidationMessage("SlikaError", new { id = "SlikaError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Uloga: </label>
+            @Html.DropDownListFor(model => model.KorisnickaUlogaId, Model.KorisnickeUloge, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.KorisnickaUlogaId, "Odaberite korisničku ulogu iz opadajuće liste")
+            @Html.ValidationMessage("KorisnickaUlogaError", new { id = "KorisnickaUlogaError" })
+
+        </div>
+        <div id="UposlenikOpcije" style="display:none;">
+           
+            <div class="form-group" style="width:auto;">
+
+                <label>Datum zaposlenja: </label>
+
+                <div class="input-group date">
+                    @Html.TextBoxFor(model => model.DatumZaposlenja, new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.DatumZaposlenja)
+                    @Html.ValidationMessage("DatumZaposlenjaError", new { id = "DatumZaposlenjaError" })
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="TrenerOpcije" style="display:none;">
+         
+                <div class="form-group" style="width:auto;">
+                    <label>Funkcija: </label>
+                    @Html.DropDownListFor(model => model.FunkcijaTreneraId, Model.FunkcijaTrenera, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FunkcijaTreneraId, "Odaberite funkciju trenera iz opadajuće liste")
+                    @Html.ValidationMessage("FunkcijaTreneraError", new { id = "FunkcijaTreneraError" })
+
+                </div>
+
+
+           
+        </div>
+        <div id="ClanOpcije" style="display:none;">
+            <div class="form-group" style="width:auto;">
+
+                <label>Datum upisa: </label>
+
+                <div class="input-group date">
+                    @Html.TextBoxFor(model => model.DatumUpisa, new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.DatumUpisa)
+                    @Html.ValidationMessage("DatumUpisaError", new { id = "DatumUpisaError" })
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group" style="width:auto;">
+                <label>Starosna dob: </label>
+                @Html.DropDownListFor(model => model.StarosnaDobId, Model.StarosneDobi, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StarosnaDobId, "Odaberite starosnu dob iz opadajuće liste")
+                @Html.ValidationMessage("StarosnaDobError", new { id = "StarosnaDobError" })
+
+            </div>
+        </div>
+        <div id="ZajednickeOpcijeTreneraIClana" style="display:none;">
+
+            <div class="form-group" style="width:auto;">
+                <label>Zvanje: </label>
+                @Html.DropDownListFor(model => model.ZvanjeUKarateuId, Model.ZvanjaUKarateu, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ZvanjeUKarateuId, "Odaberite zvanje iz opadajuće liste")
+                @Html.ValidationMessage("ZvanjeError", new { id = "ZvanjeError" })
+
+            </div>
+        </div>
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Korisničko ime: </label>
+            @Html.TextBoxFor(model => model.KorisnickoIme, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.KorisnickoIme)
+            @Html.ValidationMessage("KorisnickoImeError", new { id = "KorisnickoImeError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Lozinka: </label>
+            @Html.TextBoxFor(model => model.Lozinka, new { @class = "form-control", type = "password" })
+            @Html.ValidationMessageFor(model => model.Lozinka)
+            @Html.ValidationMessage("LozinkaError", new { id = "LozinkaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Potvrda lozinke: </label>
+            @Html.TextBoxFor(model => model.PotvrdaLozinke, new { @class = "form-control", type = "password" })
+            @Html.ValidationMessageFor(model => model.PotvrdaLozinke)
+            @Html.ValidationMessage("PotvrdaLozinkeError", new { id = "PotvrdaLozinkeError" })
+
+        </div>
+      
+    </div>
+<div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+   </div>
+<div id="btnOdustani">
+    @if (IzIzbornika == true)
+    {
+        <br />
+    
+        <button type="submit" title="Odustani" class="btn-lg btn btn-danger" style="width:170px;" onclick="document.getElementById('Odustani').submit();"><span class="fa fa-eraser"></span> Odustani</button>
+
+    }
+    </div>
+
+
+    }
+    @using (Html.BeginForm("Index", "KorisnickiNalozi", FormMethod.Get, new { id = "Odustani" }))
+    {
+    }
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script src="~/scripts/jquery-1.12.4.intellisense.js"></script>
+    <script type="text/javascript">
+        if ($('#KorisnickaUlogaId').find('option:selected').text() == "Trener" || $('#KorisnickaUlogaId').find('option:selected').text() == "Blagajnik" ||
+                    $('#KorisnickaUlogaId').find('option:selected').text() == "Sekretar") {
+
+            if (ValidirajDatumZaposlenja() == false)
+                validna = false;
+            else
+                validna = true;
+
+        }
+        if ($('#KorisnickaUlogaId').find('option:selected').text() == "Trener" || $('#KorisnickaUlogaId').find('option:selected').text() == "Član") {
+
+            if (ValidirajZvanjeUKarateu() == false)
+                validna = false;
+            else
+                validna = true;
+
+        }
+     
+
+        if ($('#KorisnickaUlogaId').find('option:selected').text() == "Član") {
+
+            if (ValidirajDatumUpisa() == false)
+                validna = false;
+            else
+                validna = true;
+            if (ValidirajStarosnuDob() == false)
+                validna = false;
+            else
+                validna = true;
+
+        }
+        if ($('#KorisnickaUlogaId').find('option:selected').text() == "Trener") {
+
+            if (ValidirajFunkcijuTrenera() == false)
+                validna = false;
+            else
+                validna = true;
+
+        }
+        document.getElementById("Ime").onblur = ValidirajIme;
+        document.getElementById("Prezime").onblur = ValidirajPrezime;
+        document.getElementById("ImeRoditelja").onblur = ValidirajImeRoditelja;
+        document.getElementById("JMBG").onblur = ValidirajJMBG;
+        document.getElementById("DatumRodjenja").onblur = ValidirajDatumRodjenja;
+        document.getElementById("DatumRodjenja").onchange = ValidirajDatumRodjenja;
+        document.getElementById("MjestoRodjenja").onblur = ValidirajMjestoRodjenja;
+        document.getElementById("KontaktTelefon").onblur = ValidirajKontaktTelefon;
+        document.getElementById("Email").onblur = ValidirajEmail;
+        document.getElementById("FunkcijaTreneraId").onblur = ValidirajFunkcijuTrenera;
+        document.getElementById("ZvanjeUKarateuId").onblur = ValidirajZvanjeUKarateu;
+        document.getElementById("KorisnickaUlogaId").onblur = ValidirajKorisnickuUlogu;
+        document.getElementById("StarosnaDobId").onblur = ValidirajStarosnuDob;
+        document.getElementById("s").onblur = ValidirajSliku;
+        document.getElementById("DatumZaposlenja").onblur = ValidirajDatumZaposlenja;
+        document.getElementById("DatumZaposlenja").onchange = ValidirajDatumZaposlenja;
+        document.getElementById("DatumUpisa").onblur = ValidirajDatumUpisa;
+        document.getElementById("DatumUpisa").onchange = ValidirajDatumUpisa;
+        document.getElementById("KorisnickoIme").onblur = ValidirajKorisnickoIme;
+        document.getElementById("Lozinka").onblur = ValidirajLozinku;
+        document.getElementById("PotvrdaLozinke").onblur = ValidirajPotvrduLozinke;
+
+
+        function Validiraj() {
+
+
+            var validna = true;
+            if (ValidirajIme() == false)
+                validna = false;
+            if (ValidirajPrezime() == false)
+                validna = false;
+            if (ValidirajImeRoditelja() == false)
+                validna = false;
+            if (ValidirajJMBG() == false)
+                validna = false;
+            if (ValidirajSpol() == false)
+                validna = false;
+            if (ValidirajDatumRodjenja() == false)
+                validna = false;
+            if (ValidirajMjestoRodjenja() == false)
+                validna = false;
+            if (ValidirajKontaktTelefon() == false)
+                validna = false;
+            if (ValidirajSliku() == false)
+                validna = false;
+            if (ValidirajEmail() == false)
+                validna = false;
+            if (ValidirajKorisnickoIme() == false)
+                validna = false;
+            if (ValidirajLozinku() == false)
+                validna = false;
+            if (ValidirajKorisnickuUlogu() == false)
+                validna = false;
+            if (ValidirajPotvrduLozinke() == false)
+                validna = false;
+            if ($('#KorisnickaUlogaId').find('option:selected').text() == "Trener" || $('#KorisnickaUlogaId').find('option:selected').text() == "Blagajnik" ||
+                  $('#KorisnickaUlogaId').find('option:selected').text() == "Sekretar") {
+
+                if (ValidirajDatumZaposlenja() == false)
+                    validna = false;
+                else
+                    validna = true;
+
+            }
+
+            if ($('#KorisnickaUlogaId').find('option:selected').text() == "Trener" || $('#KorisnickaUlogaId').find('option:selected').text() == "Član") {
+
+                if (ValidirajZvanjeUKarateu() == false)
+                    validna = false;
+                else
+                    validna = true;
+
+            }
+           
+
+                if ($('#KorisnickaUlogaId').find('option:selected').text() == "Član") {
+
+                    if (ValidirajDatumUpisa() == false)
+                        validna = false;
+                    else
+                        validna = true;
+                    if (ValidirajStarosnuDob() == false)
+                        validna = false;
+                    else
+                        validna = true;
+
+                }
+                if ($('#KorisnickaUlogaId').find('option:selected').text() == "Trener") {
+
+                if (ValidirajFunkcijuTrenera() == false)
+                    validna = false;
+                else
+                    validna = true;
+
+            }
+            return validna;
+        }
+
+        function ValidirajIme() {
+
+            var valid = true;
+            var element = document.getElementById("Ime");
+            var error = document.getElementById("ImeError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Ime je obavezno polje";
+            }
+            else {
+                if (element.value.length < 2) {
+                    valid = false;
+                    error.innerHTML = "*Ime se sastoji od najmanje 2 slova";
+                }
+                else {
+                    var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+                    if (pravilo.test(element.value) == true) {
+                        valid = false;
+                        error.innerHTML = "*Ime se sastoji od isključivo od slova";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajPrezime() {
+
+            var valid = true;
+            var element = document.getElementById("Prezime");
+            var error = document.getElementById("PrezimeError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Prezime je obavezno polje";
+            }
+            else {
+                if (element.value.length < 2) {
+                    valid = false;
+                    error.innerHTML = "*Prezime se sastoji od najmanje 2 slova";
+                }
+                else {
+                    var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+                    if (pravilo.test(element.value) == true) {
+                        valid = false;
+                        error.innerHTML = "*Prezime se sastoji isključivo od slova";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajImeRoditelja() {
+
+            var valid = true;
+            var element = document.getElementById("ImeRoditelja");
+            var error = document.getElementById("ImeRoditeljaError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Ime roditelja je obavezno polje";
+            }
+            else {
+                if (element.value.length < 2) {
+                    valid = false;
+                    error.innerHTML = "*Ime roditelja se sastoji od najmanje 2 slova";
+                }
+                else {
+                    var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+                    if (pravilo.test(element.value) == true) {
+                        valid = false;
+                        error.innerHTML = "*Ime roditelja se sastoji isključivo od slova";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajJMBG() {
+
+            var valid = true;
+            var element = document.getElementById("JMBG");
+            var error = document.getElementById("JMBGError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*JMBG je obavezno polje";
+            }
+            else {
+                if (element.value.length != 13) {
+                    valid = false;
+                    error.innerHTML = "*JMBG se sastoji od 13 brojeva";
+                }
+                else {
+                    var pravilo = new RegExp(/[A-Za-z*_$%?#&!.,+-]/, 'gi');
+                    if (pravilo.test(element.value) == true) {
+                        valid = false;
+                        error.innerHTML = "*JMBG mora biti broj";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajKontaktTelefon() {
+
+            var valid = true;
+            var element = document.getElementById("KontaktTelefon");
+            var error = document.getElementById("KontaktTelefonError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Kontakt telefon je obavezno polje";
+            }
+            else {
+                if (element.value.length < 6) {
+                    valid = false;
+                    error.innerHTML = "*Kontakt telefon se sastoji od najmanje 6 brojeva";
+                }
+                else {
+                    var pravilo = new RegExp(/[A-Za-z*_$%?#&!.,+-]/, 'gi');
+                    if (pravilo.test(element.value) == true) {
+                        valid = false;
+                        error.innerHTML = "*Kontakt telefon može sadržavati samo brojeve";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajSpol() {
+            var error = document.getElementById("SpolError");
+            if (document.getElementById("SpolM").checked == false && document.getElementById("SpolZ").checked == false) {
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Spol je obavezno polje";
+                return false;
+            }
+            else {
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                return true;
+            }
+        }
+        function ValidirajDatumRodjenja() {
+            var valid = true;
+            var element = document.getElementById("DatumRodjenja");
+            var error = document.getElementById("DatumRodjenjaError");
+
+            if (element.value=="") {
+                valid = false;
+                error.innerHTML = "*Datum rođenja je obavezno polje";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+
+        function ValidirajMjestoRodjenja() {
+
+            var valid = true;
+            var element = document.getElementById("MjestoRodjenja");
+            var error = document.getElementById("MjestoRodjenjaError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Mjesto rođenja je obavezno polje";
+            }
+            else {
+
+                var pravilo = new RegExp(/[0-9*_$%?#&!.,+]/, 'gi');
+                if (pravilo.test(element.value) == true) {
+                    valid = false;
+                    error.innerHTML = "*Mjesto rođenja se sastoji isključivo od slova";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajEmail() {
+
+            var valid = true;
+            var element = document.getElementById("Email");
+            var error = document.getElementById("EmailError");
+
+           
+            if (element.value != "") {
+                var pravilo = new RegExp(/[A-Z0-9._%+-]+[@@][A-Z0-9.-]+\.[A-Z]{2,}/, 'gi')
+                if (pravilo.test(element.value) == false) {
+                    valid = false;
+                    error.innerHTML = "*Neispravan format email-a";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajDatumZaposlenja() {
+            var valid = true;
+
+            var element = document.getElementById("DatumZaposlenja");
+            var error = document.getElementById("DatumZaposlenjaError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Datum zaposlenja je obavezno polje";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajDatumUpisa() {
+            var valid = true;
+            var element = document.getElementById("DatumUpisa");
+            var error = document.getElementById("DatumUpisaError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Datum upisa je obavezno polje";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajZvanjeUKarateu() {
+
+            var element = document.getElementById("ZvanjeUKarateuId");
+            var error = document.getElementById("ZvanjeError");
+
+            if (element[0].selected == true) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Odaberite zvanje iz opadajuće liste";
+                return false;
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                return true;
+            }
+
+        }
+        function ValidirajFunkcijuTrenera() {
+
+            var element = document.getElementById("FunkcijaTreneraId");
+            var error = document.getElementById("FunkcijaTreneraError");
+
+            if (element[0].selected == true) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Odaberite funkciju iz opadajuće liste";
+
+                return false;
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                return true;
+            }
+
+        }
+        function ValidirajKorisnickuUlogu() {
+
+            var element = document.getElementById("KorisnickaUlogaId");
+            var error = document.getElementById("KorisnickaUlogaError");
+
+            if (element[0].selected == true) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Odaberite korisničku ulogu iz opadajuće liste";
+
+                return false;
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                return true;
+            }
+
+        }
+        function ValidirajStarosnuDob() {
+
+            var element = document.getElementById("StarosnaDobId");
+            var error = document.getElementById("StarosnaDobError");
+
+            if (element[0].selected == true) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Odaberite starosnu dob iz opadajuće liste";
+
+                return false;
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                return true;
+            }
+
+        }
+        function ValidirajSliku() {
+            var element = document.getElementById("s");
+            var error = document.getElementById("SlikaError");
+
+
+            //var dozvoljeneEkstenzije = new Array("jpg", "png", "gif", "jpeg", "bmp");
+            var dozvoljeneEkstenzije = new Array("psd", "xcf", "al", "cdr", "tif","tiff","bmp","jpg","jpeg","gif","png","eps","raw","cr2","nef","urf","sr2","dip","jpe","jfif");
+            var ekstenzijaUcitaneSlike = element.value.split('.').pop().toLowerCase(); 
+            if (element.value.length != 0) {
+                for (var i = 0; i <= dozvoljeneEkstenzije.length; i++) {
+                    if (dozvoljeneEkstenzije[i] == ekstenzijaUcitaneSlike) {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                        return true;
+                    }
+                  
+                }
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+                error.innerHTML = "*Odabrani file nije dozvoljenog formata";
+                return false;
+
+            }
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+
+
+        }
+
+        function ValidirajKorisnickoIme() {
+
+            var valid = true;
+            var element = document.getElementById("KorisnickoIme");
+            var error = document.getElementById("KorisnickoImeError");
+            var odgovor = false;
+            var username = $("#KorisnickoIme").val();
+            $.ajax({
+                type: "POST",
+                url: "/KorisnickiNalozi/CheckUsername",
+                data: '{username: "' + username + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var element = document.getElementById("KorisnickoIme");
+                    var error = document.getElementById("KorisnickoImeError");
+                    if (response == false) {
+                        odgovor = false;
+
+                    }
+                    else
+                        odgovor = true;
+
+                    if (odgovor == false) {
+                        valid = false;
+                        error.innerHTML = "*Ime je zauzeto";
+
+                    }
+                    else {
+
+                        if (element.value == "") {
+                            valid = false;
+                            error.innerHTML = "*Korisničko ime je obavezno polje";
+                        }
+                        else {
+                            if (element.value.length < 3) {
+                                valid = false;
+                                error.innerHTML = "*Korisničko ime se sastoji od najmanje 3 slova";
+                            }
+                            else {
+                                var pravilo = new RegExp(/[*$%?#&!,+-]/, 'gi');
+                                if (pravilo.test(element.value) == true) {
+                                    valid = false;
+                                    error.innerHTML = "*Korisničko ime smije sadržavati samo '.' ili '_' od specijalnih znakova";
+                                }
+                                else {
+                                    element.classList.remove("input-validation-error");
+                                    error.classList.remove("field-validation-error");
+                                    error.classList.add("field-validation-valid");
+                                    error.innerHTML = "";
+                                }
+                            }
+                        }
+                    }
+                    if (valid == false) {
+                        element.classList.add("input-validation-error");
+                        error.classList.remove("field-validation-valid");
+                        error.classList.add("field-validation-error");
+                    }
+                    return valid;
+
+                }
+
+            });
+
+
+
+        }
+        function ValidirajLozinku() {
+
+            var valid = true;
+            var element = document.getElementById("Lozinka");
+            var error = document.getElementById("LozinkaError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Lozinka je obavezno polje";
+            }
+            else {
+                if (element.value.length < 6) {
+                    valid = false;
+                    error.innerHTML = "*Lozinka moramo imati najmanje 6 karaktera";
+                }
+                else {
+                    var pravilo1 = new RegExp(/[a-zA-Z]/, 'gi');
+                    var pravilo2 = new RegExp(/[0-9]/, 'gi');
+                    var pravilo3 = new RegExp(/[$#%&!?*,._+-]/, 'gi');
+
+                    if (pravilo1.test(element.value) == false || pravilo2.test(element.value) == false
+                        || pravilo3.test(element.value) == false) {
+                        valid = false;
+                        error.innerHTML = "*Lozinka mora biti kombinacija brojeva, slova i specijalnih znakova";
+                    }
+                    else {
+                        element.classList.remove("input-validation-error");
+                        error.classList.remove("field-validation-error");
+                        error.classList.add("field-validation-valid");
+                        error.innerHTML = "";
+                    }
+                }
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajPotvrduLozinke() {
+
+            var valid = true;
+            var element = document.getElementById("PotvrdaLozinke");
+            var lozinka = document.getElementById("Lozinka");
+            var error = document.getElementById("PotvrdaLozinkeError");
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Potvrda lozinke je obavezno polje";
+            }
+            else {
+                if (lozinka.value != element.value) {
+                    valid = false;
+                    error.innerHTML = "*Potvrda lozinke se ne slaže sa poljem lozinka";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+            }
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+    </script>
+
+    <script type="text/javascript">
+        $("#KorisnickaUlogaId").change(function () {
+            if ($('#KorisnickaUlogaId :selected').val() == 2 || $('#KorisnickaUlogaId :selected').val() == 4 || $('#KorisnickaUlogaId :selected').val() == 3) {
+                $("#UposlenikOpcije").fadeIn();
+                $('#UposlenikOpcije').show(1000);
+              
+
+            }
+            else {
+                $("#UposlenikOpcije").fadeOut();
+                $('#UposlenikOpcije').hide(1000);
+
+            }
+            if ($('#KorisnickaUlogaId :selected').val() == 3 || $('#KorisnickaUlogaId :selected').val() == 5) {
+                $("#ZajednickeOpcijeTreneraIClana").fadeIn();
+                $('#ZajednickeOpcijeTreneraIClana').show(1000);
+
+            }
+            else {
+                $("#ZajednickeOpcijeTreneraIClana").fadeOut();
+                $("#ZajednickeOpcijeTreneraIClana").hide();
+
+            }
+            if ($('#KorisnickaUlogaId :selected').val() == 3) {
+
+                $("#TrenerOpcije").fadeIn();
+                $('#TrenerOpcije').show(1000);
+
+            }
+            else {
+
+
+                $("#TrenerOpcije").fadeOut();
+                $("#TrenerOpcije").hide();
+
+            }
+
+            if ($('#KorisnickaUlogaId :selected').val() == 5) {
+                $("#ClanOpcije").fadeIn();
+                $('#ClanOpcije').show(1000);
+            }
+            else {
+
+                $("#ClanOpcije").fadeOut();
+                $('#ClanOpcije').hide(1000);
+            }
+        })
+    </script>
+
+
+
+
+

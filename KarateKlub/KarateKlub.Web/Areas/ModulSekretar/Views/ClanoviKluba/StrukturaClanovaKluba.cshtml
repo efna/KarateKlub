@@ -1,0 +1,271 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.ClanoviKlubaStrukturaClanovaKlubaVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.PageTitle = "Struktura članova";
+    ViewBag.Title = "Struktura članova";
+    Layout = null;
+    
+}
+
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .poravnanje2 {
+        width: 200px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaStrukturaClanova">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th class="col-xs-1" style="text-align:center;">Grupe</th>
+                                        <th class="col-xs-1" style="text-align:center;">Djeca (M)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Djeca (Ž)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Kadeti (M)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Kadeti (Ž)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Juniori (M)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Juniori (Ž)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Seniori (M)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Seniori (Ž)</th>
+                                        <th class="col-xs-1" style="text-align:center;">Ukupno</th>
+
+                                    </tr>
+                       
+                                </thead>
+                                <tbody>
+                                    <tr>
+
+                                        <td style="text-align:left;">Početnici</td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.pocetniciSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojPocetnika </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="col-xs-1" style="text-align:left;">Žuti pojas</td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zutiPojasSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojZutiPojas </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">Oranž pojas</td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.oranzPojasSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojOranzPojas </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">Zeleni pojas</td>
+
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.zeleniPojasSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojZeleniPojas </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">Plavi pojas</td>
+
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.plaviPojasSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojPlaviPojas </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">Smeđi pojas</td>
+
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.smedjiPojasSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojSmedjiPojas </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;">Majstori karatea</td>
+
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasDjecaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasDjecaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasKadetiM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasKadetiŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasJunioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasSenioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasSenioriŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojCrniPojas </td>
+
+                                    </tr>               
+                                    <tr>
+                                        <td style="text-align:left;">Ukupno:</td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojDjeceM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojDjeceŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojKadetaM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojKadetaŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.crniPojasJunioriM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojJunioraŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojSenioraM </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojSenioraŽ </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojClanova </td>
+
+                                    </tr>             
+                                       
+
+                                    </tbody>
+                            </table>
+                            <br />
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaStrukturaClanova2">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th></th>
+                                        <th class="col-xs-1" style="text-align:center;">Djeca</th>
+                                        <th class="col-xs-1" style="text-align:center;">Kadeti</th>
+                                        <th class="col-xs-1" style="text-align:center;">Juniori</th>
+                                        <th class="col-xs-1" style="text-align:center;">Seniori</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="col-xs-1" style="text-align:center;">Ukupno: </td> 
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojDjece </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojKadeta </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojJuniora </td>
+                                        <td class="col-xs-1" style="text-align:center;">@Model.ukupanBrojSeniora </td>
+
+                                    </tr>
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+@*<script>
+    $(function () {
+        $('#tabelaStrukturaClanova').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4],
+                'width': '20%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>*@
+
+
+
+
+
+
+

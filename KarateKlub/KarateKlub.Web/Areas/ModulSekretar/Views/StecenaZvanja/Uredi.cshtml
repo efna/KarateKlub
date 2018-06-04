@@ -1,0 +1,277 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.StecenaZvanjaUrediVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Uređivanje stečenog zvanja";
+    ViewBag.Title = "Uređivanje stečenog zvanja";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiIzmjenuStecenogZvanja", "StecenaZvanja", FormMethod.Post, new { style = "width:400px;", id = "formaUrediStecenoZvanje" }))
+{
+    @Html.HiddenFor(model=>model.Id)
+    <div id="PoravnanjeKontrola">
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Osoba: </label>
+            @Html.DropDownListFor(model => model.OsobaId, Model.Osobe, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.OsobaId, "Odaberite osobu iz opadajuće liste")
+            @Html.ValidationMessage("OsobaIdError", new { id = "OsobaIdError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Stečeno zvanje: </label>
+            @Html.DropDownListFor(model => model.ZvanjeUKarateuId, Model.ZvanjaUKarateu, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ZvanjeUKarateuId, "Odaberite zvanje iz opadajuće liste")
+            @Html.ValidationMessage("ZvanjeUKarateuIdError", new { id = "ZvanjeUKarateuIdError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumSticanja, new { @class = "form-control datepicker", onchange = "ValidirajDatumSticanja()" })
+                @Html.ValidationMessageFor(model => model.DatumSticanja)
+                @Html.ValidationMessage("DatumSticanjaError", new { id = "DatumSticanjaError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Mjesto: </label>
+            @Html.TextBoxFor(model => model.Mjesto, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Mjesto)
+            @Html.ValidationMessage("MjestoError", new { id = "MjestoError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Organizator polaganja: </label>
+            @Html.TextBoxFor(model => model.Organizator, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Organizator)
+            @Html.ValidationMessage("OrganizatorError", new { id = "OrganizatorError" })
+
+        </div>
+
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+<script type="text/javascript">
+
+
+    document.getElementById("DatumSticanja").onblur = ValidirajDatumSticanja;
+    document.getElementById("OsobaId").onblur = ValidirajOsobu;
+    document.getElementById("ZvanjeUKarateuId").onblur = ValidirajZvanje;
+    document.getElementById("Mjesto").onblur = ValidirajMjestoPolaganja;
+    document.getElementById("Organizator").onblur = ValidirajOrganizatoraPolaganja;
+
+
+
+    function Validiraj() {
+
+
+        var validna = true;
+        if (ValidirajDatumSticanja() == false)
+            validna = false;
+        if (ValidirajMjestoPolaganja() == false)
+            validna = false;
+        if (ValidirajOrganizatoraPolaganja() == false)
+            validna = false;
+        if (ValidirajOsobu() == false)
+            validna = false;
+        if (ValidirajZvanje() == false)
+            validna = false;
+        return validna;
+    }
+
+
+
+
+    function ValidirajDatumSticanja() {
+        var valid = true;
+        var element = document.getElementById("DatumSticanja");
+        var error = document.getElementById("DatumSticanjaError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum je obavezno polje";
+        }
+        else {
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajMjestoPolaganja() {
+
+        var valid = true;
+        var element = document.getElementById("Mjesto");
+        var error = document.getElementById("MjestoError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Mjesto polaganja je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajOrganizatoraPolaganja() {
+
+        var valid = true;
+        var element = document.getElementById("Organizator");
+        var error = document.getElementById("OrganizatorError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Organizator polaganja je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajOsobu() {
+
+        var element = document.getElementById("OsobaId");
+        var error = document.getElementById("OsobaIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite osobu iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+
+    }
+    function ValidirajZvanje() {
+
+        var element = document.getElementById("ZvanjeUKarateuId");
+        var error = document.getElementById("ZvanjeUKarateuIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite zvanje iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+
+    }
+</script>
+
+
+
+
+
+
+

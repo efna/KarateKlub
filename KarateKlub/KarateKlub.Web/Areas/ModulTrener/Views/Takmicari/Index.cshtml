@@ -1,0 +1,317 @@
+﻿@model KarateKlub.Web.Areas.ModulTrener.Models.TakmicariIndexVM
+@using KarateKlub.Web.Areas.ModulTrener.Models
+
+@{
+    ViewBag.PageTitle = "Takmičari";
+    ViewBag.Title = "Takmičari";
+    Layout = null;
+    int aktivnost = (int)ViewData["aktivnost"];
+
+}
+
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .poravnanje2 {
+        width: 200px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+<br />
+<br />
+<div style="margin-left:15px;width:260px;">
+    @using (Html.BeginForm("GoToUpravljanjeTakmicenjimaTakmicarima", "Takmicari", FormMethod.Get, new { id = "Filter" }))
+    {
+        @Html.DropDownListFor(model => model.aktivnost, Model.Aktivnost, new { @class = "form-control", onchange = "document.getElementById('Filter').submit()" })
+
+    }
+</div>
+
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaTakmicari">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Takmičar</th>
+                                        <th>JMBG</th>
+                                        <th>Spol</th>
+                                        <th>Uzrast</th>
+                                        <th>Registarski broj</th>
+                                        <th>Obraloženje</th>
+                                        <th class="col-xs-1" style="text-align:center;">Aktivnost</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (TakmicarPodaci x in Model.listaTakmicara)
+                                    {
+
+                                        <tr id="rowTakmicarId_@x.Id">
+                                            <td>@x.Takmicar</td>
+                                            <td>@x.JMBG</td>
+                                            <td>@x.Spol</td>
+                                            <td>@x.StarosnaDob</td>
+                                         
+                                            <td>@x.RegistarskiBroj</td>
+                                            <td>
+
+                                                @if (x.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za takmičara.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+                                            <td class="col-xs-1" align="center">
+                                                @if (@x.isAktivanTakmicar == true)
+                                                {
+                                                    @Html.CheckBox("Aktivann", true, new { disabled = "disabled" })
+
+                                                }
+                                                else
+                                                {
+                                                    @Html.CheckBox("Aktivann", false, new { disabled = "disabled" })
+                                                }
+                                            </td>
+
+                                            <td class="col-xs-1" align="center">
+                                                <div id="akcija" style="font-family:Arial;font-size:16px; font-weight:500;">
+                                                  
+                                                    @using (Html.BeginForm("Index", "UpravljanjeTakmicarskomKnjizicom", new { takmicarId =x.Id, aktivnost = aktivnost,brojTaba=1 }, FormMethod.Post, new { @class = "poravnanje" }))
+                                                    {
+                                                        <button type="submit" title="Takmičarska knjižica" class="btn-lg btn btn-primary poravnanje"><span class="fa fa-address-card-o" aria-hidden="true"></span> </button>
+
+                                                    }
+                                                    @using (Ajax.BeginForm("Uredi", "Takmicari", new { takmicarId = x.Id,aktivnost=aktivnost}, new AjaxOptions { UpdateTargetId = "formaUrediTakmicara" }, new { @class = "poravnanje" }))
+                                                    {
+
+                                                        <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediTakmicara" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                    }
+
+                                                    <button class="btn-lg btn btn-danger poravnanje" title="Obriši" onclick="PotvrdiBrisanjeTakmicara(@x.Id)"><i class="fa fa-trash"></i> </button>
+
+
+                                                    <input type="hidden" id="sakrijTakmicarId" />
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+
+                    <div style="text-align:center;">
+                        @using (Ajax.BeginForm("Dodaj", "Takmicari",new {aktivnost=Model.aktivnost }, new AjaxOptions { UpdateTargetId = "formaDodajTakmicara" }, new { @class = "poravnanje2" }))
+                        {
+                            
+                            <button type="submit" class="btn-lg btn btn-primary poravnanje2" title="Dodaj takmičara" data-toggle="modal" data-target="#modalDodajTakmicara" data-backdrop="static" data-keyboard="false"><span class="fa fa-user-plus" aria-hidden="true"></span>Dodaj takmičara</button>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+    $(function () {
+        $('#tabelaTakmicari').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [5,6,7],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4, 5, 6,7],
+                'width': '1%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+<div id="modalDodajTakmicara" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Novi takmičar</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodajTakmicara">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalUrediTakmicara" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka takmičara</h4>
+            </div>
+
+            <div class="modal-body" id="formaUrediTakmicara">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalPorukaZaBrisanjeTakmicara">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="color:white;">Obriši takmičara</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <h4>Da li ste sigurni da želite obrisati takmičara? </h4>
+
+                <div style="text-align:center;display:none" id="divUcitavanje">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" width="150" />
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a href="#" class="btn btn-primary" data-dismiss="modal" title="NE">NE</a>
+                <a href="#" class="btn btn-danger" onclick="ObrisiTakmicara()" title="DA">DA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#modalDodajTakmicara').on('hidden.bs.modal', function () { $('#formaDodajTakmicara').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modalUrediTakmicara').on('hidden.bs.modal', function () { $('#formaUrediTakmicara').empty(); });
+    });
+</script>
+<script>
+    var PotvrdiBrisanjeTakmicara = function (Id) {
+
+        $("#sakrijTakmicarId").val(Id);
+        $("#modalPorukaZaBrisanjeTakmicara").modal('show');
+
+    }
+
+    var ObrisiTakmicara = function () {
+
+        $("#divUcitavanje").show();
+
+        var takmicarId = $("#sakrijTakmicarId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/ModulTrener/Takmicari/Obrisi",
+            data: { takmicarId: takmicarId },
+            success: function (result) {
+                $("#divUcitavanje").hide();
+                $("#modalPorukaZaBrisanjeTakmicara").modal("hide");
+                $("#rowTakmicarId_" + takmicarId).remove();
+
+            }
+
+        })
+
+    }
+</script>
+

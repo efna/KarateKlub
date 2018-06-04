@@ -1,0 +1,366 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.KazneTakmicariDodajVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Nova kazna";
+    ViewBag.Title = "Nova kazna";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiNovuKaznu", "KazneTakmicari", FormMethod.Post, new { style = "width:400px;", id = "formaDodajKaznu" }))
+{
+    @Html.HiddenFor(Model => Model.aktivnost)
+    @Html.HiddenFor(Model => Model.TakmicarId)
+
+    <div id="PoravnanjeKontrola">
+
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum sticanja: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumSticanja, new { @class = "form-control datepicker", onchange = "ValidirajDatumSticanja()" })
+                @Html.ValidationMessageFor(model => model.DatumSticanja)
+                @Html.ValidationMessage("DatumSticanjaError", new { id = "DatumSticanjaError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum isteka: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumIsteka, new { @class = "form-control datepicker", onchange = "ValidirajDatumIsteka()" })
+                @Html.ValidationMessageFor(model => model.DatumIsteka)
+                @Html.ValidationMessage("DatumIstekaError", new { id = "DatumIstekaError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Mjesto dodjele: </label>
+            @Html.TextBoxFor(model => model.MjestoSticanja, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MjestoSticanja)
+            @Html.ValidationMessage("MjestoSticanjaError", new { id = "MjestoSticanjaError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Dodjeljeno od: </label>
+            @Html.TextBoxFor(model => model.DodjeljenoOd, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DodjeljenoOd)
+            @Html.ValidationMessage("DodjeljenoOdError", new { id = "DodjeljenoOdError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Razlog: </label>
+            @Html.TextBoxFor(model => model.DodjeljenoZbog, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DodjeljenoZbog)
+            @Html.ValidationMessage("DodjeljenoZbogError", new { id = "DodjeljenoZbogError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Obrazloženje: </label>
+            @Html.TextAreaFor(model => model.Obrazlozenje, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.Obrazlozenje)
+            @Html.ValidationMessage("ObrazlozenjeError", new { id = "ObrazlozenjeError" })
+
+        </div>
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+
+    <script type="text/javascript">
+
+
+        document.getElementById("DatumSticanja").onblur = ValidirajDatumSticanja;
+        document.getElementById("DatumIsteka").onblur = ValidirajDatumIsteka;
+        document.getElementById("MjestoSticanja").onblur = ValidirajMjestoDodjele;
+        document.getElementById("DodjeljenoOd").onblur = ValidirajDodjeljenoOd;
+        document.getElementById("DodjeljenoZbog").onblur = ValidirajDodjeljenoZbog;
+
+
+
+        function Validiraj() {
+
+
+            var validna = true;
+            if (ValidirajDatumSticanja() == false)
+                validna = false;
+            if (ValidirajDatumIsteka() == false)
+                validna = false;
+            if (ValidirajMjestoDodjele() == false)
+                validna = false;
+            if (ValidirajDodjeljenoOd() == false)
+                validna = false;
+            if (ValidirajDodjeljenoZbog() == false)
+                validna = false;
+
+            return validna;
+        }
+
+
+
+
+        function ValidirajDatumSticanja() {
+            var valid = true;
+            var element = document.getElementById("DatumSticanja");
+            var error = document.getElementById("DatumSticanjaError");
+            var datumDo = document.getElementById("DatumIsteka");
+            var datumDoError = document.getElementById("DatumIstekaError");
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Datum sticanja kazne je obavezno polje";
+            }
+            else 
+                if (element.value.length < 10) {
+                    valid = false;
+                    error.innerHTML = "*Pogrešan format datuma";
+                }
+             
+            else if (element.value != "" && datumDo.value != "") {
+                var danOd = element.value.substring(0, 2);
+                var mjesecOd = element.value.substring(3, 5);
+                var godinaOd = element.value.substring(6, 20);
+                var danDo = datumDo.value.substring(0, 2);
+                var mjesecDo = datumDo.value.substring(3, 5);
+                var godinaDo = datumDo.value.substring(6, 20);
+                var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+                var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+                var dod = new Date(noviDatumOd);
+                var ddo = new Date(noviDatumDo);
+                if (ddo < dod) {
+                    valid = false;
+                    error.innerHTML = "*Datum sticanja kazne mora biti manji ili jednak datumu isteka kazne.";
+
+                }
+
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                    valid = true;
+                }
+
+
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajDatumIsteka() {
+            var valid = true;
+            var element = document.getElementById("DatumIsteka");
+            var error = document.getElementById("DatumIstekaError");
+            var datumOd = document.getElementById("DatumSticanja");
+            var datumOdError = document.getElementById("DatumSticanjaError");
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Datum isteka kazne je obavezno polje";
+            }
+            else 
+                if (element.value.length < 10) {
+                    valid = false;
+                    error.innerHTML = "*Pogrešan format datuma";
+                }
+              
+        
+            else if (element.value != "" && datumOd.value != "") {
+                var danDo = element.value.substring(0, 2);
+                var mjesecDo = element.value.substring(3, 5);
+                var godinaDo = element.value.substring(6, 20);
+                var danOd = datumOd.value.substring(0, 2);
+                var mjesecOd = datumOd.value.substring(3, 5);
+                var godinaOd = datumOd.value.substring(6, 20);
+                var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+                var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+                var dod = new Date(noviDatumOd);
+                var ddo = new Date(noviDatumDo);
+                if (ddo < dod) {
+                    valid = false;
+                    error.innerHTML = "*Datum isteka kazne mora biti veći ili jednak datumu sticanja kazne.";
+
+                }
+
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                    valid = true;
+                }
+
+
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajMjestoDodjele() {
+
+            var valid = true;
+            var element = document.getElementById("MjestoSticanja");
+            var error = document.getElementById("MjestoSticanjaError");
+
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Mjesto sticanja kazne je obavezno polje";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+        function ValidirajDodjeljenoOd() {
+
+            var valid = true;
+            var element = document.getElementById("DodjeljenoOd");
+            var error = document.getElementById("DodjeljenoOdError");
+
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Obavezno je unijeti ko je dodijelio kaznu takmičaru.";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+
+        function ValidirajDodjeljenoZbog() {
+
+            var valid = true;
+            var element = document.getElementById("DodjeljenoZbog");
+            var error = document.getElementById("DodjeljenoZbogError");
+
+
+            if (element.value == "") {
+                valid = false;
+                error.innerHTML = "*Razlog sticanja kazne je obavezno polje.";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+
+            if (valid == false) {
+                element.classList.add("input-validation-error");
+                error.classList.remove("field-validation-valid");
+                error.classList.add("field-validation-error");
+            }
+            return valid;
+        }
+
+    </script>
+
+
+
+
+
+
+

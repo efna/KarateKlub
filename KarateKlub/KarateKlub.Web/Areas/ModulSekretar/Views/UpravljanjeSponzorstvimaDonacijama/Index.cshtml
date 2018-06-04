@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Sponzorstva i donacije";
+    ViewBag.PageTitle = "Sponzorstva i donacije";
+    int brojTaba = (int)ViewData["tab"];
+    int aktivnost = (int)ViewData["aktivnost"];
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="sponzori">
+                    <a id="sponzoriKluba" href="#sponzoriTab" data-toggle="tab">Sponzori</a>
+                </li>
+                <li id="donatori">
+                    <a id="donatoriKluba" href="#donatoriTab" data-toggle="tab">Donatori</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="sponzoriTab">
+
+                    @Html.Action("Index", "Sponzori", new { aktivnost = aktivnost })
+
+                </div>
+
+                <div id="donatoriTab">
+
+                    @Html.Action("Index", "Donatori", new { })
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var sponzori = document.getElementById("sponzori");
+       sponzori.classList.add("active");
+       var sponzoriTab = document.getElementById("sponzoriTab");
+       sponzoriTab.classList.add("tab-pane");
+       sponzoriTab.classList.add("fade");
+       sponzoriTab.classList.add("in");
+       sponzoriTab.classList.add("active");
+       var donatoriTab = document.getElementById("donatoriTab");
+       donatoriTab.classList.add("tab-pane");
+       donatoriTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var donatori = document.getElementById("donatori");
+       donatori.classList.add("active");
+       var donatoriTab = document.getElementById("donatoriTab");
+       donatoriTab.classList.add("tab-pane");
+       donatoriTab.classList.add("fade");
+       donatoriTab.classList.add("in");
+       donatoriTab.classList.add("active");
+       var sponzoriTab = document.getElementById("sponzoriTab");
+       sponzoriTab.classList.add("tab-pane");
+       sponzoriTab.classList.add("fade");
+
+   }
+
+</script>
+
+

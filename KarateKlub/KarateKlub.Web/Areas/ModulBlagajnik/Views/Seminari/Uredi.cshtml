@@ -1,0 +1,428 @@
+﻿@model KarateKlub.Web.Areas.ModulBlagajnik.Models.SeminariUrediVM
+@using KarateKlub.Web.Areas.ModulBlagajnik.Models
+@{
+    ViewBag.PageTitle = "Uređivanje seminara";
+    ViewBag.Title = "Uređivanje seminara";
+    Layout = null;
+}
+
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiIzmjenuSeminara", "Seminari", FormMethod.Post, new { style = "width:400px;", id = "formaUrediSeminar" }))
+{
+    @Html.HiddenFor(Model => Model.Id)
+    <div id="Poravnanje">
+
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Naziv seminara: </label>
+            @Html.TextBoxFor(model => model.NazivSeminara, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.NazivSeminara)
+            @Html.ValidationMessage("NazivSeminaraError", new { id = "NazivSeminaraError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Mjesto održavanja: </label>
+            @Html.TextBoxFor(model => model.MjestoOdrzavanjaSeminara, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MjestoOdrzavanjaSeminara)
+            @Html.ValidationMessage("MjestoOdrzavanjaSeminaraError", new { id = "MjestoOdrzavanjaSeminaraError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Organizator: </label>
+            @Html.TextBoxFor(model => model.OrganizatorSeminara, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.OrganizatorSeminara)
+            @Html.ValidationMessage("OrganizatorSeminaraError", new { id = "OrganizatorSeminaraError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum početka: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumOdrzavanjaSeminaraOd, new { @class = "form-control datepicker", onchange = "ValidirajDatumOdrzavanjaOd()" })
+                @Html.ValidationMessageFor(model => model.DatumOdrzavanjaSeminaraOd)
+                @Html.ValidationMessage("DatumOdrzavanjaSeminaraOdError", new { id = "DatumOdrzavanjaSeminaraOdError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum završetka: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumOdrzavanjaSeminaraDo, new { @class = "form-control datepicker", onchange = "ValidirajDatumOdrzavanjaDo()" })
+                @Html.ValidationMessageFor(model => model.DatumOdrzavanjaSeminaraDo)
+                @Html.ValidationMessage("DatumOdrzavanjaSeminaraDoError", new { id = "DatumOdrzavanjaSeminaraDoError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Učesnici: </label>
+            @Html.DropDownListFor(model => model.ucesniciId, Model.ucesnici, new { @class = "form-control select2", @multiple = "multiple", @id = "listaUcesnika", onchange = "ValidirajListuUcesnika()" })
+            @Html.ValidationMessageFor(model => model.ucesniciId, "Odaberite učesnika seminara iz opadajuće liste")
+            @Html.ValidationMessage("ucesniciIdError", new { id = "ucesniciIdError" })
+        </div>
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Obrazloženje: </label>
+            @Html.TextAreaFor(model => model.Obrazlozenje, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.Obrazlozenje)
+            @Html.ValidationMessage("ObrazlozenjeUplateError", new { id = "ObrazlozenjeUplateError" })
+
+        </div>
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+
+}
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+
+</script>
+<script>
+    $(function () {
+
+        $('#listaUcesnika option:contains("-Odaberite učesnike-")').attr("disabled", "disabled");
+        $(".select2").select2({
+            closeOnSelect: false,
+            language: {
+                noResults: function () {
+                    return "Nema pronađenih rezultata";
+                },
+                errorLoading: function () {
+                    return 'Preuzimanje nije uspjelo.';
+                },
+
+                loadingMore: function () {
+                    return 'Učitavanje rezultata…';
+                },
+                searching: function () {
+                    return 'Pretraga…';
+                }
+            }
+
+
+        });
+        var selectedValues = @Html.Raw(Json.Encode(Model.ucesniciId));
+
+        $('#listaUcesnika').val(selectedValues);
+        $('#listaUcesnika').trigger('change');
+    })
+
+</script>
+<script type="text/javascript">
+
+    document.getElementById("NazivSeminara").onblur = ValidirajNazivSeminara;
+    document.getElementById("MjestoOdrzavanjaSeminara").onblur = ValidirajMjestoOdrzavanja;
+    document.getElementById("OrganizatorSeminara").onblur = ValidirajOrganizatoraSeminara;
+    document.getElementById("DatumOdrzavanjaSeminaraOd").onblur = ValidirajDatumOdrzavanjaOd;
+    document.getElementById("DatumOdrzavanjaSeminaraDo").onblur = ValidirajDatumOdrzavanjaDo;
+
+
+
+
+    function Validiraj() {
+        var valid = true;
+        if (ValidirajNazivSeminara() == false)
+            valid = false;
+        if (ValidirajMjestoOdrzavanja() == false)
+            valid = false;
+        if (ValidirajOrganizatoraSeminara() == false)
+            valid = false;
+        if (ValidirajDatumOdrzavanjaOd() == false)
+            valid = false;
+        if (ValidirajDatumOdrzavanjaDo() == false)
+            valid = false;
+        if (ValidirajListuUcesnika() == false)
+            valid = false;
+
+        return valid;
+
+    }
+
+    function ValidirajNazivSeminara() {
+
+        var valid = true;
+        var element = document.getElementById("NazivSeminara");
+        var error = document.getElementById("NazivSeminaraError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Naziv seminara je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajMjestoOdrzavanja() {
+
+        var valid = true;
+        var element = document.getElementById("MjestoOdrzavanjaSeminara");
+        var error = document.getElementById("MjestoOdrzavanjaSeminaraError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Mjesto održavanja je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajOrganizatoraSeminara() {
+
+        var valid = true;
+        var element = document.getElementById("OrganizatorSeminara");
+        var error = document.getElementById("OrganizatorSeminaraError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Organizator seminara je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+    function ValidirajListuUcesnika() {
+
+        var element = document.getElementById("listaUcesnika");
+        var error = document.getElementById("ucesniciIdError");
+        if ($("#listaUcesnika").val() == "") {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite učesnike iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+
+
+    }
+    function ValidirajDatumOdrzavanjaOd() {
+        var valid = true;
+        var element = document.getElementById("DatumOdrzavanjaSeminaraOd");
+        var error = document.getElementById("DatumOdrzavanjaSeminaraOdError");
+        var datumDo = document.getElementById("DatumOdrzavanjaSeminaraDo");
+        var datumDoError = document.getElementById("DatumOdrzavanjaSeminaraDoError");
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum početka seminara je obavezno polje";
+        }
+        else 
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+          
+        else if (element.value != "" && datumDo.value != "") {
+            var danOd =element.value.substring(0,2);
+            var mjesecOd=element.value.substring(3,5);
+            var godinaOd=element.value.substring(6,20);
+            var danDo=datumDo.value.substring(0,2);
+            var mjesecDo=datumDo.value.substring(3,5);
+            var godinaDo = datumDo.value.substring(6, 20);
+            var noviDatumOd = mjesecOd+"/"+danOd+"/"+godinaOd;
+            var noviDatumDo = mjesecDo +"/"+danDo+"/"+godinaDo;
+
+            var dod =new Date(noviDatumOd);
+            var ddo =new Date(noviDatumDo);
+            if (ddo<dod) {
+                valid = false;
+                error.innerHTML = "*Datum početka seminara mora biti manji od datuma završetka seminara.";
+
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+
+
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajDatumOdrzavanjaDo() {
+        var valid = true;
+        var element = document.getElementById("DatumOdrzavanjaSeminaraDo");
+        var error = document.getElementById("DatumOdrzavanjaSeminaraDoError");
+        var datumOd = document.getElementById("DatumOdrzavanjaSeminaraOd");
+        var datumOdError = document.getElementById("DatumOdrzavanjaSeminaraOdError");
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum završetka seminara je obavezno polje";
+        }
+        else 
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+           
+        else if (element.value != "" && datumOd.value != "") {
+            var danDo = element.value.substring(0, 2);
+            var mjesecDo = element.value.substring(3, 5);
+            var godinaDo = element.value.substring(6, 20);
+            var danOd = datumOd.value.substring(0, 2);
+            var mjesecOd = datumOd.value.substring(3, 5);
+            var godinaOd = datumOd.value.substring(6, 20);
+            var noviDatumOd = mjesecOd + "/" + danOd + "/" + godinaOd;
+            var noviDatumDo = mjesecDo + "/" + danDo + "/" + godinaDo;
+
+            var dod = new Date(noviDatumOd);
+            var ddo = new Date(noviDatumDo);
+            if (ddo < dod) {
+                valid = false;
+                error.innerHTML = "*Datum završetka seminara mora biti veći ili jednak datumu početka seminara.";
+
+            }
+
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+
+
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            valid = true;
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+</script>
+
+
+
+
+
+

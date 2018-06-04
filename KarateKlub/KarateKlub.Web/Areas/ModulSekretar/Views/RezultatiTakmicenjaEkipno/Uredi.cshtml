@@ -1,0 +1,450 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.RezultatiTakmicenjaEkipnoUrediVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Uređivanje rezultata takmičenja";
+    ViewBag.Title = "Uređivanja rezultata takmičenja";
+    Layout = null;
+}
+
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    #Poravnanje {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("SpremiIzmjenuRezultataTakmicenjaEkipno", "RezultatiTakmicenjaEkipno", FormMethod.Post, new { style = "width:400px;", id = "formaUrediRezultatTakmicenjaEkipno" }))
+{
+    @Html.HiddenFor(Model => Model.TakmicenjeId)
+    @Html.HiddenFor(Model => Model.Id)
+    @Html.HiddenFor(Model => Model.EkipaId)
+
+
+    <div id="Poravnanje">
+
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Naziv ekipe: </label>
+            @Html.TextBoxFor(model => model.NazivEkipe, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.NazivEkipe)
+            @Html.ValidationMessage("NazivEkipeError", new { id = "NazivEkipeError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Članovi ekipe: </label>
+            @Html.DropDownListFor(model => model.clanoviEkipeId, Model.clanoviEkipe, new { @class = "form-control select2", @multiple = "multiple", @id = "listaTakmicara", onchange = "ValidirajListuTakmicara()" })
+            @Html.ValidationMessageFor(model => model.clanoviEkipeId, "Odaberite člana ekipe iz opadajuće liste")
+            @Html.ValidationMessage("clanoviEkipeIdError", new { id = "clanoviEkipeIdError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Disciplina takmičenja: </label>
+            @Html.DropDownListFor(model => model.DisciplinaTakmicenjaId, Model.disciplinaTakmicenja, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DisciplinaTakmicenjaId, "Odaberite disciplinu iz opadajuće liste")
+            @Html.ValidationMessage("DisciplinaTakmicenjaIdError", new { id = "DisciplinaTakmicenjaIdError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Starosna dob: </label>
+            @Html.DropDownListFor(model => model.StarosnaDobId, Model.StarosneDobi, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.StarosnaDobId, "Odaberite starosnu dob iz opadajuće liste")
+            @Html.ValidationMessage("StarosnaDobIdError", new { id = "StarosnaDobIdError" })
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Kategorija: </label>
+            @Html.TextBoxFor(model => model.Kategorija, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Kategorija)
+            @Html.ValidationMessage("KategorijaError", new { id = "KategorijaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Osvojeno mjesto: </label>
+            @Html.DropDownListFor(model => model.OsvojenoMjestoNaTakmicenjuId, Model.osvojenaMjestaNaTakmicenju, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.OsvojenoMjestoNaTakmicenjuId, "Odaberite osvojeno mjesto iz opadajuće liste")
+            @Html.ValidationMessage("OsvojenoMjestoNaTakmicenjuIdError", new { id = "OsvojenoMjestoNaTakmicenjuIdError" })
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Broj ekipa u kategoriji: </label>
+            @Html.TextBoxFor(model => model.BrojEkipaUKategoriji, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrojEkipaUKategoriji)
+            @Html.ValidationMessage("BrojEkipaUKategorijiError", new { id = "BrojEkipaUKategorijiError" })
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Broj pobjeda: </label>
+            @Html.TextBoxFor(model => model.BrojPobjeda, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrojPobjeda)
+            @Html.ValidationMessage("BrojPobjedaError", new { id = "BrojPobjedaError" })
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Broj poraza: </label>
+            @Html.TextBoxFor(model => model.BrojPoraza, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrojPoraza)
+            @Html.ValidationMessage("BrojPorazaError", new { id = "BrojPorazaError" })
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Obrazloženje: </label>
+            @Html.TextAreaFor(model => model.Obrazlozenje, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.Obrazlozenje)
+            @Html.ValidationMessage("ObrazlozenjeUplateError", new { id = "ObrazlozenjeUplateError" })
+
+        </div>
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+
+}
+
+<script>
+    $(function () {
+
+        $('#listaTakmicara option:contains("-Odaberite takmičare-")').attr("disabled", "disabled");
+        $(".select2").select2({
+            closeOnSelect: false,
+            language: {
+                noResults: function () {
+                    return "Nema pronađenih rezultata";
+                },
+                errorLoading: function () {
+                    return 'Preuzimanje nije uspjelo.';
+                },
+
+                loadingMore: function () {
+                    return 'Učitavanje rezultata…';
+                },
+                searching: function () {
+                    return 'Pretraga…';
+                }
+            }
+
+
+        });
+        var selectedValues = @Html.Raw(Json.Encode(Model.clanoviEkipeId));
+
+        $('#listaTakmicara').val(selectedValues);
+        $('#listaTakmicara').trigger('change');
+    })
+
+</script>
+<script type="text/javascript">
+
+    document.getElementById("NazivEkipe").onblur = ValidirajNazivEkipe;
+    document.getElementById("Kategorija").onblur = ValidirajKategoriju;
+    document.getElementById("DisciplinaTakmicenjaId").onblur = ValidirajDisciplinuTakmicenja;
+    document.getElementById("OsvojenoMjestoNaTakmicenjuId").onblur = ValidirajOsvojenoMjesto;
+    document.getElementById("BrojEkipaUKategoriji").onblur = ValidirajBrojEkipaUKategoriji;
+    document.getElementById("BrojPobjeda").onblur = ValidirajBrojPobjeda;
+    document.getElementById("BrojPoraza").onblur = ValidirajBrojPoraza;
+    document.getElementById("StarosnaDobId").onblur = ValidirajStarosnuDob;
+
+
+
+    function Validiraj() {
+        var valid = true;
+        if (ValidirajNazivEkipe() == false)
+            valid = false;
+        if (ValidirajKategoriju() == false)
+            valid = false;
+        if (ValidirajStarosnuDob() == false)
+            valid = false;
+        if (ValidirajListuTakmicara() == false)
+            valid = false;
+        if (ValidirajDisciplinuTakmicenja() == false)
+            valid = false;
+        if (ValidirajOsvojenoMjesto() == false)
+            valid = false;
+        if (ValidirajBrojEkipaUKategoriji() == false)
+            valid = false;
+        if (ValidirajBrojPobjeda() == false)
+            valid = false;
+        if (ValidirajBrojPoraza() == false)
+            valid = false;
+        return valid;
+
+    }
+
+    function ValidirajNazivEkipe() {
+
+        var valid = true;
+        var element = document.getElementById("NazivEkipe");
+        var error = document.getElementById("NazivEkipeError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Naziv ekipe je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajKategoriju() {
+
+        var valid = true;
+        var element = document.getElementById("Kategorija");
+        var error = document.getElementById("KategorijaError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Kategorija je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+    function ValidirajStarosnuDob() {
+
+        var element = document.getElementById("StarosnaDobId");
+        var error = document.getElementById("StarosnaDobIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite starosnu dob iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+    function ValidirajListuTakmicara() {
+
+        var element = document.getElementById("listaTakmicara");
+        var error = document.getElementById("clanoviEkipeIdError");
+        if ($("#listaTakmicara").val() == "") {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite takmičare iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+    function ValidirajDisciplinuTakmicenja() {
+
+        var element = document.getElementById("DisciplinaTakmicenjaId");
+        var error = document.getElementById("DisciplinaTakmicenjaIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite disciplinu takmičenja iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+
+    function ValidirajOsvojenoMjesto() {
+
+        var element = document.getElementById("OsvojenoMjestoNaTakmicenjuId");
+        var error = document.getElementById("OsvojenoMjestoNaTakmicenjuIdError");
+
+        if (element[0].selected == true) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+            error.innerHTML = "*Odaberite osvojeno mjesto iz opadajuće liste";
+
+            return false;
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+            return true;
+        }
+
+    }
+
+    function ValidirajBrojEkipaUKategoriji() {
+
+        var valid = true;
+        var element = document.getElementById("BrojEkipaUKategoriji");
+        var error = document.getElementById("BrojEkipaUKategorijiError");
+
+
+       
+
+                var pravilo = new RegExp(/[A-Za-z*_$%?#&!.,+-]/, 'gi');
+                if (pravilo.test(element.value) == true) {
+                    valid = false;
+                    error.innerHTML = "*Broj ekipa mora biti cijel pozitivan broj";
+                }
+                else {
+                    element.classList.remove("input-validation-error");
+                    error.classList.remove("field-validation-error");
+                    error.classList.add("field-validation-valid");
+                    error.innerHTML = "";
+                }
+
+        
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajBrojPobjeda() {
+
+        var valid = true;
+        var element = document.getElementById("BrojPobjeda");
+        var error = document.getElementById("BrojPobjedaError");
+
+
+
+            var pravilo = new RegExp(/[A-Za-z*_$%?#&!.,+-]/, 'gi');
+            if (pravilo.test(element.value) == true) {
+                valid = false;
+                error.innerHTML = "*Broj pobjeda mora biti cijel pozitivan broj";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+        
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+    function ValidirajBrojPoraza() {
+
+        var valid = true;
+        var element = document.getElementById("BrojPoraza");
+        var error = document.getElementById("BrojPorazaError");
+
+
+        
+
+            var pravilo = new RegExp(/[A-Za-z*_$%?#&!.,+-]/, 'gi');
+            if (pravilo.test(element.value) == true) {
+                valid = false;
+                error.innerHTML = "*Broj poraza mora biti cijel pozitivan broj";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+            }
+
+        
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

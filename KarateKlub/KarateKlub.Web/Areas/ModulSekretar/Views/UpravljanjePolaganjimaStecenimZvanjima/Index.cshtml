@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Polaganja i stečena zvanja";
+    ViewBag.PageTitle = "Polaganja i stečena zvanja";
+    int brojTaba = (int)ViewData["tab"];
+   
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="polaganjaUcenickaZvanja">
+                    <a id="polaganja" href="#polaganjaUcenickaZvanjaTab" data-toggle="tab">Polaganja</a>
+                </li>
+                <li id="stecenaZvanja">
+                    <a id="zvanja" href="#stecenaZvanjaTab" data-toggle="tab">Stečena zvanja</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="polaganjaUcenickaZvanjaTab">
+                   
+                    @Html.Action("Index", "PolaganjaUcenickaZvanja", new { })
+
+                </div>
+
+                <div id="stecenaZvanjaTab">
+
+                    @Html.Action("Index", "StecenaZvanja", new { })
+              
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var polaganjaUcenickaZvanja = document.getElementById("polaganjaUcenickaZvanja");
+       polaganjaUcenickaZvanja.classList.add("active");
+       var polaganjaUcenickaZvanjaTab = document.getElementById("polaganjaUcenickaZvanjaTab");
+       polaganjaUcenickaZvanjaTab.classList.add("tab-pane");
+       polaganjaUcenickaZvanjaTab.classList.add("fade");
+       polaganjaUcenickaZvanjaTab.classList.add("in");
+       polaganjaUcenickaZvanjaTab.classList.add("active");
+       var stecenaZvanjaTab = document.getElementById("stecenaZvanjaTab");
+       stecenaZvanjaTab.classList.add("tab-pane");
+       stecenaZvanjaTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var stecenaZvanja = document.getElementById("stecenaZvanja");
+       stecenaZvanja.classList.add("active");
+       var stecenaZvanjaTab = document.getElementById("stecenaZvanjaTab");
+       stecenaZvanjaTab.classList.add("tab-pane");
+       stecenaZvanjaTab.classList.add("fade");
+       stecenaZvanjaTab.classList.add("in");
+       stecenaZvanjaTab.classList.add("active");
+       var polaganjaUcenickaZvanjaTab = document.getElementById("polaganjaUcenickaZvanjaTab");
+       polaganjaUcenickaZvanjaTab.classList.add("tab-pane");
+       polaganjaUcenickaZvanjaTab.classList.add("fade");
+
+   }
+
+</script>
+
+

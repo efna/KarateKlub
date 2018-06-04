@@ -1,0 +1,268 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.OdlukeUpravnogOdboraIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Odluke upravnog odbora";
+    ViewBag.PageTitle = "Odluke upravnog odbora";
+    Layout = null;
+
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaOdlukeUO">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Donesena odluka</th>
+                                        <th>Obrazloženje</th>
+                                        <th></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (OdlukeUpravnogOdboraPodaci x in Model.odlukeUpravnogOdbora)
+                                    {
+                                        <tr id="row_@x.Id">
+                                            <td>@x.DonesenaOdluka</td>
+                                            <td>
+                                                @if (x.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za odabranu odluku.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+                                            <td class="col-xs-1" align="center">
+                                                <div id="akcija" style="font-family:Arial;font-size:16px; font-weight:500;">
+
+
+                                                    @using (Ajax.BeginForm("Uredi", "OdlukeUpravnogOdbora", new { odlukaId = x.Id }, new AjaxOptions { UpdateTargetId = "formaUredi" }, new { @class = "poravnanje" }))
+                                                    {
+
+                                                        <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediOdluku" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                    }
+                                                    <button class="btn-lg btn btn-danger poravnanje" title="Obriši" onclick="PotvrdiBrisanje(@x.Id)"><i class="fa fa-trash"></i> </button>
+
+                                                    <input type="hidden" id="sakrijOdlukaId" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+
+                    @using (Ajax.BeginForm("Dodaj", "OdlukeUpravnogOdbora", new { sjednicaId = Model.SjednicaId}, new AjaxOptions { UpdateTargetId = "formaDodaj" }))
+                    {   <div style="text-align:center;">
+                        <button type="submit" class="btn-lg btn btn-primary" title="Dodaj odluku" data-toggle="modal" data-target="#modalDodajOdluku" data-backdrop="static" data-keyboard="false"><span class="glyphicon-plus" aria-hidden="true"></span><span class="fa fa-handshake-o" aria-hidden="true"></span> Dodaj odluku</button>
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaOdlukeUO').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [1,2],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2],
+                'width': '30%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+
+<div id="modalUrediOdluku" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka odluke</h4>
+            </div>
+
+            <div class="modal-body" id="formaUredi">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modalDodajOdluku" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Nova odluka upravnog odbora</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodaj">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalPorukaZaBrisanje">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="color:white;">Obriši odluku upravnog odbora</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <h4>Da li ste sigurni da želite obrisati podatke o odluci upravnog odbora? </h4>
+
+                <div style="text-align:center;display:none" id="divUcitavanje">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" width="150" />
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a href="#" class="btn btn-primary" data-dismiss="modal" title="NE">NE</a>
+                <a href="#" class="btn btn-danger" onclick="ObrisiOdluku()" title="DA">DA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#modalDodajOdluku').on('hidden.bs.modal', function () { $('#formaDodaj').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modalUrediOdluku').on('hidden.bs.modal', function () { $('#formaUredi').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+    var PotvrdiBrisanje = function (Id) {
+
+        $("#sakrijOdlukaId").val(Id);
+        $("#modalPorukaZaBrisanje").modal('show');
+
+    }
+
+    var ObrisiOdluku = function () {
+
+        $("#divUcitavanje").show();
+
+        var odlukaId = $("#sakrijOdlukaId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/ModulSekretar/OdlukeUpravnogOdbora/Obrisi",
+            data: { odlukaId: odlukaId },
+            success: function (result) {
+                $("#divUcitavanje").hide();
+                $("#modalPorukaZaBrisanje").modal("hide");
+                $("#row_" + odlukaId).remove();
+
+            }
+
+        })
+
+    }
+
+
+</script>

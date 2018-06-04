@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Uplate";
+    ViewBag.PageTitle = "Uplate";
+    int brojTaba = (int)ViewData["tab"];
+    int funkcijaOsobe = (int)ViewData["funkcijaOsobe"];
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="uplateUposlenim">
+                    <a id="uplate" href="#uplateUposlenimTab" data-toggle="tab">Uplate</a>
+                </li>
+                <li id="pregledSvihUplata">
+                    <a id="pregledUplata" href="#pregledSvihUplataTab" data-toggle="tab">Pregled svih uplata</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="uplateUposlenimTab">
+
+                    @Html.Action("Index", "Osoba", new { funkcijaOsobe = funkcijaOsobe })
+
+                </div>
+
+                <div id="pregledSvihUplataTab">
+
+                    @Html.Action("Index", "UplateUposlenicima", new {})
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var uplateUposlenim = document.getElementById("uplateUposlenim");
+       uplateUposlenim.classList.add("active");
+       var uplateUposlenimTab = document.getElementById("uplateUposlenimTab");
+       uplateUposlenimTab.classList.add("tab-pane");
+       uplateUposlenimTab.classList.add("fade");
+       uplateUposlenimTab.classList.add("in");
+       uplateUposlenimTab.classList.add("active");
+       var pregledSvihUplataTab = document.getElementById("pregledSvihUplataTab");
+       pregledSvihUplataTab.classList.add("tab-pane");
+       pregledSvihUplataTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var pregledSvihUplata = document.getElementById("pregledSvihUplata");
+       pregledSvihUplata.classList.add("active");
+       var pregledSvihUplataTab = document.getElementById("pregledSvihUplataTab");
+       pregledSvihUplataTab.classList.add("tab-pane");
+       pregledSvihUplataTab.classList.add("fade");
+       pregledSvihUplataTab.classList.add("in");
+       pregledSvihUplataTab.classList.add("active");
+       var uplateUposlenimTab = document.getElementById("uplateUposlenimTab");
+       uplateUposlenimTab.classList.add("tab-pane");
+       uplateUposlenimTab.classList.add("fade");
+
+
+   }
+
+</script>
+
+
+

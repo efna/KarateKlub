@@ -1,0 +1,220 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.PolaganjaUcenickaZvanjaUrediVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Uređivanje polaganja";
+    ViewBag.Title = "Uređivanje polaganja";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiIzmjenPolaganjeUcenickaZvanja", "PolaganjaUcenickaZvanja", FormMethod.Post, new { style = "width:400px;", id = "formaUrediPolaganjaUcenickaZvanja" }))
+{
+    @Html.HiddenFor(Model=>Model.Id)
+    <div id="PoravnanjeKontrola">
+
+        <div class="form-group" style="width:auto;">
+
+            <label>Datum polaganja: </label>
+
+            <div class="input-group date">
+                @Html.TextBoxFor(model => model.DatumPolaganja, new { @class = "form-control datepicker", onchange = "ValidirajDatumPolaganja()" })
+                @Html.ValidationMessageFor(model => model.DatumPolaganja)
+                @Html.ValidationMessage("DatumPolaganjaError", new { id = "DatumPolaganjaError" })
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Mjesto polaganja: </label>
+            @Html.TextBoxFor(model => model.MjestoPolaganja, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MjestoPolaganja)
+            @Html.ValidationMessage("MjestoPolaganjaError", new { id = "MjestoPolaganjaError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Organizator: </label>
+            @Html.TextBoxFor(model => model.OrganizatorPolaganja, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.OrganizatorPolaganja)
+            @Html.ValidationMessage("OrganizatorPolaganjaError", new { id = "OrganizatorPolaganjaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Obrazloženje: </label>
+            @Html.TextAreaFor(model => model.Obrazlozenje, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.Obrazlozenje)
+            @Html.ValidationMessage("ObrazlozenjeError", new { id = "ObrazlozenjeError" })
+
+        </div>
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+<script type="text/javascript">
+
+
+    document.getElementById("DatumPolaganja").onblur = ValidirajDatumPolaganja;
+    document.getElementById("MjestoPolaganja").onblur = ValidirajMjestoPolaganja;
+    document.getElementById("OrganizatorPolaganja").onblur = ValidirajOrganizatoraPolaganja;
+
+
+
+    function Validiraj() {
+
+
+        var validna = true;
+        if (ValidirajDatumPolaganja() == false)
+            validna = false;
+        if (ValidirajMjestoPolaganja() == false)
+            validna = false;
+        if (ValidirajOrganizatoraPolaganja() == false)
+            validna = false;
+
+        return validna;
+    }
+
+
+
+
+    function ValidirajDatumPolaganja() {
+        var valid = true;
+        var element = document.getElementById("DatumPolaganja");
+        var error = document.getElementById("DatumPolaganjaError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum polaganja je obavezno polje";
+        }
+        else {
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajMjestoPolaganja() {
+
+        var valid = true;
+        var element = document.getElementById("MjestoPolaganja");
+        var error = document.getElementById("MjestoPolaganjaError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Mjesto polaganja je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajOrganizatoraPolaganja() {
+
+        var valid = true;
+        var element = document.getElementById("OrganizatorPolaganja");
+        var error = document.getElementById("OrganizatorPolaganjaError");
+
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Organizator polaganja je obavezno polje";
+        }
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+</script>
+
+
+
+
+
+

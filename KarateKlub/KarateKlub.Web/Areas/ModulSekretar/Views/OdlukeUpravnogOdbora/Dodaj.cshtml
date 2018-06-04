@@ -1,0 +1,121 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.OdlukeUpravnogOdboraDodajVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Nova odluka";
+    ViewBag.Title = "Nova odluka";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiNovuOdluku", "OdlukeUpravnogOdbora", FormMethod.Post, new { style = "width:400px;", id = "formaDodaj" }))
+{
+    @Html.HiddenFor(Model=>Model.SjednicaUpravnogOdboraId)
+
+    <div id="PoravnanjeKontrola">
+
+        <div class="form-group" style="width:auto;">
+            <label>Odluka: </label>
+            @Html.TextAreaFor(model => model.DonesenaOdluka, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.DonesenaOdluka)
+            @Html.ValidationMessage("DonesenaOdlukaError", new { id = "DonesenaOdlukaError" })
+
+        </div>
+
+
+        <div class="form-group" style="width:auto;">
+            <label>Obrazloženje: </label>
+            @Html.TextAreaFor(model => model.Obrazlozenje, new { @class = "form-control", @style = "resize:none;height:150px;" })
+            @Html.ValidationMessageFor(model => model.Obrazlozenje)
+            @Html.ValidationMessage("ObrazlozenjeError", new { id = "ObrazlozenjeError" })
+
+        </div>
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+<script type="text/javascript">
+
+    document.getElementById("DonesenaOdluka").onblur = ValidirajDonesunuOdluku;
+   
+    function Validiraj() {
+
+
+        var validna = true;
+        if (ValidirajDonesunuOdluku() == false)
+            validna = false;
+      
+        return validna;
+    }
+
+
+
+    function ValidirajDonesunuOdluku() {
+
+        var valid = true;
+        var element = document.getElementById("DonesenaOdluka");
+        var error = document.getElementById("DonesenaOdlukaError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Odluka je obavezno polje";
+        }
+
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+</script>
+
+
+

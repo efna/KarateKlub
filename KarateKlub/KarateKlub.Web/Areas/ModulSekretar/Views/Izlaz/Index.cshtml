@@ -1,0 +1,287 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.IzlazIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Izlazi";
+    ViewBag.PageTitle = "Izlazi";
+    Layout = null;
+    decimal ukupanIznosIzlazaZaOstaleTroskove = (decimal)ViewData["ukupanIznosIzlazaZaOstaleTroskove"];
+
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<br />
+<br />
+@if (ukupanIznosIzlazaZaOstaleTroskove != 0)
+{
+  <label style="margin-left:15px;">Ukupan iznos izdvojen za ostale troškove u odabranom periodu: @ukupanIznosIzlazaZaOstaleTroskove KM</label>
+}
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaIzlazi">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Naziv</th>
+                                        <th>Datum</th>
+                                        <th>Iznos</th>
+                                        <th>Obrazloženje</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (IzlazPodaci x in Model.izlazi)
+                                    {
+                                        <tr id="rowIzlazId_@x.Id">
+                                            <td>@x.Naziv</td>
+                                            <td>@x.Datum.ToString("dd.MM.yyyy")</td>
+                                            <td>@x.IznosKMSBrojevima KM(@x.IznosKMSlovima)</td>
+
+                                            <td>
+                                                @if (x.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za izlaz.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+                                           
+                                            <td class="col-xs-1" align="center">
+                                                <div id="akcija" style="font-family:Arial;font-size:16px; font-weight:500;">
+
+
+                                                    @using (Ajax.BeginForm("Uredi", "Izlaz", new { izlazId = x.Id }, new AjaxOptions { UpdateTargetId = "formaUrediIzlaz" }, new { @class = "poravnanje" }))
+                                                    {
+
+                                                        <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediIzlaz" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                    }
+                                                    <button class="btn-lg btn btn-danger poravnanje" title="Obriši" onclick="PotvrdiBrisanjeIzlaza(@x.Id)"><i class="fa fa-trash"></i> </button>
+
+                                                    <input type="hidden" id="sakrijIzlazId" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+
+                    @using (Ajax.BeginForm("Dodaj", "Izlaz", new { }, new AjaxOptions { UpdateTargetId = "formaDodajIzlaz" }))
+                    {   <div style="text-align:center;">
+                        <button type="submit" class="btn-lg btn btn-primary" title="Dodaj izlaz" data-toggle="modal" data-target="#modaDodajIzlaz" data-backdrop="static" data-keyboard="false"><span class="fa fa-plus" aria-hidden="true"></span><span class="fa fa-money" aria-hidden="true"></span> Dodaj izlaz</button>
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaIzlazi').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [3,4],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4],
+                'width': '20%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+
+<div id="modalUrediIzlaz" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka o izlazu</h4>
+            </div>
+
+            <div class="modal-body" id="formaUrediIzlaz">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modaDodajIzlaz" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Novi izlaz</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodajIzlaz">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalPorukaZaBrisanjeIzlaza">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="color:white;">Obriši izlaz</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <h4>Da li ste sigurni da želite obrisati izlaz? </h4>
+
+                <div style="text-align:center;display:none" id="divUcitavanje">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" width="150" />
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a href="#" class="btn btn-primary" data-dismiss="modal" title="NE">NE</a>
+                <a href="#" class="btn btn-danger" onclick="ObrisiIzlaz()" title="DA">DA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#modalUrediIzlaz').on('hidden.bs.modal', function () { $('#formaUrediIzlaz').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modaDodajIzlaz').on('hidden.bs.modal', function () { $('#formaDodajIzlaz').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+    var PotvrdiBrisanjeIzlaza = function (Id) {
+
+        $("#sakrijIzlazId").val(Id);
+        $("#modalPorukaZaBrisanjeIzlaza").modal('show');
+
+    }
+
+    var ObrisiIzlaz = function () {
+
+        $("#divUcitavanje").show();
+
+        var izlazId = $("#sakrijIzlazId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/ModulSekretar/Izlaz/Obrisi",
+            data: { izlazId: izlazId },
+            success: function (result) {
+                $("#divUcitavanje").hide();
+                $("#modalPorukaZaBrisanjeIzlaza").modal("hide");
+                $("#rowIzlazId_" + izlazId).remove();
+
+            }
+
+        })
+
+    }
+
+
+</script>
+
+
+
+
+
+
+

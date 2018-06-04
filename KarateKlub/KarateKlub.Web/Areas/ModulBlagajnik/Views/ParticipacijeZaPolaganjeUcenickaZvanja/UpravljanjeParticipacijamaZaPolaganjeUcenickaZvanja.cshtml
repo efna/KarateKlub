@@ -1,0 +1,83 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    int brojTaba = (int)ViewData["tab"];
+    int polaganjeId = (int)ViewData["polaganjeId"];
+
+    ViewBag.PageTitle = "Participacije za polaganje";
+    ViewBag.Title = "Participacije za polaganje";
+    Layout = null;
+}
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li id="izmireneParticipacijeZaPolaganje">
+                    <a id="izmirene" href="#izmireneParticipacijeZaPolaganjeTab" data-toggle="tab">Izmirene</a>
+                </li>
+                <li id="neizmireneParticipacijeZaPolaganje">
+                    <a id="neizmirene" href="#neizmireneParticipacijeZaPolaganjeTab" data-toggle="tab">Neizmirene</a>
+                </li>
+
+            </ul>
+            <div class="tab-content">
+                <div id="izmireneParticipacijeZaPolaganjeTab">
+
+                    @Html.Action("Index", "ParticipacijeZaPolaganjeUcenickaZvanja", new { polaganjeId = polaganjeId })
+
+                </div>
+                <div id="neizmireneParticipacijeZaPolaganjeTab">
+
+                    @Html.Action("NeizmireneParticipacije", "ParticipacijeZaPolaganjeUcenickaZvanja", new { polaganjeId = polaganjeId })
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var izmireneParticipacijeZaPolaganje = document.getElementById("izmireneParticipacijeZaPolaganje");
+        izmireneParticipacijeZaPolaganje.classList.add("active");
+        var izmireneParticipacijeZaPolaganjeTab = document.getElementById("izmireneParticipacijeZaPolaganjeTab");
+        izmireneParticipacijeZaPolaganjeTab.classList.add("tab-pane");
+        izmireneParticipacijeZaPolaganjeTab.classList.add("fade");
+        izmireneParticipacijeZaPolaganjeTab.classList.add("in");
+        izmireneParticipacijeZaPolaganjeTab.classList.add("active");
+        var neizmireneParticipacijeZaPolaganjeTab = document.getElementById("neizmireneParticipacijeZaPolaganjeTab");
+        neizmireneParticipacijeZaPolaganjeTab.classList.add("tab-pane");
+        neizmireneParticipacijeZaPolaganjeTab.classList.add("fade");
+
+    }
+ else{
+        var neizmireneParticipacijeZaPolaganje = document.getElementById("neizmireneParticipacijeZaPolaganje");
+        neizmireneParticipacijeZaPolaganje.classList.add("active");
+        var neizmireneParticipacijeZaPolaganjeTab = document.getElementById("neizmireneParticipacijeZaPolaganjeTab");
+        neizmireneParticipacijeZaPolaganjeTab.classList.add("tab-pane");
+        neizmireneParticipacijeZaPolaganjeTab.classList.add("fade");
+        neizmireneParticipacijeZaPolaganjeTab.classList.add("in");
+        neizmireneParticipacijeZaPolaganjeTab.classList.add("active");
+        var izmireneParticipacijeZaPolaganjeTab = document.getElementById("izmireneParticipacijeZaPolaganjeTab");
+        izmireneParticipacijeZaPolaganjeTab.classList.add("tab-pane");
+        izmireneParticipacijeZaPolaganjeTab.classList.add("fade");
+
+
+ }
+
+
+</script>
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    ViewBag.Title = "Uplate";
+    ViewBag.PageTitle = "Uplate";
+    int brojTaba = (int)ViewData["tab"];
+    int osobaId = (int)ViewData["osobaId"];
+    Osoba osoba = (Osoba)ViewData["osoba"];
+    int izmirena = (int)ViewData["izmirena"];
+    Layout = null;
+}
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="clanarine">
+                    <a id="clanarineClana" href="#clanarineTab" data-toggle="tab">Članarine</a>
+                </li>
+                <li id="participacije">
+                    <a id="participacijeClana" href="#participacijeTab" data-toggle="tab">Participacije za polaganje</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="clanarineTab">
+
+                    @Html.Action("PregledClanarinaClana", "StavkeClanarine", new { osobaId = osobaId, izmirena = izmirena })
+
+                </div>
+
+                <div id="participacijeTab">
+
+                    @Html.Action("PregledParticipacijaClana", "ParticipacijeZaPolaganjeUcenickaZvanja", new { osobaId = osobaId, izmirena = izmirena })
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var clanarine = document.getElementById("clanarine");
+       clanarine.classList.add("active");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+       clanarineTab.classList.add("in");
+       clanarineTab.classList.add("active");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var participacije = document.getElementById("participacije");
+       participacije.classList.add("active");
+       var participacijeTab = document.getElementById("participacijeTab");
+       participacijeTab.classList.add("tab-pane");
+       participacijeTab.classList.add("fade");
+       participacijeTab.classList.add("in");
+       participacijeTab.classList.add("active");
+       var clanarineTab = document.getElementById("clanarineTab");
+       clanarineTab.classList.add("tab-pane");
+       clanarineTab.classList.add("fade");
+
+
+   }
+
+</script>
+
+
+
+

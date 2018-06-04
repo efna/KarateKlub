@@ -1,0 +1,162 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.UpravljanjeUposlenicimaPrikazUposlenikaVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Osoblje";
+    ViewBag.PageTitle = "Osoblje";
+    int brojTaba = (int)ViewData["tab"];
+    int aktivan = (int)ViewData["aktivan"];
+    int trener = 1;
+    int sekretar = 2;
+    int blagajnik = 3;
+    int knjigovodja = 4;
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="treneri">
+                    <a id="treneriKluba" href="#treneriTab" data-toggle="tab">Treneri</a>
+                </li>
+                <li id="sekretari">
+                    <a id="sekretariKluba" href="#sekretariTab" data-toggle="tab">Sekretari</a>
+                </li>
+                <li id="blagajnici">
+                    <a id="blagajniciKluba" href="#blagajniciTab" data-toggle="tab">Blagajnici</a>
+                </li>
+                <li id="knjigovodje">
+                    <a id="knjigovodjeKluba" href="#knjigovodjeTab" data-toggle="tab">Knjigovođe</a>
+                </li>
+     
+            </ul>
+            <div class="tab-content">
+
+                <div id="treneriTab">
+
+                    @Html.Action("PrikazUposlenika", "UpravljanjeUposlenicima", new {aktivan=aktivan, uloga=trener})
+
+                </div>
+                <div id="sekretariTab">
+
+                    @Html.Action("PrikazUposlenika", "UpravljanjeUposlenicima", new { aktivan = aktivan, uloga = sekretar })
++
+                </div> 
+           
+                <div id="blagajniciTab">
+
+                    @Html.Action("PrikazUposlenika", "UpravljanjeUposlenicima", new {aktivan=aktivan,uloga=blagajnik})
+                </div>
+                <div id="knjigovodjeTab">
+
+                    @Html.Action("PrikazUposlenika", "UpravljanjeUposlenicima", new {aktivan=aktivan,uloga=knjigovodja})
+                </div>
+
+           
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+   if (@brojTaba==1)
+    {
+       var treneri = document.getElementById("treneri");
+       treneri.classList.add("active");
+       var treneriTab = document.getElementById("treneriTab");
+       treneriTab.classList.add("tab-pane");
+       treneriTab.classList.add("fade");
+       treneriTab.classList.add("in");
+       treneriTab.classList.add("active");
+       var sekretariTab = document.getElementById("sekretariTab");
+       sekretariTab.classList.add("tab-pane");
+       sekretariTab.classList.add("fade");
+       var blagajniciTab = document.getElementById("blagajniciTab");
+       blagajniciTab.classList.add("tab-pane");
+       blagajniciTab.classList.add("fade");
+       var knjigovodjeTab = document.getElementById("knjigovodjeTab");
+       knjigovodjeTab.classList.add("tab-pane");
+       knjigovodjeTab.classList.add("fade");
+
+
+
+    }
+
+   else if(@brojTaba==2)
+   {
+       var sekretari = document.getElementById("sekretari");
+       sekretari.classList.add("active");
+       var sekretariTab = document.getElementById("sekretariTab");
+       sekretariTab.classList.add("tab-pane");
+       sekretariTab.classList.add("fade");
+       sekretariTab.classList.add("in");
+       sekretariTab.classList.add("active");
+       var blagajniciTab = document.getElementById("blagajniciTab");
+       blagajniciTab.classList.add("tab-pane");
+       blagajniciTab.classList.add("fade");
+       var knjigovodjeTab = document.getElementById("knjigovodjeTab");
+       knjigovodjeTab.classList.add("tab-pane");
+       knjigovodjeTab.classList.add("fade");
+       var treneriTab = document.getElementById("treneriTab");
+       treneriTab.classList.add("tab-pane");
+       treneriTab.classList.add("fade");
+
+
+
+   }
+   else if(@brojTaba==3){
+       var blagajnici = document.getElementById("blagajnici");
+       blagajnici.classList.add("active");
+       var blagajniciTab = document.getElementById("blagajniciTab");
+       blagajniciTab.classList.add("tab-pane");
+       blagajniciTab.classList.add("fade");
+       blagajniciTab.classList.add("in");
+       blagajniciTab.classList.add("active");
+       var sekretariTab = document.getElementById("sekretariTab");
+       sekretariTab.classList.add("tab-pane");
+       sekretariTab.classList.add("fade");
+       var knjigovodjeTab = document.getElementById("knjigovodjeTab");
+       knjigovodjeTab.classList.add("tab-pane");
+       knjigovodjeTab.classList.add("fade");
+       var treneriTab = document.getElementById("treneriTab");
+       treneriTab.classList.add("tab-pane");
+       treneriTab.classList.add("fade");
+
+
+
+   }
+   else{
+       var knjigovodje = document.getElementById("knjigovodje");
+       knjigovodje.classList.add("active");
+       var knjigovodjeTab = document.getElementById("knjigovodjeTab");
+       knjigovodjeTab.classList.add("tab-pane");
+       knjigovodjeTab.classList.add("fade");
+       knjigovodjeTab.classList.add("in");
+       knjigovodjeTab.classList.add("active");
+       var sekretariTab = document.getElementById("sekretariTab");
+       sekretariTab.classList.add("tab-pane");
+       sekretariTab.classList.add("fade");
+       var treneriTab = document.getElementById("treneriTab");
+       treneriTab.classList.add("tab-pane");
+       treneriTab.classList.add("fade");
+       var blagajniciTab = document.getElementById("blagajniciTab");
+       blagajniciTab.classList.add("tab-pane");
+       blagajniciTab.classList.add("fade");
+   }
+
+
+</script>
+
+
+

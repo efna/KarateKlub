@@ -1,0 +1,89 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    int brojTaba = (int)ViewData["tab"];
+    int upisId = (int)ViewData["upisId"];
+    int izmirena = (int)ViewData["izmirena"];
+    Upisi upis = (Upisi)ViewData["upis"];
+    ViewBag.PageTitle = "Upravljanje podacima upisa";
+    ViewBag.Title = "Upravljanje podacima upisa održanog od "+upis.DatumOd.ToString("dd.MM.yyyy")+" do "+ upis.DatumDo.ToString("dd.MM.yyyy");
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "UpravljanjeUpisima", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz upisa" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li id="upisaniClanovi">
+                    <a id="upisani" href="#upisaniClanoviTab" data-toggle="tab">Upisani članovi</a>
+                </li>
+                <li id="upisnine">
+                    <a id="upisnineUpisanihClanova" href="#upisnineTab" data-toggle="tab">Upisnine</a>
+                </li>
+              
+            </ul>
+            <div class="tab-content">
+                <div id="upisaniClanoviTab">
+
+                    @Html.Action("Index", "UpisaniClanovi", new {upisId=upisId })
+
+                </div>
+                <div id="upisnineTab">
+
+                    @Html.Action("Index", "Upisnine", new {upisId=upisId,izmirena=izmirena })
+
+                </div>
+                
+                
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var upisaniClanovi = document.getElementById("upisaniClanovi");
+        upisaniClanovi.classList.add("active");
+        var upisaniClanoviTab = document.getElementById("upisaniClanoviTab");
+        upisaniClanoviTab.classList.add("tab-pane");
+        upisaniClanoviTab.classList.add("fade");
+        upisaniClanoviTab.classList.add("in");
+        upisaniClanoviTab.classList.add("active");
+        var upisnineTab = document.getElementById("upisnineTab");
+        upisnineTab.classList.add("tab-pane");
+        upisnineTab.classList.add("fade");
+
+    }
+ else{
+        var upisnine = document.getElementById("upisnine");
+        upisnine.classList.add("active");
+        var upisnineTab = document.getElementById("upisnineTab");
+        upisnineTab.classList.add("tab-pane");
+        upisnineTab.classList.add("fade");
+        upisnineTab.classList.add("in");
+        upisnineTab.classList.add("active");
+        var upisaniClanoviTab = document.getElementById("upisaniClanoviTab");
+        upisaniClanoviTab.classList.add("tab-pane");
+        upisaniClanoviTab.classList.add("fade");
+
+
+ }
+
+
+</script>
+
+
+
+
+
+

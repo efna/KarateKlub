@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Registracije kluba i takmičara";
+    ViewBag.PageTitle = "Registracije";
+    int brojTaba = (int)ViewData["tab"];
+    int savez = (int)ViewData["savez"];
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+
+                <li id="registracijeKluba">
+                    <a id="regKluba" href="#registracijeKlubaTab" data-toggle="tab">Registracije kluba</a>
+                </li>
+                <li id="registracijeTakmicara">
+                    <a id="regTakmicara" href="#registracijeTakmicaraTab" data-toggle="tab">Registracije takmičara</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+
+                <div id="registracijeKlubaTab">
+
+                    @Html.Action("Index", "RegistracijeKluba", new { savez = savez })
+
+                </div>
+
+                <div id="registracijeTakmicaraTab">
+
+                    @Html.Action("Index", "RegistracijeTakmicara", new { savez = savez })
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@using (Html.BeginForm("Index", "Savezi", new { }, FormMethod.Post, new { }))
+{
+    <div style="text-align:center;">
+        <button type="submit" style="width:198px;" class="btn-lg btn btn-primary" title="Pregledaj saveze"><span class="fa fa-file-text-o" aria-hidden="true"></span>Pregledaj saveze</button>
+    </div>
+}
+<script>
+   if (@brojTaba==1)
+    {
+       var registracijeKluba = document.getElementById("registracijeKluba");
+       registracijeKluba.classList.add("active");
+       var registracijeKlubaTab = document.getElementById("registracijeKlubaTab");
+       registracijeKlubaTab.classList.add("tab-pane");
+       registracijeKlubaTab.classList.add("fade");
+       registracijeKlubaTab.classList.add("in");
+       registracijeKlubaTab.classList.add("active");
+       var registracijeTakmicaraTab = document.getElementById("registracijeTakmicaraTab");
+       registracijeTakmicaraTab.classList.add("tab-pane");
+       registracijeTakmicaraTab.classList.add("fade");
+
+
+    }
+
+   else
+   {
+       var registracijeTakmicara = document.getElementById("registracijeTakmicara");
+       registracijeTakmicara.classList.add("active");
+       var registracijeTakmicaraTab = document.getElementById("registracijeTakmicaraTab");
+       registracijeTakmicaraTab.classList.add("tab-pane");
+       registracijeTakmicaraTab.classList.add("fade");
+       registracijeTakmicaraTab.classList.add("in");
+       registracijeTakmicaraTab.classList.add("active");
+       var registracijeKlubaTab = document.getElementById("registracijeKlubaTab");
+       registracijeKlubaTab.classList.add("tab-pane");
+       registracijeKlubaTab.classList.add("fade");
+
+
+   }
+
+</script>
+
+
+
+

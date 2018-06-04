@@ -1,0 +1,293 @@
+﻿@model KarateKlub.Web.Areas.ModulTrener.Models.KazneTakmicariIndexVM
+@using KarateKlub.Web.Areas.ModulTrener.Models
+@{
+    ViewBag.PageTitle = "Kazne takmičara";
+    ViewBag.Title = "Kazne takmičara";
+    int takmicarId = (int)ViewData["takmicarId"];
+    int aktivnost = (int)ViewData["aktivnost"];
+    Layout = null;
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .poravnanje2 {
+        width: 200px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaKazneTakmicari">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Dodjeljeno od</th>
+                                        <th>Razlog</th>
+                                        <th>Vremenski period</th>
+                                        <th>Mjesto sticanja</th>
+                                        <th>Obrazloženje</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (KaznaTakmicaraPodaci x in Model.kazneTakmicara)
+                                    {
+
+                                        <tr id="rowKaznaId_@x.Id">
+                                            <td>@x.DodjeljenoOd</td>
+                                            <td>@x.DodjeljenoZbog</td>
+                                            <td>@x.DatumSticanja.ToString("dd.MM.yyyy")-@x.DatumIsteka.ToString("dd.MM.yyyy")</td>
+                                            <td>@x.MjestoSticanja</td>
+                                            <td>
+
+                                                @if (x.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za kaznu.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+
+                                            <td class="col-xs-1" align="center">
+                                                <div id="akcija" style="font-family:Arial;font-size:16px; font-weight:500;">
+
+                                                    @using (Ajax.BeginForm("Uredi", "KazneTakmicari", new { kaznaId = x.Id, aktivnost = aktivnost }, new AjaxOptions { UpdateTargetId = "formaUrediKaznu" }, new { @class = "poravnanje" }))
+                                                    {
+
+                                                        <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediKaznu" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                    }
+
+                                                    <button class="btn-lg btn btn-danger poravnanje" title="Obriši" onclick="PotvrdiBrisanjeKazne(@x.Id)"><i class="fa fa-trash"></i> </button>
+
+
+                                                    <input type="hidden" id="sakrijKaznaId" />
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+                    @using (Ajax.BeginForm("Dodaj", "KazneTakmicari", new { takmicarId = takmicarId, aktivnost = aktivnost }, new AjaxOptions { UpdateTargetId = "formaDodajKaznu" }))
+                    {
+
+                        <div style="text-align:center;">
+                            <button type="submit" title="Dodaj kaznu" class="btn-lg btn btn-primary" data-toggle="modal" data-target="#modalDodajKaznu" data-backdrop="static" data-keyboard="false"><span class="glyphicon-plus" aria-hidden="true"></span> Dodaj kaznu</button>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+    $(function () {
+        $('#tabelaKazneTakmicari').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [4,5],
+                'orderable': false
+            },
+            {
+                'targets': [0, 1, 2, 3, 4, 5],
+                'width': '10%'
+            }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+<div id="modalUrediKaznu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka kazne</h4>
+            </div>
+
+            <div class="modal-body" id="formaUrediKaznu">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modalDodajKaznu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Nova kazna</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodajKaznu">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalPorukaZaBrisanjeKazne">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="color:white;">Obriši kaznu</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <h4>Da li ste sigurni da želite obrisati kaznu? </h4>
+
+                <div style="text-align:center;display:none" id="divUcitavanje">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" width="150" />
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a href="#" class="btn btn-primary" data-dismiss="modal" title="NE">NE</a>
+                <a href="#" class="btn btn-danger" onclick="ObrisiKaznu()" title="DA">DA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#modalDodajKaznu').on('hidden.bs.modal', function () { $('#formaDodajKaznu').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modalUrediKaznu').on('hidden.bs.modal', function () { $('#formaUrediKaznu').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+    var PotvrdiBrisanjeKazne = function (Id) {
+
+        $("#sakrijKaznaId").val(Id);
+        $("#modalPorukaZaBrisanjeKazne").modal('show');
+
+    }
+
+    var ObrisiKaznu = function () {
+
+        $("#divUcitavanje").show();
+
+        var kaznaId = $("#sakrijKaznaId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/ModulTrener/KazneTakmicari/Obrisi",
+            data: { kaznaId: kaznaId },
+            success: function (result) {
+                $("#divUcitavanje").hide();
+                $("#modalPorukaZaBrisanjeKazne").modal("hide");
+                $("#rowKaznaId_" + kaznaId).remove();
+            }
+
+        })
+
+    }
+
+
+</script>
+
+
+
+
+
+

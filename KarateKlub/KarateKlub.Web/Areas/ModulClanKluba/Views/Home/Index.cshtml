@@ -1,0 +1,54 @@
+﻿@using KarateKlub.Web.Helper;
+
+@using KarateKlub.Data.Models;
+
+@{
+    ViewBag.PageTitle = "Opcije";
+    ViewBag.Title = "Opcije";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isTakmicar = Autentifikacija.isTakmicar(Context);
+
+}
+@if (isTakmicar==true){
+<div class="panel-body">
+    <div class="icon-grid">
+        <div class="col-lg-3 col-md-4 col-sm-6" style="min-height:165px;">
+            <a href="/ModulClanKluba/ClanoviKluba/UpravljanjeKlubskomKnjizicom" style="display:block;text-align:center;" title="Klubska knjižica"><i class="fa fa-address-book-o fa-5x" id="1" title="Klubska knjižica" aria-hidden="true"></i></a>
+            <hr style="border-color:white;" />
+            <a href="/ModulClanKluba/ClanoviKluba/UpravljanjeKlubskomKnjizicom" class="text-center" style="display:block; margin-top:-24px;  font-size:18px;">
+                Klubska knjižica
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6" style="min-height:165px;">
+            <a href="/ModulClanKluba/Takmicari/UpravljanjeTakmicarskomKnjizicom" style="display:block;text-align:center;" id="2" title="Takmičarska knjižica"><i class="fa fa-address-card-o fa-5x" aria-hidden="true"></i></a>
+            <hr style="border-color:white;" />
+            <a href="/ModulClanKluba/Takmicari/UpravljanjeTakmicarskomKnjizicom" class="text-center" style="display:block; margin-top:-24px;  font-size:18px;">
+                Takmičarska knjižica
+            </a>
+        </div>
+      
+    </div>
+</div>
+}
+else
+{
+    <div class="panel-body">
+        <div class="icon-grid">
+            <div class="col-lg-3 col-md-4 col-sm-6" style="min-height:165px;">
+                <a href="/ModulClanKluba/ClanoviKluba/UpravljanjeKlubskomKnjizicom" style="display:block;text-align:center;" title="Klubska knjižica"><i class="fa fa-address-book-o fa-5x" id="1" title="Klubska knjižica" aria-hidden="true"></i></a>
+                <hr style="border-color:white;" />
+                <a href="/ModulClanKluba/ClanoviKluba/UpravljanjeKlubskomKnjizicom" class="text-center" style="display:block; margin-top:-24px;  font-size:18px;">
+                    Klubska knjižica
+                </a>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+
+
+

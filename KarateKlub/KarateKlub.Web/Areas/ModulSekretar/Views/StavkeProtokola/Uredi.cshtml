@@ -1,0 +1,279 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.StavkeProtokolaUrediVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+@{
+    ViewBag.PageTitle = "Upravljanje stavkama protokola";
+    ViewBag.Title = "Upravljanje stavkama protokola";
+    Layout = null;
+}
+
+<style>
+    #PoravnanjeKontrola {
+        margin-left: 40px;
+        margin-top: 10px;
+        width: 500px;
+    }
+
+    #btnSpremi {
+        margin-left: 200px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("SpremiIzmjenuStavke", "StavkeProtokola", FormMethod.Post, new { style = "width:400px;", id = "formaUredi" }))
+{
+    @Html.HiddenFor(Model => Model.Id)
+    @Html.HiddenFor(Model=>Model.ProtokolId)
+    
+    <div id="PoravnanjeKontrola">
+        <div class="form-group" style="width:auto;">
+            <label>Predmet: </label>
+            @Html.TextBoxFor(model => model.Predmet, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Predmet)
+            @Html.ValidationMessage("PredmetError", new { id = "PredmetError" })
+
+        </div>
+
+        <div class="form-group" style="width:auto;">
+            <label>Pod broj: </label>
+            @Html.TextBoxFor(model => model.PodBroj, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PodBroj)
+            @Html.ValidationMessage("PodBrojError", new { id = "PodBrojError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Datum prijema: </label>
+            @Html.TextBoxFor(model => model.DatumPrijema, new { @class = "form-control datepicker" })
+            @Html.ValidationMessageFor(model => model.DatumPrijema)
+            @Html.ValidationMessage("DatumPrijemaError", new { id = "DatumPrijemaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Pošiljalac: </label>
+            @Html.TextBoxFor(model => model.Posiljaoc, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Posiljaoc)
+            @Html.ValidationMessage("PosiljaocError", new { id = "PosiljaocError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Broj pošiljke: </label>
+            @Html.TextBoxFor(model => model.BrojPosiljke, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.BrojPosiljke)
+            @Html.ValidationMessage("BrojPosiljkeError", new { id = "BrojPosiljkeError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Datum pošiljke: </label>
+            @Html.TextBoxFor(model => model.DatumPosiljke, new { @class = "form-control datepicker" })
+            @Html.ValidationMessageFor(model => model.DatumPosiljke)
+            @Html.ValidationMessage("DatumPosiljkeError", new { id = "DatumPosiljkeError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Mjesto pošiljke: </label>
+            @Html.TextBoxFor(model => model.MjestoPosiljke, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MjestoPosiljke)
+            @Html.ValidationMessage("MjestoPosiljkeError", new { id = "MjestoPosiljkeError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Organizaciona jedinica: </label>
+            @Html.TextBoxFor(model => model.OrganizacionaJedinica, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.OrganizacionaJedinica)
+            @Html.ValidationMessage("OrganizacionaJedinicaError", new { id = "OrganizacionaJedinicaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Datum razvoda: </label>
+            @Html.TextBoxFor(model => model.DatumRazvoda, new { @class = "form-control datepicker" })
+            @Html.ValidationMessageFor(model => model.DatumRazvoda)
+            @Html.ValidationMessage("DatumRazvodaError", new { id = "DatumRazvodaError" })
+
+        </div>
+        <div class="form-group" style="width:auto;">
+            <label>Oznaka: </label>
+            @Html.TextAreaFor(model => model.Oznaka, new { @class = "form-control", @style = "resize:none;" })
+            @Html.ValidationMessageFor(model => model.Oznaka)
+            @Html.ValidationMessage("OznakaError", new { id = "OznakaError" })
+
+        </div>
+        <br />
+    </div>
+    <div id="btnSpremi">
+        <button type="submit" title="Spremi podatke" class="btn-lg btn btn-primary" style="width:170px;" onclick="return Validiraj()"><span class="fa fa-floppy-o"></span> Spremi  </button>
+    </div>
+
+}
+
+
+<script>
+
+    $(function () {
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            language: 'bs'
+        })
+    })
+</script>
+<script type="text/javascript">
+
+    document.getElementById("Predmet").onblur = ValidirajPredmet;
+    document.getElementById("PodBroj").onblur = ValidirajPodBroj;
+    document.getElementById("DatumPrijema").onblur = ValidirajDatumPrijema;
+    document.getElementById("DatumPrijema").onchange = ValidirajDatumPrijema;
+    document.getElementById("Posiljaoc").onblur = ValidirajPosiljaoca;
+
+    function Validiraj() {
+
+
+        var validna = true;
+        if (ValidirajPredmet() == false)
+            validna = false;
+        if (ValidirajPodBroj() == false)
+            validna = false;
+        if (ValidirajDatumPrijema() == false)
+            validna = false;
+        if (ValidirajPosiljaoca() == false)
+            validna = false;
+
+        return validna;
+    }
+
+
+
+    function ValidirajPredmet() {
+
+        var valid = true;
+        var element = document.getElementById("Predmet");
+        var error = document.getElementById("PredmetError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Predmet je obavezno polje";
+        }
+
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajPodBroj() {
+
+        var valid = true;
+        var element = document.getElementById("PodBroj");
+        var error = document.getElementById("PodBrojError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Pod broj je obavezno polje";
+        }
+
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+    function ValidirajDatumPrijema() {
+        var valid = true;
+        var element = document.getElementById("DatumPrijema");
+        var error = document.getElementById("DatumPrijemaError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Datum prijema je obavezno polje";
+        }
+        else {
+            if (element.value.length < 10) {
+                valid = false;
+                error.innerHTML = "*Pogrešan format datuma";
+            }
+            else {
+                element.classList.remove("input-validation-error");
+                error.classList.remove("field-validation-error");
+                error.classList.add("field-validation-valid");
+                error.innerHTML = "";
+                valid = true;
+            }
+        }
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+    function ValidirajPosiljaoca() {
+
+        var valid = true;
+        var element = document.getElementById("Posiljaoc");
+        var error = document.getElementById("PosiljaocError");
+
+        if (element.value == "") {
+            valid = false;
+            error.innerHTML = "*Pošiljalac je obavezno polje";
+        }
+
+        else {
+            element.classList.remove("input-validation-error");
+            error.classList.remove("field-validation-error");
+            error.classList.add("field-validation-valid");
+            error.innerHTML = "";
+        }
+
+
+        if (valid == false) {
+            element.classList.add("input-validation-error");
+            error.classList.remove("field-validation-valid");
+            error.classList.add("field-validation-error");
+        }
+        return valid;
+    }
+
+
+</script>
+
+

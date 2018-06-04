@@ -1,0 +1,282 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.StavkeClanarineIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Stavke članarine "+ Model.Clanarina.DatumOd.ToString("dd.MM.yyyy")+"-"+Model.Clanarina.DatumDo.ToString("dd.MM.yyyy");
+    ViewBag.PageTitle = "Stavke članarine";
+    int clanarinaId = (int)ViewData["clanarinaId"];
+    int izmirena = (int)ViewData["izmirena"];
+
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "UpravljanjeClanarinama", new {brojTaba=1}, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na članarine" })
+
+
+</div>
+<br />
+<br />
+<div style="margin-left:25px;width:260px;">
+    @using (Html.BeginForm("Index", "StavkeClanarine", FormMethod.Get, new { id = "Filter" }))
+    {
+        @Html.HiddenFor(Model=>Model.clanarinaId)
+        @Html.DropDownListFor(model => model.izmirena, Model.Izmirenost, new { @class = "form-control", onchange = "document.getElementById('Filter').submit()" })
+
+    }
+</div>
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaStavkeClanarineIzmirene">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Članarina</th>
+                                        <th>Član</th>
+                                        <th>Priznanica</th>
+                                        <th>Iznos</th>
+                                        <th>Datum</th>
+                                        <th>Mjesto</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (StavkaClanarinePodaci x in Model.stavka)
+                                    {
+                                        <tr id="row_@x.Id">
+                                            <td>@x.Clanarina</td>
+                                            <td>@x.ClanKluba</td>
+                                            <td>@x.BrojPriznanice</td>
+                                            <td>@x.IznosKMBrojevima KM (@x.IznosKMSlovima)</td>
+                                            <td>@x.DatumUplate</td>
+                                            <td>@x.MjestoUplate</td>
+                                            
+                                            <td class="col-xs-1" align="center">
+                                                <div id="akcija" style="font-family:Arial;font-size:16px; font-weight:500;">
+
+
+                                                    @using (Ajax.BeginForm("Uredi", "StavkeClanarine", new { stavkaId = x.Id, izmirena = izmirena }, new AjaxOptions { UpdateTargetId = "formaUrediStavkuClanarine" }, new { @class = "poravnanje" }))
+                                                    {
+
+                                                        <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediStavkuClanarine" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                    }
+                                                    <button class="btn-lg btn btn-danger poravnanje" title="Obriši" onclick="PotvrdiBrisanjeStavkeClanarine(@x.Id)"><i class="fa fa-trash"></i> </button>
+
+                                                    <input type="hidden" id="sakrijStavkaClanarineId" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+
+                    @using (Ajax.BeginForm("Dodaj", "StavkeClanarine", new { clanarinaId = clanarinaId, izmirena = izmirena }, new AjaxOptions { UpdateTargetId = "formaDodajStavkuClanarine" }))
+                    {   <div style="text-align:center;">
+                        <button type="submit" class="btn-lg btn btn-primary" title="Dodaj stavku članarine" data-toggle="modal" data-target="#modalDodajStavkuClanarine" data-backdrop="static" data-keyboard="false"><span class="fa fa-plus" aria-hidden="true"></span><span class="fa fa-file-text-o" aria-hidden="true"></span> Dodaj stavku</button>
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaStavkeClanarineIzmirene').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [6],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4, 5, 6],
+                'width': '5%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+
+<div id="modalUrediStavkuClanarine" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka stavke članarine</h4>
+            </div>
+
+            <div class="modal-body" id="formaUrediStavkuClanarine">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modalDodajStavkuClanarine" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Nova stavka članarine</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodajStavkuClanarine">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalPorukaZaBrisanjeStavkeClanarine">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="color:white;">Obriši stavku članarine</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <h4>Da li ste sigurni da želite obrisati stavku članarine? </h4>
+
+                <div style="text-align:center;display:none" id="divUcitavanje">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" width="150" />
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a href="#" class="btn btn-primary" data-dismiss="modal" title="NE">NE</a>
+                <a href="#" class="btn btn-danger" onclick="ObrisiStavkuClanarine()" title="DA">DA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#modalDodajStavkuClanarine').on('hidden.bs.modal', function () { $('#formaDodajStavkuClanarine').empty(); });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#modalUrediStavkuClanarine').on('hidden.bs.modal', function () { $('#formaUrediStavkuClanarine').empty(); });
+    });
+</script>
+<script>
+    var PotvrdiBrisanjeStavkeClanarine = function (Id) {
+
+        $("#sakrijStavkaClanarineId").val(Id);
+        $("#modalPorukaZaBrisanjeStavkeClanarine").modal('show');
+
+    }
+
+    var ObrisiStavkuClanarine = function () {
+
+        $("#divUcitavanje").show();
+
+        var stavkaId = $("#sakrijStavkaClanarineId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/ModulSekretar/StavkeClanarine/Obrisi",
+            data: { stavkaId: stavkaId },
+            success: function (result) {
+                $("#divUcitavanje").hide();
+                $("#modalPorukaZaBrisanjeStavkeClanarine").modal("hide");
+                $("#row_" + stavkaId).remove();
+
+            }
+
+        })
+
+    }
+
+
+</script>
+
+
+
+
+
+

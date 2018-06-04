@@ -1,0 +1,150 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.RegistracijeKlubaIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Registracije kluba";
+    ViewBag.PageTitle = "Registracije kluba";
+    Layout = null;
+    decimal ukupanIznosIzlazaZaTrosakRegistracijeKluba = (decimal)ViewData["ukupanIznosIzlazaZaTrosakRegistracijeKluba"];
+
+}
+
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<br />
+<br />
+@if (ukupanIznosIzlazaZaTrosakRegistracijeKluba != 0)
+{
+<label style="margin-left:15px;">Ukupan iznos izdvojen za registracije kluba u odabranom periodu: @ukupanIznosIzlazaZaTrosakRegistracijeKluba KM</label>
+}
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaRegistracijeKluba">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Naziv</th>
+                                        <th>Period</th>
+                                        <th>Savez</th>
+                                        <th>Obrazloženje</th>
+                                        <th>Iznos</th>
+                                        <th>Datum uplate</th>
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (RegistracijaKlubaPodaci x in Model.troskoviRegistracije)
+                                    {
+                                        <tr id="row_@x.Id">
+                                            <td>@x.Naziv</td>
+                                            <td>@x.DatumRegistracijeKluba.ToString("dd.MM.yyyy") - @x.DatumIstekaRegistracijeKluba.ToString("dd.MM.yyyy")</td>
+                                            <td>@x.Savez</td>
+                                            <td>
+                                                @if (x.trosakRegistracije.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za registraciju.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.trosakRegistracije.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+                                            <td>@x.trosakRegistracije.IznosKMBrojevima.ToString() (@x.trosakRegistracije.IznosKMSlovima)</td>
+                                            <td>@x.trosakRegistracije.DatumUplate.ToString("dd.MM.yyyy")</td>
+                                        
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+              
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaRegistracijeKluba').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [3],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4, 5],
+                'width': '15%'
+    }
+            ]
+
+
+        })
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

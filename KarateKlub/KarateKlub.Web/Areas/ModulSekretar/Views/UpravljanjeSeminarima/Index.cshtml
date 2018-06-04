@@ -1,0 +1,163 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    int brojTaba = (int)ViewData["tab"];
+    int seminarId = (int)ViewData["seminarId"];
+    Seminari seminar = (Seminari)ViewData["seminar"];
+
+    ViewBag.Title = "Detalji seminara održanog " + seminar.DatumOdrzavanjaSeminaraOd.ToString("dd.MM.yyyy") +"-"+ seminar.DatumOdrzavanjaSeminaraDo.ToString("dd.MM.yyyy");
+    ViewBag.PageTitle = "Detalji seminara";
+
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Seminari", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na prikaz seminara" })
+
+</div>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li id="ucesniciSeminara">
+                    <a id="ucesnici" href="#ucesniciSeminaraTab" data-toggle="tab">Učesnici</a>
+                </li>
+                <li id="steceneLicence">
+                    <a id="licence" href="#steceneLicenceTab" data-toggle="tab">Stečene licence</a>
+                </li>
+                <li id="obnoveLicenci">
+                    <a id="obnove" href="#obnoveLicenciTab" data-toggle="tab">Obnove licenci</a>
+                </li>
+
+                <li id="troskoviSeminara">
+                    <a id="troskovi" href="#troskoviSeminaraTab" data-toggle="tab">Troškovi</a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content">
+                <div id="ucesniciSeminaraTab">
+
+                    @Html.Action("Index", "UcesniciSeminara", new { seminarId = seminarId })
+
+                </div>
+                <div id="steceneLicenceTab">
+
+                    @Html.Action("Index", "SteceneLicence", new {seminarId=seminarId })
+                    
+                </div>
+                <div id="obnoveLicenciTab">
+
+                    @Html.Action("Index", "ObnoveLicenci", new { seminarId = seminarId })
+                 
+                </div>
+                <div id="troskoviSeminaraTab">
+
+                    @Html.Action("Index", "TroskoviSeminara", new {seminarId=seminarId })
+                    
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div style="text-align:center;">
+    @using (Html.BeginForm("Index", "VrsteLicenci", new {seminarId=seminarId }, FormMethod.Post, new { @class = "" }))
+    {
+
+        <button type="submit" style="width:210px;" class="btn-lg btn btn-primary" title="Pregledaj vrste licenci"><span class="fa fa-file-text-o" aria-hidden="true"></span>Pregledaj vrste licenci</button>
+    }
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var ucesniciSeminara = document.getElementById("ucesniciSeminara");
+        ucesniciSeminara.classList.add("active");
+        var ucesniciSeminaraTab = document.getElementById("ucesniciSeminaraTab");
+        ucesniciSeminaraTab.classList.add("tab-pane");
+        ucesniciSeminaraTab.classList.add("fade");
+        ucesniciSeminaraTab.classList.add("in");
+        ucesniciSeminaraTab.classList.add("active");
+        var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+        troskoviSeminaraTab.classList.add("tab-pane");
+        troskoviSeminaraTab.classList.add("fade");
+        var steceneLicenceTab = document.getElementById("steceneLicenceTab");
+        steceneLicenceTab.classList.add("tab-pane");
+        steceneLicenceTab.classList.add("fade");
+        var obnoveLicenciTab = document.getElementById("obnoveLicenciTab");
+        obnoveLicenciTab.classList.add("tab-pane");
+        obnoveLicenciTab.classList.add("fade");
+
+    }
+
+ else  if (@brojTaba==2)
+    {
+       var steceneLicence = document.getElementById("steceneLicence");
+       steceneLicence.classList.add("active");
+       var steceneLicenceTab = document.getElementById("steceneLicenceTab");
+       steceneLicenceTab.classList.add("tab-pane");
+       steceneLicenceTab.classList.add("fade");
+       steceneLicenceTab.classList.add("in");
+       steceneLicenceTab.classList.add("active");
+       var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+       troskoviSeminaraTab.classList.add("tab-pane");
+       troskoviSeminaraTab.classList.add("fade");
+       var ucesniciSeminaraTab = document.getElementById("ucesniciSeminaraTab");
+       ucesniciSeminaraTab.classList.add("tab-pane");
+       ucesniciSeminaraTab.classList.add("fade");
+       var obnoveLicenciTab = document.getElementById("obnoveLicenciTab");
+       obnoveLicenciTab.classList.add("tab-pane");
+       obnoveLicenciTab.classList.add("fade");
+
+    }
+ else if(@brojTaba==3){
+     var obnoveLicenci = document.getElementById("obnoveLicenci");
+     obnoveLicenci.classList.add("active");
+     var obnoveLicenciTab = document.getElementById("obnoveLicenciTab");
+     obnoveLicenciTab.classList.add("tab-pane");
+     obnoveLicenciTab.classList.add("fade");
+     obnoveLicenciTab.classList.add("in");
+     obnoveLicenciTab.classList.add("active");
+     var steceneLicenceTab = document.getElementById("steceneLicenceTab");
+     steceneLicenceTab.classList.add("tab-pane");
+     steceneLicenceTab.classList.add("fade");
+     var ucesniciSeminaraTab = document.getElementById("ucesniciSeminaraTab");
+     ucesniciSeminaraTab.classList.add("tab-pane");
+     ucesniciSeminaraTab.classList.add("fade");
+     var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+     troskoviSeminaraTab.classList.add("tab-pane");
+     troskoviSeminaraTab.classList.add("fade");
+
+ }
+   else
+   {
+       var troskoviSeminara = document.getElementById("troskoviSeminara");
+       troskoviSeminara.classList.add("active");
+       var troskoviSeminaraTab = document.getElementById("troskoviSeminaraTab");
+       troskoviSeminaraTab.classList.add("tab-pane");
+       troskoviSeminaraTab.classList.add("fade");
+       troskoviSeminaraTab.classList.add("in");
+       troskoviSeminaraTab.classList.add("active");
+       var steceneLicenceTab = document.getElementById("steceneLicenceTab");
+       steceneLicenceTab.classList.add("tab-pane");
+       steceneLicenceTab.classList.add("fade");
+       var ucesniciSeminaraTab = document.getElementById("ucesniciSeminaraTab");
+       ucesniciSeminaraTab.classList.add("tab-pane");
+       ucesniciSeminaraTab.classList.add("fade");
+       var obnoveLicenciTab = document.getElementById("obnoveLicenciTab");
+       obnoveLicenciTab.classList.add("tab-pane");
+       obnoveLicenciTab.classList.add("fade");
+   }
+
+</script>
+
+
+

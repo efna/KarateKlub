@@ -1,0 +1,196 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.SekretariDetaljiVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Podaci sekretara";
+    ViewBag.PageTitle = "Podaci sekretara";
+    Layout = null;
+}
+
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000;
+        background-color: #ffeeee;
+    }
+
+    .validation-summary-errors {
+        font-weight: bold;
+        color: #ff0000;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    #PoravnanjeKontrola {
+        margin-left: 1px;
+        width: 300px;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+
+    .customDiv {
+        margin: 5px;
+    }
+
+    #slikaSekretara {
+        border: 1px solid transparent;
+        border-color: #337ab7;
+    }
+
+    .razmak {
+        margin-top: 20px;
+    }
+
+    .poravnanjeDugmadi {
+        margin-top: 10px;
+    }
+</style>
+
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="customDiv">
+                                    @if (Model.Slika != null)
+                                    {
+                                        <img id="slikaSekretara" style="width: 300px; height: 300px;" src="@Url.Action("GetImage", new { osobaId = Model.OsobaId })" />
+                                    }
+                                    else
+                                    {
+
+                                        <img id="slikaSekretara" src="~/Content/AdminLTE-2.4.2/dist/img/korisnikNemaSliku.jpg" style="width: 300px; height: 300px;">
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="customDiv">
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmakNaslov">Prezime i ime: </a>
+                                        <a class="col-sm-6 razmakNaslov">@Model.Prezime @Model.Ime</a>
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Ime oca: </a>
+                                        <a class="col-sm-6 razmak">@Model.ImeRoditelja</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Spol: </a>
+                                        <a class="col-sm-6 razmak">@Model.Spol</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">JMBG: </a>
+                                        <a class="col-sm-6 razmak">@Model.JMBG</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Datum rođenja: </a>
+                                        <a class="col-sm-6 razmak">@Model.DatumRodjenja.ToString("dd.MM.yyyy")</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Mjesto rođenja: </a>
+                                        <a class="col-sm-6 razmak">@Model.MjestoRodjenja</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Kontakt telefon: </a>
+                                        <a class="col-sm-6 razmak">@Model.KontaktTelefon</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">E-mail: </a>
+                                        <a class="col-sm-6 razmak">@Model.Email</a>
+
+                                    </div>
+
+                                    <div>
+                                        <a class="text-primary col-sm-6 razmak">Datum zaposlenja: </a>
+                                        <a class="col-sm-6 razmak">@Model.DatumZaposlenja.ToString("dd.MM.yyyy")</a>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                @using (Ajax.BeginForm("KorisnickiPodaci", "Sekretari", new { osobaId = Model.OsobaId }, new AjaxOptions { UpdateTargetId = "formaKorisnickiPodaciSekretara", LoadingElementId = "Loading1" }))
+                                {
+
+                                    @Html.HiddenFor(Model => Model.OsobaId)
+
+                                    <button type="submit" class="btn-lg btn btn-primary poravnanjeDugmadi" title="Korisnički podaci" style="display:inline-block;position:relative;" data-toggle="modal" data-target="#korisnickiPodaciSekretaraModal" data-backdrop="static" data-keyboard="false">
+                                        Korisnički podaci
+                                        <i class="fa fa-user" style="margin-left:140px;"></i>
+                                    </button>
+                                }
+
+                                </div>
+                            </div>
+
+                    </div>
+
+                    <br />
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal za korisniče podatke-->
+<div id="korisnickiPodaciSekretaraModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje korisničkih podataka</h4>
+            </div>
+            <div class="modal-body" id="formaKorisnickiPodaciSekretara">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

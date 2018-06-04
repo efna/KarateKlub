@@ -1,0 +1,72 @@
+﻿@using KarateKlub.Web.Helper;
+
+@using KarateKlub.Data.Models;
+
+@{ 
+    bool isTakmicar = Autentifikacija.isTakmicar(Context);
+
+
+}
+@if (isTakmicar == true)
+{
+<ul class="sidebar-menu" data-widget="tree">
+    <li>
+        <br />
+    </li>
+
+    <li class="header">Navigacija</li>
+    <li class="active">
+        <a href="/ModulClanKluba/Home/Index"><i class="fa fa-home" style="font-size:15px;"></i><span style="font-size:15px;">Početna</span></a>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-address-book-o" style="font-size:15px;"></i>
+            <span style="font-size:15px;"> Klubska knjižica</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li><a href="/ModulClanKluba/ClanoviKluba/UpravljanjeKlubskomKnjizicom" style="font-size:13px;margin-left:15px;"><i class="fa fa-file-text-o"></i>Prikaz knjižice</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-address-card-o" style="font-size:15px;"></i>
+            <span style="font-size:15px;"> Takmičarska knjižica</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu" style="display: none;">
+            <li><a href="/ModulClanKluba/Takmicari/UpravljanjeTakmicarskomKnjizicom" style="font-size:13px;margin-left:15px;"><i class="fa fa-file-text-o"></i>Prikaz knjižice</a></li>
+        </ul>
+    </li>
+</ul>
+}
+else
+{
+    <ul class="sidebar-menu" data-widget="tree">
+        <li>
+            <br />
+        </li>
+
+        <li class="header">Navigacija</li>
+        <li class="active">
+            <a href="/ModulClanKluba/Home/Index"><i class="fa fa-home" style="font-size:15px;"></i><span style="font-size:15px;">Početna</span></a>
+        </li>
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-address-book-o" style="font-size:15px;"></i>
+                <span style="font-size:15px;"> Klubska knjižica</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu" style="display: none;">
+                <li><a href="/ModulClanKluba/ClanoviKluba/UpravljanjeKlubskomKnjizicom" style="font-size:13px;margin-left:15px;"><i class="fa fa-file-text-o"></i>Prikaz knjižice</a></li>
+            </ul>
+        </li>
+   
+    </ul>
+}

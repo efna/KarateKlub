@@ -1,0 +1,380 @@
+﻿@model KarateKlub.Web.Areas.ModulSekretar.Models.ZaduzenjeOpremeKlubaClanovimaIndexVM
+@using KarateKlub.Web.Areas.ModulSekretar.Models
+
+@{
+    ViewBag.Title = "Zadužena oprema";
+    ViewBag.PageTitle = "Zadužena oprema";
+    Layout = null;
+    int aktivnost = (int)ViewData["aktivnost"];
+
+}
+<style>
+    .poravnanje {
+        width: 50px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+</style>
+<br />
+<br />
+<div style="margin-left:15px;width:260px;">
+    @using (Html.BeginForm("GoToUpravljanjeOpremomKlubaByAktivnost", "ZaduzenjeOpremeKlubaClanovima", FormMethod.Get, new { id = "Filter" }))
+    {
+        @Html.DropDownListFor(model => model.aktivnost, Model.Aktivnost, new { @class = "form-control", onchange = "document.getElementById('Filter').submit()" })
+
+    }
+</div>
+
+<div id="content-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-primary">
+                        <div class="table-responsive-vertical shadow-z-1">
+
+                            <table style="border-top: 1px solid rgba(0, 0, 0, 0.12); font-family:Arial;" class="table table-hover table-striped table-bordered" id="tabelaZaduzenaOprema">
+                                <thead style="font-size:16px; font-weight:500;">
+                                    <tr>
+                                        <th>Član</th>
+                                        <th>Datum zaduženja</th>
+                                        <th>Oprema</th>
+                                        <th>Jedinica mjere</th>
+                                        <th>Obrazloženje</th>
+                                        <th>Razduženo</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (ZaduzenjeOpremeKlubaClanovimaPodaci x in Model.zaduzenjaOpremaKlubaClanovima)
+                                    {
+                                        <tr id="rowRazduzenaZaduzenaOpremaId_@x.Id">
+                                            <td>@x.ClanKluba</td>
+                                            <td>@x.DatumZaduzenjaOpreme.ToString("dd.MM.yyyy")</td>
+                                            <td>@x.VrstaOpremeKluba</td>
+                                            <td>@x.JedinicaMjere</td>
+                                            <td>
+                                                @if (x.Obrazlozenje == null)
+                                                {
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="Ne postoji obrazloženje za zaduženu opremu.">Pregledaj obrazloženje</a>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <a href="#" data-toggle="popover" title="Obrazloženje" data-content="@x.Obrazlozenje">Pregledaj obrazloženje</a>
+
+                                                }
+                                            </td>
+                                                @if (@x.isAktivnoZaduzenje == true)
+                                                {
+                                                   
+                                                    <td>NE</td>
+
+                                                }
+                                                else
+                                                {
+                                                
+                                                    <td>@x.razduzenaOprema.DatumRazduzenjaOpreme.ToString("dd.MM.yyyy")</td>
+                                                }
+                                                
+
+                                                <td class="col-xs-1" align="center">
+                                                    <div id="akcija" style="font-family:Arial;font-size:16px; font-weight:500;">
+
+                                                        @if (x.isAktivnoZaduzenje == true)
+                                                        {
+                                                            using (Ajax.BeginForm("Dodaj", "RazduzenaOpremaKlubaClanovi", new { zaduzenjeId = x.Id, aktivnost = aktivnost }, new AjaxOptions { UpdateTargetId = "formaDodajRazduzenje" }, new { @class = "poravnanje" }))
+                                                            {
+
+                                                                <button type="submit" title="Razduzi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalDodajRazduzenje" data-backdrop="static" data-keyboard="false"><span class="fa fa-times" aria-hidden="true"></span><span class="fa fa-thumb-tack" aria-hidden="true"></span> </button>
+                                                            }
+                                                            using (Ajax.BeginForm("Uredi", "ZaduzenjeOpremeKlubaClanovima", new { zaduzenjeId = x.Id, aktivnost = aktivnost }, new AjaxOptions { UpdateTargetId = "formaUrediZaduzenuOpremu" }, new { @class = "poravnanje" }))
+                                                            {
+
+                                                                <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediZaduzenuOpremu" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                            }
+                                                            <button class="btn-lg btn btn-danger poravnanje" title="Obriši" onclick="PotvrdiBrisanjeZaduzeneOpreme(@x.Id)"><i class="fa fa-trash"></i> </button>
+
+                                                            <input type="hidden" id="sakrijZaduzenaOpremaId" />
+                                                        }
+                                                        else
+                                                        {
+                                                            using (Ajax.BeginForm("Uredi", "RazduzenaOpremaKlubaClanovi", new { razduzenjeId = x.razduzenaOprema.Id, aktivnost = aktivnost }, new AjaxOptions { UpdateTargetId = "formaUrediRazduzenje" }, new { @class = "poravnanje" }))
+                                                            {
+
+                                                                <button type="submit" title="Uredi" class="btn-lg btn btn-warning poravnanje" data-toggle="modal" data-target="#modalUrediRazduzenje" data-backdrop="static" data-keyboard="false"><span class="fa fa-edit" aria-hidden="true"></span> </button>
+                                                            }
+                                                            
+                                                        }
+
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+
+                    @using (Ajax.BeginForm("Dodaj", "ZaduzenjeOpremeKlubaClanovima", new { aktivnost = aktivnost }, new AjaxOptions { UpdateTargetId = "formaDodajZaduzenuOpremu" }))
+                    {   <div style="text-align:center;">
+                        <button type="submit" style="width:210px;" class="btn-lg btn btn-primary" title="Dodaj zaduženje" data-toggle="modal" data-target="#modalDodajZaduzenuOpremu" data-backdrop="static" data-keyboard="false"><span class="fa fa-plus" aria-hidden="true"></span><span class="fa fa-thumb-tack" aria-hidden="true"></span> Dodaj zaduženje</button>
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/AdminLTE-2.4.2/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#tabelaZaduzenaOprema').DataTable({
+
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'retrieve': true,
+            'autoWidth': false,
+            'language': {
+                'paginate': {
+                    'previous': "Prethodna",
+                    'next': 'Sljedeća',
+
+                },
+                'search': "Pretraga:",
+                'lengthMenu': 'Broj zapisa po stranici:<select>' +
+            '<option value="1">1</option>' +
+            '<option value="2">2</option>' +
+            '<option value="3">3</option>' +
+            '<option value="4">4</option>' +
+            '<option value="5">5</option>' +
+            '<option value="10">10</option>' +
+            '<option value="20">20</option>' +
+            '<option value="30">30</option>' +
+            '<option value="40">40</option>' +
+            '<option value="50">50</option>' +
+            '<option value="-1">Svi</option>' +
+            '</select>',
+                'info': "Prikaziva _END_ od ukupno _TOTAL_ zapisa",
+                'emptyTable': "Nema dostupnih podataka",
+                'zeroRecords': "Nema pronađenih rezultata",
+                'processing': "Procesiranje",
+                'infoEmpty': "Prikaziva 0 od ukupno 0 zapisa",
+                'loadingRecords': "Učitavanje zapisa...",
+                'infoPostFix': "",
+                'infoFiltered': "(filtrirano od ukupno _MAX_ zapisa)"
+            },
+
+            'pageLength': 10,
+            'columnDefs': [{
+                'targets': [4,6],
+                'orderable': false
+            }, {
+                'targets': [0, 1, 2, 3, 4, 5, 6],
+                'width': '1%'
+            }
+            ]
+
+
+        })
+
+    });
+</script>
+
+
+
+<div id="modalUrediZaduzenuOpremu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka zadužene opreme</h4>
+            </div>
+
+            <div class="modal-body" id="formaUrediZaduzenuOpremu">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modalDodajZaduzenuOpremu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Nova zadužena oprema</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodajZaduzenuOpremu">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalDodajRazduzenje" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#337ab7;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Novo razduženje opreme</h4>
+            </div>
+
+            <div class="modal-body" id="formaDodajRazduzenje">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modalUrediRazduzenje" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white;">Uređivanje podataka razdužene opreme</h4>
+            </div>
+
+            <div class="modal-body" id="formaUrediRazduzenje">
+                <div class="text-center" id="Loading1" style="margin:auto;">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" title="Odustani" style="margin-right:200px;width:170px;" class="btn-lg btn btn-danger" data-dismiss="modal"><span class="fa fa-eraser"></span> Odustani</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalPorukaZaBrisanjeZaduzeneOpreme">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#FF8800;">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title" style="color:white;">Obriši zaduženu opremu</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <h4>Da li ste sigurni da želite obrisati zaduženu opremu? </h4>
+
+                <div style="text-align:center;display:none" id="divUcitavanje">
+                    <img src="~/Content/AdminLTE-2.4.2/dist/img/gifLoading.gif" width="150" />
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align:center;">
+                <a href="#" class="btn btn-primary" data-dismiss="modal" title="NE">NE</a>
+                <a href="#" class="btn btn-danger" onclick="ObrisiZaduzenuOpremu()" title="DA">DA</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#modalUrediZaduzenuOpremu').on('hidden.bs.modal', function () { $('#formaUrediZaduzenuOpremu').empty(); });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#modalDodajZaduzenuOpremu').on('hidden.bs.modal', function () { $('#formaDodajRazduzenje').empty(); });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#modalDodajRazduzenje').on('hidden.bs.modal', function () { $('#formaDodajRazduzenje').empty(); });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#modalUrediRazduzenje').on('hidden.bs.modal', function () { $('#formaUrediRazduzenje').empty(); });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+<script>
+    var PotvrdiBrisanjeZaduzeneOpreme = function (Id) {
+
+        $("#sakrijZaduzenaOpremaId").val(Id);
+        $("#modalPorukaZaBrisanjeZaduzeneOpreme").modal('show');
+
+    }
+
+    var ObrisiZaduzenuOpremu = function () {
+
+        $("#divUcitavanje").show();
+
+        var zaduzenaOpremaId = $("#sakrijZaduzenaOpremaId").val();
+
+        $.ajax({
+
+            type: "POST",
+            url: "/ModulSekretar/ZaduzenjeOpremeKlubaClanovima/Obrisi",
+            data: { zaduzenaOpremaId: zaduzenaOpremaId },
+            success: function (result) {
+                $("#divUcitavanje").hide();
+                $("#modalPorukaZaBrisanjeZaduzeneOpreme").modal("hide");
+                $("#rowRazduzenaZaduzenaOpremaId_" + zaduzenaOpremaId).remove();
+
+            }
+
+        })
+
+    }
+
+
+</script>
+
+
+
+
+

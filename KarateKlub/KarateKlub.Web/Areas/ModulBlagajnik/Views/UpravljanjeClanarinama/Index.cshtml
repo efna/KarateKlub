@@ -1,0 +1,116 @@
+﻿@using KarateKlub.Data.Models;
+@{
+    ViewBag.PageTitle = "Evidencija članarina";
+    ViewBag.Title = "Evidencija članarina";
+    int brojTaba = (int)ViewData["tab"];
+
+}
+
+<div style="text-align:left;">
+
+    @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = " btn-lg btn btn-primary glyphicon glyphicon-chevron-left", @style = "font-family_", @Title = "Nazad na početnu" })
+
+</div>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <ul class="nav nav-tabs nav-justified">
+                <li id="clanarine">
+                    <a id="clanarineClanova" href="#clanarineTab" data-toggle="tab">Članarine</a>
+                </li>
+                <li id="izmireneClanarine">
+                    <a id="izmirene" href="#izmireneClanarineTab" data-toggle="tab">Pregled izmirenih članarina</a>
+                </li>
+                <li id="neizmireneClanarine">
+                    <a id="neizmirene" href="#neizmireneClanarineTab" data-toggle="tab">Pregled neizmirenih članarina</a>
+                </li>
+
+
+
+            </ul>
+            <div class="tab-content">
+                <div id="clanarineTab">
+
+                    @Html.Action("Index", "Clanarine", new { })
+
+                </div>
+                <div id="izmireneClanarineTab">
+
+                    @Html.Action("IzmireneClanarine", "StavkeClanarine", new { })
+
+                </div>
+                <div id="neizmireneClanarineTab">
+
+                    @Html.Action("NeizmireneClanarine", "StavkeClanarine", new { })
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    if (@brojTaba==1)
+    {
+        var clanarine = document.getElementById("clanarine");
+        clanarine.classList.add("active");
+        var clanarineTab = document.getElementById("clanarineTab");
+        clanarineTab.classList.add("tab-pane");
+        clanarineTab.classList.add("fade");
+        clanarineTab.classList.add("in");
+        clanarineTab.classList.add("active");
+        var izmireneClanarineTab = document.getElementById("izmireneClanarineTab");
+        izmireneClanarineTab.classList.add("tab-pane");
+        izmireneClanarineTab.classList.add("fade");
+        var neizmireneClanarineTab = document.getElementById("neizmireneClanarineTab");
+        neizmireneClanarineTab.classList.add("tab-pane");
+        neizmireneClanarineTab.classList.add("fade");
+    }
+
+ else  if (@brojTaba==2)
+    {
+     var izmireneClanarine = document.getElementById("izmireneClanarine");
+     izmireneClanarine.classList.add("active");
+     var izmireneClanarineTab = document.getElementById("izmireneClanarineTab");
+     izmireneClanarineTab.classList.add("tab-pane");
+     izmireneClanarineTab.classList.add("fade");
+     izmireneClanarineTab.classList.add("in");
+     izmireneClanarineTab.classList.add("active");
+     var clanarineTab = document.getElementById("clanarineTab");
+     clanarineTab.classList.add("tab-pane");
+     clanarineTab.classList.add("fade");
+     var neizmireneClanarineTab = document.getElementById("neizmireneClanarineTab");
+     neizmireneClanarineTab.classList.add("tab-pane");
+     neizmireneClanarineTab.classList.add("fade");
+
+    }
+ else{
+     var neizmireneClanarine = document.getElementById("neizmireneClanarine");
+     neizmireneClanarine.classList.add("active");
+     var neizmireneClanarineTab = document.getElementById("neizmireneClanarineTab");
+     neizmireneClanarineTab.classList.add("tab-pane");
+     neizmireneClanarineTab.classList.add("fade");
+     neizmireneClanarineTab.classList.add("in");
+     neizmireneClanarineTab.classList.add("active");
+     var clanarineTab = document.getElementById("clanarineTab");
+     clanarineTab.classList.add("tab-pane");
+     clanarineTab.classList.add("fade");
+     var izmireneClanarineTab = document.getElementById("izmireneClanarineTab");
+     izmireneClanarineTab.classList.add("tab-pane");
+     izmireneClanarineTab.classList.add("fade");
+
+ }
+
+
+</script>
+
+
+
+
+
