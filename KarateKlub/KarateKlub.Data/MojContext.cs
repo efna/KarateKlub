@@ -101,6 +101,7 @@ namespace KarateKlub.Data
 
     
         }
+        public DbSet<AutorizacijskiToken> AutorizacijskiToken { get; set; }
         public DbSet<Osoba> Osoba { get; set; }
         public DbSet<KorisnickiNalozi> KorisnickiNalozi { get; set; }
         public DbSet<KorisnickeUloge> KorisnickeUloge { get; set; }
