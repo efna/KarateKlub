@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KarateKlub.Api.Controllers
 {
-    [MyApiAuthorize]
+   [MyApiAuthorize]
     public class TakmicariController : MyWebApiBaseController
     {
         public TakmicariController(MyContext db) : base(db)

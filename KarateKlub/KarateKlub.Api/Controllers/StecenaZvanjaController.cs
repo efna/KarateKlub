@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KarateKlub.Api.Controllers
 {
-    [MyApiAuthorize]
+   [MyApiAuthorize]
     public class StecenaZvanjaController : MyWebApiBaseController
     {
         public StecenaZvanjaController(MyContext db) : base(db)
@@ -73,7 +73,7 @@ namespace KarateKlub.Api.Controllers
             StecenaZvanjaPregledVM model = new StecenaZvanjaPregledVM
             {
 
-                rows = _db.StecenaZvanjas.Where(x => x.isDeleted).Select(x => new StecenaZvanjaPregledVM.Row
+                rows = _db.StecenaZvanjas.Where(x => x.isDeleted==false).Select(x => new StecenaZvanjaPregledVM.Row
                 {
                     ime = _db.Osobas.Where(k => k.Id == x.OsobaId).First().Ime + " ",
                     prezime = _db.Osobas.Where(k => k.Id == x.OsobaId).First().Prezime,

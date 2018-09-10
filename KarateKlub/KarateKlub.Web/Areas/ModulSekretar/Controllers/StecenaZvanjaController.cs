@@ -63,7 +63,7 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindOsobe()
         {
-            return ctx.Osoba.Where(x => x.isDeleted == false && x.isAktivnaOsoba == true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Ime + " (" + x.ImeRoditelja + ") " + x.Prezime }).ToList();
+            return ctx.Osoba.OrderBy(x=>x.Ime).Where(x => x.isDeleted == false && x.isAktivnaOsoba == true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Ime + " (" + x.ImeRoditelja + ") " + x.Prezime }).ToList();
 
         }
 

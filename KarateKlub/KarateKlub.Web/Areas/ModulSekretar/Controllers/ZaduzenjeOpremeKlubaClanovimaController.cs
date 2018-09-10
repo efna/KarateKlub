@@ -61,19 +61,19 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindClanoviKluba()
         {
-            return ctx.ClanoviKluba.Where(x => x.isDeleted == false && x.Osoba.isAktivnaOsoba==true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Osoba.Ime+" ("+x.Osoba.ImeRoditelja+") "+x.Osoba.Prezime }).ToList();
+            return ctx.ClanoviKluba.OrderBy(x=>x.Osoba.Ime).Where(x => x.isDeleted == false && x.Osoba.isAktivnaOsoba==true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Osoba.Ime+" ("+x.Osoba.ImeRoditelja+") "+x.Osoba.Prezime }).ToList();
 
         }
 
         private List<SelectListItem> BindJediniceMjere()
         {
-            return ctx.JediniceMjere.Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
+            return ctx.JediniceMjere.OrderBy(x=>x.Naziv).Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
 
         }
 
         private List<SelectListItem> BindVrsteOpreme()
         {
-            return ctx.VrsteOpremeKluba.Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
+            return ctx.VrsteOpremeKluba.OrderBy(x=>x.Naziv).Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
 
         }
 

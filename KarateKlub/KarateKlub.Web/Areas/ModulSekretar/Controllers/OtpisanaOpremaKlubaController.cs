@@ -51,13 +51,13 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindJediniceMjere()
         {
-            return ctx.JediniceMjere.Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
+            return ctx.JediniceMjere.OrderBy(x=>x.Naziv).Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
 
         }
 
         private List<SelectListItem> BindVrsteOpreme()
         {
-            return ctx.VrsteOpremeKluba.Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
+            return ctx.VrsteOpremeKluba.OrderBy(x=>x.Naziv).Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
 
         }
 

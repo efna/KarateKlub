@@ -18,7 +18,7 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
         public ActionResult Index(int seminarId)
         {
             UcesniciSeminaraIndexVM model = new UcesniciSeminaraIndexVM {
-                ucesniciSeminara = ctx.UcesniciSeminara.Where(x => x.isDeleted == false && x.SeminariId == seminarId).Select(x => new UcesnikSeminaraPodaci
+                ucesniciSeminara = ctx.UcesniciSeminara.OrderBy(x=>x.Osoba.Ime).Where(x => x.isDeleted == false && x.SeminariId == seminarId).Select(x => new UcesnikSeminaraPodaci
                 {
                     Id = x.Id,
                     isDeleted=x.isDeleted,

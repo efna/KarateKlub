@@ -54,7 +54,7 @@
     <div id="Poravnanje">
 
         <div class="form-group" style="width:auto;">
-            <label>Naziv: </label>
+            <label>Naziv troška: </label>
             @Html.TextBoxFor(model => model.Naziv, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Naziv)
             @Html.ValidationMessage("NazivError", new { id = "NazivError" })

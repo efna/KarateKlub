@@ -231,7 +231,7 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindTakmicare()
         {
-            return ctx.Takmicari.Where(x => x.isDeleted == false && x.isAktivanTakmicar==true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.ClanKluba.Osoba.Ime + " (" + x.ClanKluba.Osoba.ImeRoditelja + ") " + x.ClanKluba.Osoba.Prezime }).ToList();
+            return ctx.Takmicari.OrderBy(x=>x.ClanKluba.Osoba.Ime).Where(x => x.isDeleted == false && x.isAktivanTakmicar==true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.ClanKluba.Osoba.Ime + " (" + x.ClanKluba.Osoba.ImeRoditelja + ") " + x.ClanKluba.Osoba.Prezime }).ToList();
 
         }
 

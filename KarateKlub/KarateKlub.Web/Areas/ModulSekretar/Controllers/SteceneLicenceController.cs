@@ -111,7 +111,7 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindUcesnikeSeminara(int seminarId)
         {
-            return ctx.UcesniciSeminara.Where(x => x.isDeleted == false && x.SeminariId == seminarId).Select(x => new SelectListItem { Value = x.Osoba.Id.ToString(), Text = x.Osoba.Ime + " (" + x.Osoba.ImeRoditelja + ") " + x.Osoba.Prezime }).ToList();
+            return ctx.UcesniciSeminara.OrderBy(x=>x.Osoba.Ime).Where(x => x.isDeleted == false && x.SeminariId == seminarId).Select(x => new SelectListItem { Value = x.Osoba.Id.ToString(), Text = x.Osoba.Ime + " (" + x.Osoba.ImeRoditelja + ") " + x.Osoba.Prezime }).ToList();
 
         }
 
@@ -260,7 +260,7 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindVrsteLicenci()
         {
-            return ctx.VrsteLicenci.Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
+            return ctx.VrsteLicenci.OrderBy(x=>x.Naziv).Where(x => x.isDeleted == false).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Naziv }).ToList();
 
         }
 

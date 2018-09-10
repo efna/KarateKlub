@@ -60,7 +60,7 @@ namespace KarateKlub.Web.Areas.ModulSekretar.Controllers
 
         private List<SelectListItem> BindClanoveKluba()
         {
-            return ctx.ClanoviKluba.Where(x => x.isDeleted == false && x.Osoba.isAktivnaOsoba == true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Osoba.Ime + " (" + x.Osoba.ImeRoditelja + ") " + x.Osoba.Prezime }).ToList();
+            return ctx.ClanoviKluba.OrderBy(x=>x.Osoba.Ime).Where(x => x.isDeleted == false && x.Osoba.isAktivnaOsoba == true).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Osoba.Ime + " (" + x.Osoba.ImeRoditelja + ") " + x.Osoba.Prezime }).ToList();
 
         }
         public ActionResult SpremiNovogUcesnikaPolaganjaZaUcenickaZvanja(UcesniciPolaganjaZaUcenickaZvanjaDodajVM model)
