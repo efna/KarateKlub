@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.design.widget.CoordinatorLayout
+android:id="@+id/main_content"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/white"
+    >
+
+
+    <SearchView
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textNoSuggestions|textVisiblePassword"
+        android:hint=""
+        android:layout_alignParentLeft="true"
+        android:text="" />
+
+
+    <ListView
+        android:paddingTop="25dp"
+        android:layout_below="@id/editText"
+        android:id="@+id/listaRezultataTakmicenjaTrener"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </ListView>
+
+</RelativeLayout>
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="10dp"
+    android:src="@android:drawable/ic_input_add"
+    android:backgroundTint="@color/colorPrimary"
+    />
+
+
+</android.support.design.widget.CoordinatorLayout>

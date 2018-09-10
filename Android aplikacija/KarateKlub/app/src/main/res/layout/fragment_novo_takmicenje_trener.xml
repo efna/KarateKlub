@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/layout_padding"
+    tools:context=".area_trener.fragment.NovoTakmicenjeTrenerFragment"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Naziv:"
+        android:textColor="@color/colorPrimary"
+
+        android:layout_alignParentTop="true"
+        android:id="@+id/viewNazivTakmicenja"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="true"
+        android:id="@+id/txtNazivTakmicenja"
+        android:layout_below="@id/viewNazivTakmicenja"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Datum održavanja:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtNazivTakmicenja"
+        android:id="@+id/viewDatumOdrzavanja"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtDatumOdrzavanja"
+        android:enabled="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:editable="false"
+        android:layout_below="@+id/viewDatumOdrzavanja"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mjesto održavanja:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtDatumOdrzavanja"
+        android:id="@+id/viewMjestoOdrzavanja"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtMjestoOdrzavanja"
+        android:enabled="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@+id/viewMjestoOdrzavanja"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Organizator:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtMjestoOdrzavanja"
+        android:id="@+id/viewOrganizator"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtOrganizator"
+        android:enabled="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@+id/viewOrganizator"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Savez:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtOrganizator"
+        android:id="@+id/viewSavez"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinnerSavez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewSavez"
+        android:textColor="@color/colorPrimary"
+
+        />
+
+    <Button
+        android:id="@+id/btnSpremiNovoTakmicenje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerSavez"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/icons"
+        android:text="Spremi podatke"
+        android:layout_marginTop="15dp"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_marginTop="1dp"
+            android:id="@+id/txtPrvaLinijIzmireneClanarineBlagajnik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PrvaLinija"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            />
+
+
+
+        <TextView
+            android:id="@+id/txtDrugaLinijaIzmireneClanarineBlagajnik"
+            android:layout_below="@id/txtPrvaLinijIzmireneClanarineBlagajnik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DrugaLinija"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:id="@+id/txtTrecaLinijaIzmireneClanarineBlagajnik"
+            android:layout_below="@id/txtDrugaLinijaIzmireneClanarineBlagajnik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TrecaLinija"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:layout_below="@id/txtDrugaLinijaIzmireneClanarineBlagajnik"
+            android:id="@+id/txtCetvrtaLinijaIzmireneClanarineBlagajnik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="TextView"
+            android:layout_alignRight="@id/txtTrecaLinijaIzmireneClanarineBlagajnik"
+
+            />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

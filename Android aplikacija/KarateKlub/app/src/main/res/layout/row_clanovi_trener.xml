@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/img_clan_trener"
+
+            android:layout_marginRight="15dp"
+            android:layout_alignTop="@+id/txtPrvaLinijaClanoviTrener"
+            android:layout_toLeftOf="@+id/txtPrvaLinijaClanoviTrener"
+            android:layout_toStartOf="@+id/txtPrvaLinijaClanoviTrener"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="Prva linija:"
+            android:id="@+id/txtPrvaLinijaClanoviTrener"
+            android:layout_alignLeft="@+id/txtDrugaLinijaClanoviTrener"
+            android:layout_alignStart="@+id/txtDrugaLinijaClanoviTrener"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Druga linija:"
+            android:layout_below="@+id/txtPrvaLinijaClanoviTrener"
+            android:id="@+id/txtDrugaLinijaClanoviTrener"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="100dp"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Treca linija:"
+            android:layout_below="@+id/txtDrugaLinijaClanoviTrener"
+            android:id="@+id/txtTrecaLinijaClanoviTrener"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="100dp"
+            android:layout_gravity="center_vertical"
+            />
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

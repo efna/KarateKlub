@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:padding="@dimen/layout_padding"
+tools:context=".area_blagajnik.fragment.NovaStavkaClanarineBlagajnikFragment"
+
+    >
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Broj priznanice:"
+    android:textColor="@color/colorPrimary"
+    android:layout_alignParentTop="true"
+    android:id="@+id/viewBrojPriznanice"
+    />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:enabled="true"
+    android:id="@+id/txtBrojPriznanice"
+    android:layout_below="@id/viewBrojPriznanice"
+    android:text=""
+    android:textColor="@color/colorPrimary"
+    />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iznos:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtBrojPriznanice"
+        android:id="@+id/viewIznosBrojevima"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtIznosBrojevima"
+        android:enabled="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@+id/viewIznosBrojevima"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        android:inputType="numberDecimal"
+
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iznos slovima:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtIznosBrojevima"
+        android:id="@+id/viewIznosSlovima"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtIznosSlovima"
+        android:enabled="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_below="@+id/viewIznosSlovima"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Datum uplate:"
+    android:textColor="@color/colorPrimary"
+    android:layout_below="@id/txtIznosSlovima"
+    android:id="@+id/viewDatumUplate"
+    />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/txtDatumUplate"
+    android:enabled="true"
+    android:focusable="true"
+    android:clickable="true"
+    android:editable="false"
+    android:layout_below="@+id/viewDatumUplate"
+    android:textColor="@color/colorPrimary"
+    android:text=""
+    />
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Mjesto uplate:"
+    android:textColor="@color/colorPrimary"
+    android:layout_below="@id/txtDatumUplate"
+    android:id="@+id/vireMjestoUplate"
+    />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/txtMjestoUplate"
+    android:enabled="true"
+    android:focusable="true"
+    android:clickable="true"
+    android:layout_below="@+id/vireMjestoUplate"
+    android:textColor="@color/colorPrimary"
+    android:text=""
+    />
+
+
+
+<Button
+    android:id="@+id/btnSpremiNovuStavkuClanarine"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/txtMjestoUplate"
+    android:background="@color/colorPrimary"
+    android:textColor="@color/icons"
+    android:text="Spremi podatke"
+    android:layout_marginTop="5dp"
+    />
+
+</RelativeLayout>

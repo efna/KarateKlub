@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/layout_padding"
+    tools:context=".area_trener.fragment.NoviRezultatTakmicenjaTrenerFragment"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Takmičar:"
+        android:textColor="@color/colorPrimary"
+
+        android:layout_alignParentTop="true"
+        android:id="@+id/viewTakmicar"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:id="@+id/txtTakmicar"
+        android:layout_below="@id/viewTakmicar"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        />
+    <ImageView
+        android:textColor="@color/primary"
+        android:id="@+id/imgAddTakmicara"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_action_user" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disciplina:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtTakmicar"
+        android:id="@+id/viewDisciplina"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinnerDisciplina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewDisciplina"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Starosna dob:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/spinnerDisciplina"
+        android:id="@+id/viewStarosnaDob"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinnerStarosnaDob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewStarosnaDob"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kategorija:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/spinnerStarosnaDob"
+        android:id="@+id/viewKategorija"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtKategorija"
+        android:enabled="true"
+        android:focusable="true"
+        android:layout_below="@+id/viewKategorija"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Osvojeno mjesto:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtKategorija"
+        android:id="@+id/viewOsvojenoMjesto"
+        />
+
+
+    <Spinner
+        android:id="@+id/spinnerOsvojenoMjesto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewOsvojenoMjesto"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Br. takmičara u kategoriji:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/spinnerOsvojenoMjesto"
+        android:id="@+id/viewBrojTakmicaraUKategoriji"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtBrojTakmicaraUKategoriji"
+        android:enabled="true"
+        android:focusable="true"
+        android:layout_below="@+id/viewBrojTakmicaraUKategoriji"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        android:inputType="number"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Broj pobjeda:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtBrojTakmicaraUKategoriji"
+        android:id="@+id/viewBrojPobjeda"
+
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtBrojPobjeda"
+        android:enabled="true"
+        android:focusable="true"
+        android:layout_below="@+id/viewBrojPobjeda"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        android:inputType="number"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Broj poraza:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtBrojPobjeda"
+        android:id="@+id/viewBrojPoraza"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtBrojPoraza"
+        android:enabled="true"
+        android:focusable="true"
+        android:layout_below="@+id/viewBrojPoraza"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        android:inputType="number"
+        />
+    <Button
+        android:id="@+id/btnSpremiNoviRezultatTakmicenja"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtBrojPoraza"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/icons"
+        android:text="Spremi podatke"
+        android:layout_marginTop="15dp"
+        />
+
+</RelativeLayout>

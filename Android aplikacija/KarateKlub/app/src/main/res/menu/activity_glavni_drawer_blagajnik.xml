@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/dbBlagajnik" android:title="Izbornik" android:icon="@drawable/ic_dashboard_black_24dp"></item>
+    <item android:id="@+id/clanarineClanaBlagajnik" android:title="Članarine" android:icon="@drawable/ic_clanarine_black_24dp"></item>
+    <item android:id="@+id/clanoviKlubaBlagajnik" android:title="Članovi" android:icon="@drawable/ic_clanovi_black_24dp"></item>
+    <item android:id="@+id/odjavaBlagajnika" android:title="Odjavi se" android:icon="@drawable/ic_odjavi_se_black_24dp"></item>
+
+
+</menu>

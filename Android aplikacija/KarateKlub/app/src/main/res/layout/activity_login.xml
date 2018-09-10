@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".area_autentifikacija.LoginActivity"
+    android:background="@color/blue">
+
+    <ImageView
+        android:id="@+id/slikaprijava"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        app:srcCompat="@drawable/prijava_na_sistem" />
+
+    <EditText
+        android:id="@+id/korisnickoime"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="216dp"
+        android:background="@drawable/txt_shape"
+        android:drawableRight="@drawable/ic_action_user"
+        android:ems="10"
+        android:hint="Korisničko ime"
+        android:inputType="textPersonName"
+        android:padding="12dp"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/lozinka"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="151dp"
+        android:background="@drawable/txt_shape"
+        android:drawableRight="@drawable/ic_action_pass"
+        android:ems="10"
+        android:hint="Lozinka"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textSize="20sp"
+        />
+
+
+    <Button
+
+        android:id="@+id/btnprijava"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="43dp"
+        android:background="@drawable/btn_shape_selector"
+        android:drawableRight="@drawable/ic_action_prijava"
+        android:gravity="left|center_vertical"
+        android:padding="12dp"
+        android:text="Prijavi se"
+        android:textAllCaps="false"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp" />
+</RelativeLayout>

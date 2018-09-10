@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/dbTrener" android:title="Izbornik" android:icon="@drawable/ic_dashboard_black_24dp"></item>
+    <item android:id="@+id/clanoviKlubaTrener" android:title="Članovi" android:icon="@drawable/ic_clanovi_black_24dp"></item>
+    <item android:id="@+id/stecenaZvanjaTrener" android:title="Zvanja" android:icon="@drawable/ic_zvanja_black_24dp"></item>
+    <item android:id="@+id/takmicenjaTrener" android:title="Takmičenja" android:icon="@drawable/ic_rezultati_24dp"></item>
+    <item android:id="@+id/odjavaTrenera" android:title="Odjavi se" android:icon="@drawable/ic_odjavi_se_black_24dp"></item>
+
+
+</menu>

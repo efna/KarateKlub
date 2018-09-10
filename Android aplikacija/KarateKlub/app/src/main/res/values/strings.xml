@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">KarateKlub</string>
+    <string name="korisnicko_ime_error">Korisničko ime je obavezno polje!</string>
+    <string name="lozinka_error">Lozinka je obavezno polje!</string>
+    <string name="title_activity_proba_za_nd">probaZaND</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="title_activity_glavni">Izbornik</string>
+
+    <string name="nav_header_title">Karate klub</string>
+    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_desc">Navigation header</string>
+
+</resources>

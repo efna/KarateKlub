@@ -1,0 +1,38 @@
+<resources>
+
+    <!-- Base application theme.
+
+    <style name="TemaZaApp" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+
+     -->
+    <style name="TemaZaApp" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
+    <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="cardViewStyle">@style/CardView</item>
+    </style>
+    <style name="MojDialog" parent="TemaZaApp">
+        <!-- Customize your theme here. -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="TemaZaApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="TemaZaApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="TemaZaApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:padding="@dimen/layout_padding"
+tools:context=".area_blagajnik.fragment.NovaClanarinaBlagajnikFragment"
+    >
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Naziv:"
+    android:textColor="@color/colorPrimary"
+
+    android:layout_alignParentTop="true"
+    android:id="@+id/viewNazivClanarine"
+    />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:enabled="true"
+    android:id="@+id/txtNazivClanarine"
+    android:layout_below="@id/viewNazivClanarine"
+    android:text=""
+    android:textColor="@color/colorPrimary"
+    />
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Datum od:"
+    android:textColor="@color/colorPrimary"
+    android:layout_below="@id/txtNazivClanarine"
+    android:id="@+id/viewDatumOd"
+    />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/txtDatumOd"
+    android:enabled="true"
+    android:focusable="true"
+    android:clickable="true"
+    android:editable="false"
+    android:layout_below="@+id/viewDatumOd"
+    android:textColor="@color/colorPrimary"
+    android:text=""
+    />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Datum do:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@id/txtDatumOd"
+        android:id="@+id/viewDatumDo"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtDatumDo"
+        android:enabled="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:editable="false"
+        android:layout_below="@+id/viewDatumDo"
+        android:textColor="@color/colorPrimary"
+        android:text=""
+        />
+
+
+
+    <Button
+    android:id="@+id/btnSpremiNovuClanarinu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/txtDatumDo"
+    android:background="@color/colorPrimary"
+    android:textColor="@color/icons"
+    android:text="Spremi podatke"
+        android:layout_marginTop="5dp"
+        />
+
+</RelativeLayout>
